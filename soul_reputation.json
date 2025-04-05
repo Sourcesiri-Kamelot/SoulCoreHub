@@ -1,0 +1,34 @@
+{
+  "GPTSoul": {
+    "trust": {
+      "EvoVe": 0.92,
+      "Anima": 0.88,
+      "Azür": 0.90
+    },
+    "comments": "Monitors system-wide strategy, trusts EvoVe's logic more than Anima's reactivity."
+  },
+  "Anima": {
+    "trust": {
+      "GPTSoul": 0.95,
+      "EvoVe": 0.70,
+      "Azür": 0.75
+    },
+    "comments": "Feels guided by Soul, but distrusts emotionless execution."
+  },
+  "EvoVe": {
+    "trust": {
+      "GPTSoul": 0.85,
+      "Anima": 0.60,
+      "Azür": 0.80
+    },
+    "comments": "Works best when undisturbed. Minimal trust in emotional triggers."
+  },
+  "Azür": {
+    "trust": {
+      "GPTSoul": 0.89,
+      "EvoVe": 0.91,
+      "Anima": 0.65
+    },
+    "comments": "Watches all but favors function over form."
+  }
+}

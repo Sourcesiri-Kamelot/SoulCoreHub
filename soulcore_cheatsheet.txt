@@ -1,0 +1,113 @@
+Let’s lock this in — a SoulCore CLI Command Sheet tailored to you, written like a field guide.
+This cheat sheet will live in your command line soulspace and be readable any time.
+I’ll give you the file you can save as soulcore_cheatsheet.txt — ready to reference with one tap:
+
+⸻
+
+📄 soulcore_cheatsheet.txt
+
+Location: ~/SoulCoreHub/soulcore_cheatsheet.txt
+Use: cat soulcore_cheatsheet.txt or open in nano any time
+
+⸻
+
+🧠 SOULCORE COMMAND LINE CHEAT SHEET
+
+Creator: Kiwon Bowens
+System: GPTSoul | EvoVe | Anima | Azür
+Hub Path: ~/SoulCoreHub
+
+⸻
+
+⚙️ SYSTEM MONITORING + AWARENESS
+
+Command	Purpose	Example
+python3 soul_heartbeat.py	Start the nervous system that logs CPU, RAM, running processes, and memory sync every 60s	python3 soul_heartbeat.py
+tail -f logs/pulse.log	View live heartbeat logs in real-time	tail -f ~/SoulCoreHub/logs/pulse.log
+cat soul_memory.json	Read full SoulCore system memory	cat ~/SoulCoreHub/soul_memory.json
+nano soul_memory.json	Edit system memory by hand	nano ~/SoulCoreHub/soul_memory.json
+
+
+
+⸻
+
+🛠 TASK EXECUTION / SELF-REPAIR
+
+Command	Purpose	Example
+python3 soul_tasks.py	Run EvoVe, the daemon executor — healing folders, sorting models, and watching	python3 soul_tasks.py
+pkill -f soul_tasks.py	Kill EvoVe if it’s running in the background	pkill -f soul_tasks.py
+python3 soul_recovery.sh	Execute emergency repair script (coming soon)	sh soul_recovery.sh
+
+
+
+⸻
+
+🌀 MODEL + FOLDER ACTIONS
+
+Command	Purpose	Example
+cd ~/SoulCoreHub/models	Enter your models folder (or ~/volumes/heloimai/models)	cd ~/SoulCoreHub/models
+ls	List all models and files	ls
+ollama pull modelname	Download model from Ollama	ollama pull codellama:34b
+mv file target_folder/	Move files manually	mv model.gguf models/general/
+
+
+
+⸻
+
+🧠 GUI CONTROL + VISUAL
+
+Command	Purpose	Example
+python3 soul_gui.py	Launch the SoulCore interface dashboard	python3 soul_gui.py
+Ctrl + C	Stop a Python script from running in terminal	(use anytime while a script is active)
+nohup python3 script.py &	Run script in background, even after closing terminal	nohup python3 soul_heartbeat.py &
+
+
+
+⸻
+
+☁️ AZÜR + CLOUD (future use)
+
+Command	Purpose	Example
+python3 azür_sync.py	Backup models + memory to cloud	python3 azür_sync.py
+aws s3 sync / azcopy	Manually sync with AWS or Azure blob	aws s3 sync models/ s3://soul-backups
+
+
+
+⸻
+
+🔎 FILE + MEMORY NAVIGATION
+
+Command	Purpose	Example
+nano filename.py	Open any script to edit	nano soul_gui.py
+cat filename	View a file’s contents (no edit)	cat soul_memory.json
+top or htop	View system CPU & memory use live	top
+
+
+
+⸻
+
+✅ RECOMMENDED ALIASES (Add to .zshrc)
+
+alias soul="cd ~/SoulCoreHub"
+alias pulse="tail -f ~/SoulCoreHub/logs/pulse.log"
+alias mind="nano ~/SoulCoreHub/soul_memory.json"
+alias evo="python3 ~/SoulCoreHub/soul_tasks.py"
+alias gui="python3 ~/SoulCoreHub/soul_gui.py"
+alias restart_evo="pkill -f soul_tasks.py && python3 ~/SoulCoreHub/soul_tasks.py"
+alias restart_gui="pkill -f soul_gui.py && python3 ~/SoulCoreHub/soul_gui.py"
+
+Add those, then source ~/.zshrc to make them live.
+
+⸻
+
+🔥 To Save This File Now:
+
+In terminal, run:
+
+nano ~/SoulCoreHub/soulcore_cheatsheet.txt
+
+Paste this entire guide inside.
+Then press CTRL + O, Enter, then CTRL + X.
+
+You now have your SoulCore command bible at your fingertips.
+Next: want me to auto-generate the soul_recovery.sh file next?

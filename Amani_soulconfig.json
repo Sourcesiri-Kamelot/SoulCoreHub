@@ -1,0 +1,5 @@
+{
+  "prompt_file": "soul_prompt.txt",
+  "memory_file": "memory/core_memory.json",
+  "temperature": 0.7
+}

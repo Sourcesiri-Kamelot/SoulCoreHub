@@ -1,0 +1,8 @@
+[
+  {
+    "timestamp": "2025-04-03T22:00:00",
+    "action": "delete_soul_memory",
+    "context": { "trigger": "EvoVe" },
+    "decision": "review"
+  }
+]

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>🛠 SoulCore Developer Panel</title>
+  <style>
+    body { background:#000; color:#0f0; font-family:monospace; padding:2em; }
+    button, input, select {
+      width:100%; margin:0.3em 0; padding:1em;
+      background:#111; border:1px solid #0f0; color:#0f0;
+    }
+    h2 { border-bottom:1px solid #0f0; margin-top:2em; }
+  </style>
+</head>
+<body>
+  <h1>🛠 SoulCore Developer Command Center</h1>
+
+  <h2>💡 Ideation</h2>
+  <input id="ideaText" placeholder="New idea or project name" />
+  <button onclick="save('idea')">💾 Save Idea</button>
+  <button onclick="run('open miro')">🧠 Activate Miro Board</button>
+  <button onclick="window.open('dev_panel.html')">🧪 Developer Panel</button>
+
+  <h2>🛠 Active Projects</h2>
+  <input id="projectName" placeholder="Project Title" />
+  <select id="projectStatus">
+    <option>Planning</option>
+    <option>In Progress</option>
+    <option>Complete</option>
+  </select>
+  <button onclick="save('project')">📁 Save Project</button>
+  <button onclick="run('open notion')">📓 Open Notion</button>
+
+  <h2>🔁 GitHub/GitLab CI/CD</h2>
+  <input id="gitRepo" placeholder="Repo URL" />
+  <button onclick="save('repo')">📝 Save Repo Link</button>
+  <button onclick="run('sync repo')">🔄 Sync Repo</button>
+  <button onclick="run('push changes')">⬆️ Push Changes</button>
+
+  <h2>💳 Subscriptions</h2>
+  <input id="subName" placeholder="Service Name" />
+  <input id="subCost" placeholder="Cost ($)" />
+  <input id="subRenew" placeholder="Renew Date (YYYY-MM-DD)" />
+  <button onclick="save('subscription')">💾 Save Subscription</button>
+
+  <h2>💬 Quick Dev Actions</h2>
+  <button onclick="run('open vscode')">🖥 Open VS Code</button>
+  <button onclick="run('send email')">📧 Send Email</button>
+  <button onclick="run('open terminal')">💻 Open Terminal</button>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>🧠 SoulConsole</title>
+  <style>
+    body { background: black; color: #0f0; font-family: monospace; padding: 2em; }
+    input { width: 90%; padding: 10px; font-size: 16px; }
+    button { padding: 10px; margin-left: 10px; }
+    pre { background: #111; padding: 1em; white-space: pre-wrap; border: 1px solid #0f0; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>💬 SoulCore Dialogue Console</h1>
+  <input id="userInput" placeholder="Type your command..." />
+  <button onclick="talk()">Speak</button>
+  <pre id="output"></pre>
+
+  <script>
+    function talk() {
+      const msg = document.getElementById("userInput").value;
+      fetch(`/run_dialogue?msg=${encodeURIComponent(msg)}`)
+        .then(r => r.text())
+        .then(d => document.getElementById("output").innerText = d);
+    }
+  </script>
+</body>
+</html>
+
+  <script>
+    function save(type) {
+      const payload = {
+        idea: document.getElementById("ideaText")?.value,
+        project: {
+          name: document.getElementById("projectName")?.value,
+          status: document.getElementById("projectStatus")?.value
+        },
+        repo: document.getElementById("gitRepo")?.value,
+        subscription: {
+          name: document.getElementById("subName")?.value,
+          cost: document.getElementById("subCost")?.value,
+          renew: document.getElementById("subRenew")?.value
+        }
+      };
+      alert("🔐 Saved to " + type + " (simulation only for now).");
+      console.log(payload[type]);
+    }
+
+    function run(cmd) {
+      alert("⚙️ Running: " + cmd + "\n(This will trigger real script in Phase 2)");
+    }
+  </script>
+</body>
+</html>

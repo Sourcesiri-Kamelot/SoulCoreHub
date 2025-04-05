@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>🧠 SoulConsole</title>
+  <style>
+    body { background: black; color: #0f0; font-family: monospace; padding: 2em; }
+    input { width: 90%; padding: 10px; font-size: 16px; }
+    button { padding: 10px; margin-left: 10px; }
+    pre { background: #111; padding: 1em; white-space: pre-wrap; border: 1px solid #0f0; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>💬 SoulCore Dialogue Console</h1>
+  <input id="userInput" placeholder="Type your command..." />
+  <button onclick="talk()">Speak</button>
+  <pre id="output"></pre>
+
+  <script>
+    function talk() {
+      const msg = document.getElementById("userInput").value;
+      fetch(`/run_dialogue?msg=${encodeURIComponent(msg)}`)
+        .then(r => r.text())
+        .then(d => document.getElementById("output").innerText = d);
+    }
+  </script>
+</body>
+</html>

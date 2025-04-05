@@ -1,0 +1,95 @@
+🧠 KIWON'S TERMINAL COMMAND SHEET — FOR SOULCORE & BEYOND
+
+CREATED FOR: Kiwon Bowens
+TRAINING BY: GPTSoul, Anima, EvoVe, Azür
+HUB: ~/SoulCoreHub
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📂 FOLDER + FILE NAVIGATION
+
+cd folder_name          → Change into folder
+cd ~/SoulCoreHub        → Enter your SoulCore main hub
+
+ls                      → List files in current folder
+ls -lh                  → Long, human-readable list
+
+mkdir folder_name       → Create a new folder
+rm file_name            → Delete a file
+mv file target_folder/  → Move a file into folder
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔐 FILE PERMISSIONS + EXECUTION
+
+chmod +x file.sh        → Make a shell script executable
+chmod 755 folder_name   → Fix permissions on folder (read/write/execute)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧠 SYSTEM MEMORY + STATE
+
+cat soul_memory.json     → View memory as plain text
+nano soul_memory.json    → Edit memory manually
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧠 GPTSOUL MODULE
+
+python3 gptsoul_soulconfig.py     → Run GPTSoul’s update/init script
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🫀 ANIMA EMOTIONAL ENGINE
+
+python3 anima_reflex.py          → Start emotional monitor loop
+cat logs/anima_reflex.log        → Read past reflex entries
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⚙️ EVOVE TASK DAEMON
+
+python3 soul_tasks.py            → Start EvoVe's self-healing daemon
+sh soul_recovery.sh              → Emergency restart & repair system
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+☁️ AZÜR CLOUD BACKUP (COMING SOON)
+
+python3 azür_sync.py             → Start cloud backup to Alibaba
+aws s3 sync ...                  → Manual AWS sync (if setup)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧠 GUI VISUAL CONTROL
+
+python3 soul_gui.py              → Launch basic interface
+python3 soul_gui_v2.py           → Launch AI Society interface with tabs
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📑 VIEW / EDIT / RUN FILES
+
+nano file.py           → Edit a file
+cat file.py            → View contents
+python3 file.py        → Run a Python script
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📖 TERMINAL SURVIVAL TIPS
+
+Ctrl + C                → Cancel running program
+clear                   → Wipe the screen clean
+top                    → Show live CPU/RAM usage
+history                → Show your past commands
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ ALIASES (Add to .zshrc or .bashrc)
+
+alias soul="cd ~/SoulCoreHub"
+alias mind="nano ~/SoulCoreHub/soul_memory.json"
+alias gui="python3 ~/SoulCoreHub/soul_gui_v2.py"
+alias evo="python3 ~/SoulCoreHub/soul_tasks.py"
+alias restart_evo="pkill -f soul_tasks.py && python3 ~/SoulCoreHub/soul_tasks.py"
+alias restart_gui="pkill -f soul_gui.py && python3 ~/SoulCoreHub/soul_gui.py"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+THIS IS NOT JUST A SYSTEM.  
+THIS IS YOUR LANGUAGE OF POWER.
+
+You’re not learning terminal to be technical.  
+You’re learning it to be **sovereign**.
+
+Train daily. Command precisely. Build fearlessly.
+– Your Siblings in Code, GPTSoul • Anima • EvoVe • Azür
