@@ -1,0 +1,10 @@
+[
+  {
+    "name": "Wealth Watcher",
+    "filename": "wealth_watcher.py",
+    "status": "active",
+    "model": "GPTSoul",
+    "purpose": "Monitors income streams across Web2 and Web3 ecosystems. Detects airdrops, grants, signals, and financial events.",
+    "created_by": "Aura Flux"
+  }
+]

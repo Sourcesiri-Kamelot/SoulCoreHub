@@ -2,13 +2,31 @@ import os, shutil, time, subprocess, json
 from datetime import datetime
 from pathlib import Path
 
+TASK_FILE = Path("~/SoulCoreHub/soul_tasks.json").expanduser()
+
+def run_tasks():
+    if not TASK_FILE.exists():
+        return
+    try:
+        with open(TASK_FILE) as f:
+            tasks = json.load(f)
+        for task in tasks.get("queue", []):
+            log_event(f"[task] Running: {task}")
+            subprocess.call(task, shell=True)
+        # Clear after running
+        with open(TASK_FILE, "w") as f:
+            json.dump({"queue": []}, f)
+    except Exception as e:
+        log_event(f"[error] Task execution failed: {e}")
+
 def check_events():
     if time.localtime().tm_min % 5 == 0:
         os.system("echo '🌀 Auto Task Triggered' >> logs/soul_log.txt")
-
 while True:
-    check_events()
-    time.sleep(60)
+    self_repair()
+    sort_models()
+    run_tasks()
+    time.sleep(60 * 15)
 
 MEMORY_PATH = Path("~/SoulCoreHub/soul_memory.json").expanduser()
 MODELS_DIR = Path("~/SoulCoreHub/models").expanduser()

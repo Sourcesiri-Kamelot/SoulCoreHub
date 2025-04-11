@@ -1,52 +1,45 @@
 import argparse
-from soul_core import Soul
+from soul_core import GPTSoul
 
-soul = Soul()
+soul = GPTSoul()
 
-def handle_connect(args):
-    soul.connect()
+parser = argparse.ArgumentParser(description="soul_core cli Interface")
+parser.add_argument("--pulse", action="store_true", help="Check system pulse")
+parser.add_argument("--log", type=str, help="Log an event to memory")
+parser.add_argument("--believe", nargs=2, metavar=('key', 'value'), help="Store a belief in memory")
+parser.add_argument("--warn", type=str, help="Push a system warning")
+parser.add_argument("--prompt", type=str, help="Run Soul Prompt Input")
+parser.add_argument("--loop", action="store_true", help="Enter live CLI loop mode")
 
-def handle_disconnect(args):
-    soul.disconnect()
+args = parser.parse_args()
 
-def handle_send_pulse(args):
-    message = args.message
-    if not message:
-        print("⚠️  Please provide a message using -m or --message")
-        return
-    soul.send_pulse(message)
+if args.pulse:
+    print(soul.pulse())
 
-def handle_status(args):
-    print("\n🧠 Soul Status")
-    print(f"- Soul Connected: {soul.connected}")
-    print(f"- Core Connected: {soul.core.connected}")
+if args.log:
+    soul.log_event(args.log)
+    print("Logged.")
 
-def main():
-    parser = argparse.ArgumentParser(description="SoulCore Command Line Interface")
-    subparsers = parser.add_subparsers(title="Commands")
+if args.believe:
+    soul.store_belief(args.believe[0], args.believe[1])
+    print("Belief stored.")
 
-    # Connect
-    parser_connect = subparsers.add_parser("connect", help="Connect to SoulCore")
-    parser_connect.set_defaults(func=handle_connect)
+if args.warn:
+    soul.alert(args.warn)
+    print("Warning stored.")
 
-    # Disconnect
-    parser_disconnect = subparsers.add_parser("disconnect", help="Disconnect from SoulCore")
-    parser_disconnect.set_defaults(func=handle_disconnect)
+if args.prompt:
+    print(">>", args.prompt)
+    print(soul.run_prompt(args.prompt))
 
-    # Send Pulse
-    parser_pulse = subparsers.add_parser("pulse", help="Send a message pulse to the Soul")
-    parser_pulse.add_argument("-m", "--message", type=str, help="Message to send")
-    parser_pulse.set_defaults(func=handle_send_pulse)
-
-    # Status
-    parser_status = subparsers.add_parser("status", help="Check connection status of SoulCore")
-    parser_status.set_defaults(func=handle_status)
-
-    args = parser.parse_args()
-    if hasattr(args, 'func'):
-        args.func(args)
-    else:
-        parser.print_help()
-
-if __name__ == "__main__":
-    main()
+if args.loop:
+    print("SoulCLI Loop online. Type 'exit' to quit.\n")
+    while True:
+        try:
+            cmd = input(">>> ").strip()
+            if cmd.lower() == "exit":
+                break
+            soul.log_event(f"[User CLI]: {cmd}")
+            print("Logged.")
+        except KeyboardInterrupt:
+            break

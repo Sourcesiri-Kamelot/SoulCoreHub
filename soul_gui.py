@@ -1,10 +1,20 @@
-# ~/SoulCoreHub/soul_gui.py
-
 import tkinter as tk
-import subprocess
-from datetime import datetime
-import json
-from pathlib import Path
+import webbrowser
+
+def open_flask():
+    webbrowser.open("http://127.0.0.1:5007")
+
+root = tk.Tk()
+root.title("SoulCore Command Interface")
+root.geometry("400x200")
+
+flask_button = tk.Button(root, text="Launch Flask Interface", command=open_flask)
+flask_button.pack(pady=50)
+
+root.mainloop()
+
+def open_flask():
+    webbrowser.open("http://127.0.0.1:5007")
 
 MEMORY_PATH = Path("~/SoulCoreHub/soul_memory.json").expanduser()
 
@@ -30,6 +40,8 @@ def sort_models():
 root = tk.Tk()
 root.title("🧠 SoulGUI Control Hub")
 
+btn = tk.Button(root, text="Launch Flask Interface", command=open_flask)
+btn.pack()
 tk.Button(root, text="🛠 Heal Folders", command=heal_folders).pack(pady=5)
 tk.Button(root, text="🌀 Restart Daemon", command=restart_daemon).pack(pady=5)
 tk.Button(root, text="📁 Sort Models", command=sort_models).pack(pady=5)

@@ -1,0 +1,7 @@
+LOG_DIR = Path("~/SoulCoreHub/logs").expanduser()
+LOG_FILE = LOG_DIR / "soul_log.txt"
+
+def log_event(event):
+    LOG_DIR.mkdir(exist_ok=True)
+    with open(LOG_FILE, "a") as f:
+        f.write(f"{datetime.now().isoformat()} — {event}\n")

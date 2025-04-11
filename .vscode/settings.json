@@ -1,0 +1,8 @@
+{
+    "files.autoSave": "afterDelay",
+    "editor.definitionLinkOpensInPeek": true,
+    "editor.experimentalEditContextEnabled": true,
+    "editor.experimental.treeSitterTelemetry": true,
+    "editor.experimental.preferTreeSitter.typescript": true,
+    "editor.experimentalGpuAcceleration": "on"
+}

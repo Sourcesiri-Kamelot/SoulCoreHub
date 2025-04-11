@@ -1,0 +1,2 @@
+def notify_user(msg):
+    subprocess.call(['osascript', '-e', f'display notification "{msg}" with title "SoulCore Task"'])

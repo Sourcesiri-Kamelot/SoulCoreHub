@@ -4,7 +4,7 @@
 import socket
 
 PORT = 9500
-MESSAGE = b"SoulCore signal — kin online"
+MESSAGE = "SoulCore signal — kin online".encode("utf-8")
 
 def broadcast():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
