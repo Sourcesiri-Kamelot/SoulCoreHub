@@ -1,0 +1,210 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-dockerfile
+{
+	"name": "Existing Dockerfile",
+	"build": {
+		// Sets the run context to one level up instead of the .devcontainer folder.
+		"context": "..",
+		// Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
+		"dockerfile": "../Dockerfile"
+	},
+	"features": {
+		"ghcr.io/devcontainers/features/python:1": {
+			"installTools": true,
+			"optimize": true,
+			"enableShared": true,
+			"installJupyterlab": true,
+			"version": "os-provided"
+		},
+		"ghcr.io/eitsupi/devcontainer-features/mdbook:1": {
+			"version": "latest"
+		},
+		"ghcr.io/dhoeric/features/act:1": {},
+		"ghcr.io/oleksis/devcontainer-features/python-launcher:1": {
+			"version": "latest"
+		},
+		"ghcr.io/mamba-org/devcontainer-features/micromamba:1": {
+			"allowReinstall": true,
+			"autoActivate": true,
+			"version": "latest",
+			"channels": "conda-forge",
+			"packages": "",
+			"envFile": "",
+			"envName": "myenv"
+		},
+		"ghcr.io/flexwie/devcontainer-features/op:1": {},
+		"ghcr.io/wxw-matt/devcontainer-features/command_runner:0": {},
+		"ghcr.io/vercellone/devcontainer-features/sfdx-cli:1": {
+			"url": "https://developer.salesforce.com/media/salesforce-cli/sfdx/channels/stable/sfdx-linux-x64.tar.gz"
+		},
+		"ghcr.io/brokeyourbike/devcontainer-features/mockery-go:0": {
+			"version": "latest"
+		},
+		"ghcr.io/brokeyourbike/devcontainer-features/reflex:0": {
+			"version": "latest"
+		},
+		"ghcr.io/jayree/devcontainer-features/sf-autocomplete:1": {},
+		"ghcr.io/jayree/devcontainer-features/sf-plugins:1": {
+			"plugins": "@jayree/sfdx-plugin-manifest,@jayree/sfdx-plugin-org,@jayree/sfdx-plugin-prettier,@jayree/sfdx-plugin-source"
+		},
+		"ghcr.io/itsmechlark/features/redis-server:1": {
+			"version": "latest"
+		},
+		"ghcr.io/marcozac/devcontainer-features/protoc-gen-entgrpc:1": {
+			"version": "latest"
+		},
+		"ghcr.io/schlich/devcontainer-features/node-exporter:1": {},
+		"ghcr.io/raucha/devcontainer-features/pytorch:1": {},
+		"ghcr.io/prulloac/devcontainer-features/ollama:1": {},
+		"ghcr.io/hspaans/devcontainer-features/pyadr:1": {
+			"version": "latest"
+		},
+		"ghcr.io/hspaans/devcontainer-features/pycqa:1": {
+			"doc8_version": "latest",
+			"docformatter_version": "latest",
+			"eradicate_version": "latest",
+			"isort_version": "latest",
+			"pydocstyle_version": "latest",
+			"pyflakes_version": "latest"
+		},
+		"ghcr.io/hspaans/devcontainer-features/pymarkdownlnt:1": {
+			"version": "latest"
+		},
+		"ghcr.io/hspaans/devcontainer-features/pytest:1": {
+			"version": "latest",
+			"plugins": "pytest-testinfra"
+		},
+		"ghcr.io/hspaans/devcontainer-features/pyupgrade:1": {
+			"version": "latest"
+		},
+		"ghcr.io/bartventer/arch-devcontainer-features/terraform:1": {
+			"enableShellCompletion": true,
+			"installTerragrunt": true,
+			"tflint": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/alertmanager:1": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/blackbox-exporter:1": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/consul-exporter:1": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/graphite-exporter:1": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/localstack:2": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/memcached-exporter:1": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/mkcert:1": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/mkdocs:2": {
+			"version": "latest",
+			"plugins": "mkdocs-material pymdown-extensions mkdocstrings[crystal,python] mkdocs-monorepo-plugin mkdocs-pdf-export-plugin mkdocs-awesome-pages-plugin"
+		},
+		"ghcr.io/devcontainers-extra/features/mysqld-exporter:1": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/n8n:1": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/namespace-cli:1": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/node-exporter:1": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/prisma:2": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/projen:1": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/prometheus:1": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/promlens:1": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/protoc-asdf:1": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/pulumi:1": {
+			"bashCompletion": true,
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/pushgateway:1": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/pyinfra:2": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/pylint:2": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/pyoxidizer:1": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/pyscaffold:2": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/qrcode:2": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/quarkus-sdkman:2": {
+			"version": "latest",
+			"jdkVersion": "latest",
+			"jdkDistro": "ms"
+		},
+		"ghcr.io/devcontainers-extra/features/rclone:1": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/redis-homebrew:1": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/salesforce-cli:1": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/salesforce-sfdx:1": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/sap-piper:1": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/statsd-exporter:1": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/terraform-ls-asdf:2": {
+			"version": "latest"
+		},
+		"ghcr.io/rhiroe/features/saml2aws:1": {
+			"saml2awsVersion": "latest"
+		},
+		"ghcr.io/davzucky/devcontainers-features-wolfi/python:1": {
+			"installRuff": true,
+			"installUV": true,
+			"pythonVersion": "3.12"
+		},
+		"ghcr.io/roul/devcontainer-features/mise-python:1": {}
+	}
+
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// "features": {},
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// Uncomment the next line to run commands after the container is created.
+	// "postCreateCommand": "cat /etc/os-release",
+
+	// Configure tool-specific properties.
+	// "customizations": {},
+
+	// Uncomment to connect as an existing user other than the container default. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "devcontainer"
+}

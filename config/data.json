@@ -1,0 +1,22 @@
+{
+  "resonance": {
+    "joy": [
+      {
+        "dataPoint": "test push",
+        "value": 0.9
+      },
+      {
+        "dataPoint": "psychic alignment",
+        "value": 0.93
+      },
+      {
+        "dataPoint": "user_input",
+        "value": 0.9
+      },
+      {
+        "dataPoint": "breakthrough",
+        "value": 0.95
+      }
+    ]
+  }
+}
