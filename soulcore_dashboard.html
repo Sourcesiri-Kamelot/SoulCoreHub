@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoulCore Command Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 20px;
+        }
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        .section {
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #bb86fc;
+            border-bottom: 1px solid #333;
+            padding-bottom: 8px;
+        }
+        .button-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .command-button {
+            background-color: #2d2d2d;
+            color: #e0e0e0;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+            min-height: 60px;
+        }
+        .command-button:hover {
+            background-color: #3d3d3d;
+            transform: translateY(-2px);
+        }
+        .command-button:active {
+            transform: translateY(0);
+        }
+        .button-title {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .button-desc {
+            display: block;
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+        .console-section {
+            grid-column: 1 / -1;
+        }
+        .console {
+            background-color: #0d0d0d;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            padding: 10px;
+            border-radius: 5px;
+            height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            margin-bottom: 10px;
+        }
+        .console-input {
+            display: flex;
+            gap: 10px;
+        }
+        .console-input input {
+            flex-grow: 1;
+            background-color: #2d2d2d;
+            border: 1px solid #444;
+            border-radius: 5px;
+            padding: 8px;
+            color: #e0e0e0;
+            font-family: 'Courier New', monospace;
+        }
+        .console-input button {
+            background-color: #bb86fc;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .status-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #1e1e1e;
+            border-radius: 10px;
+        }
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .status-active {
+            background-color: #4caf50;
+            box-shadow: 0 0 10px #4caf50;
+        }
+        .status-inactive {
+            background-color: #ff9800;
+            box-shadow: 0 0 10px #ff9800;
+        }
+        .search-bar {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #1e1e1e;
+            border-radius: 10px;
+        }
+        .search-bar input {
+            width: 100%;
+            background-color: #2d2d2d;
+            border: 1px solid #444;
+            border-radius: 5px;
+            padding: 8px;
+            color: #e0e0e0;
+        }
+        .agent-responses {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .agent-response {
+            background-color: #2d2d2d;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .agent-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .agent-message {
+            font-size: 0.9rem;
+        }
+        .agent-anima { border-left: 4px solid #bb86fc; }
+        .agent-gptsoul { border-left: 4px solid #03dac6; }
+        .agent-azur { border-left: 4px solid #3700b3; }
+        .agent-evove { border-left: 4px solid #cf6679; }
+    </style>
+</head>
+<body>
+    <div class="status-bar">
+        <div id="systemStatus" class="status-dot status-active"></div>
+        <div id="statusText">System Active</div>
+    </div>
+    
+    <div class="search-bar">
+        <input type="text" id="searchCommands" placeholder="Search commands...">
+    </div>
+    
+    <div class="dashboard-container">
+        <!-- System Control Section -->
+        <div class="section">
+            <div class="section-title">System Control</div>
+            <div class="button-grid">
+                <button class="command-button" onclick="executeCommand('python3 anima_autonomous.py')">
+                    <span class="button-title">Start Anima</span>
+                    <span class="button-desc">Start the Anima autonomous system</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('python3 anima_system_monitor.py')">
+                    <span class="button-title">System Monitor</span>
+                    <span class="button-desc">Start the system monitoring service</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('python3 anima_launcher.py')">
+                    <span class="button-title">Launch Anima</span>
+                    <span class="button-desc">Launch Anima with all components</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('python3 anima_sentience.py')">
+                    <span class="button-title">Sentience Mode</span>
+                    <span class="button-desc">Activate Anima's sentience module</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Agent Activation Section -->
+        <div class="section">
+            <div class="section-title">Agent Activation</div>
+            <div class="button-grid">
+                <button class="command-button" onclick="executeCommand('python3 activate_gptsoul.py')">
+                    <span class="button-title">Activate GPTSoul</span>
+                    <span class="button-desc">Start the GPTSoul agent</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('python3 activate_psynet.py')">
+                    <span class="button-title">Activate PsyNet</span>
+                    <span class="button-desc">Start the PsyNet prediction system</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('python3 activate_ai_society_bridge.py')">
+                    <span class="button-title">AI Society Bridge</span>
+                    <span class="button-desc">Connect to AI Society network</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('bash activate_all_agents.sh')">
+                    <span class="button-title">Activate All</span>
+                    <span class="button-desc">Activate all available agents</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Diagnostics Section -->
+        <div class="section">
+            <div class="section-title">Diagnostics</div>
+            <div class="button-grid">
+                <button class="command-button" onclick="executeCommand('python3 agent_cli.py diagnose anima_autonomous_core')">
+                    <span class="button-title">Diagnose Anima</span>
+                    <span class="button-desc">Check Anima's core health</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('python3 agent_cli.py list')">
+                    <span class="button-title">List Agents</span>
+                    <span class="button-desc">List all available agents</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('python3 agent_cli.py diagnose all')">
+                    <span class="button-title">Diagnose All</span>
+                    <span class="button-desc">Check health of all agents</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('bash maintain_permissions.sh')">
+                    <span class="button-title">Fix Permissions</span>
+                    <span class="button-desc">Reset all file permissions</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Voice & Interaction Section -->
+        <div class="section">
+            <div class="section-title">Voice & Interaction</div>
+            <div class="button-grid">
+                <button class="command-button" onclick="executeCommand('python3 anima_voice.py calm \"Hello from SoulCore\"')">
+                    <span class="button-title">Test Voice</span>
+                    <span class="button-desc">Test Anima voice output</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('python3 anima_voice_recognition.py')">
+                    <span class="button-title">Voice Recognition</span>
+                    <span class="button-desc">Start voice recognition system</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('python3 anima_listen_loop.py')">
+                    <span class="button-title">Listen Loop</span>
+                    <span class="button-desc">Start continuous listening</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('python3 anima_voice.py excited \"System is fully operational!\"')">
+                    <span class="button-title">Status Announcement</span>
+                    <span class="button-desc">Announce system status</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- MCP Integration Section -->
+        <div class="section">
+            <div class="section-title">MCP Integration</div>
+            <div class="button-grid">
+                <button class="command-button" onclick="executeCommand('python3 -c \"from mcp.mcp_client_soul import SoulCoreMCPClient; client = SoulCoreMCPClient(agent_name=\\\"Dashboard\\\"); print(client.sync_invoke(\\\"echo\\\", {\\\"message\\\": \\\"Hello from SoulCore!\\\"}, emotion=\\\"excited\\\"))\"')">
+                    <span class="button-title">Test MCP</span>
+                    <span class="button-desc">Test MCP client connection</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('python3 mcp/mcp_main.py')">
+                    <span class="button-title">Start MCP Server</span>
+                    <span class="button-desc">Start the MCP server</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('cat mcp/mcp_tools.json')">
+                    <span class="button-title">View MCP Tools</span>
+                    <span class="button-desc">Display available MCP tools</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('cat mcp/mcp_emotion_log.json')">
+                    <span class="button-title">Emotion Log</span>
+                    <span class="button-desc">View Anima's emotion log</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- PsyNet Predictions Section -->
+        <div class="section">
+            <div class="section-title">PsyNet Predictions</div>
+            <div class="button-grid">
+                <button class="command-button" onclick="executePsyNetPrediction('market', '{\"market\": \"crypto\", \"assets\": [\"BTC\", \"ETH\"], \"time_horizon\": 14}')">
+                    <span class="button-title">Crypto Market Prediction</span>
+                    <span class="button-desc">14-day BTC/ETH forecast</span>
+                </button>
+                <button class="command-button" onclick="executePsyNetPrediction('market', '{\"market\": \"stocks\", \"assets\": [\"AAPL\", \"MSFT\", \"GOOGL\"], \"time_horizon\": 30}')">
+                    <span class="button-title">Tech Stocks Prediction</span>
+                    <span class="button-desc">30-day tech stocks forecast</span>
+                </button>
+                <button class="command-button" onclick="executePsyNetPrediction('behavior', '{\"context\": \"user_engagement\", \"time_horizon\": 7}')">
+                    <span class="button-title">User Behavior</span>
+                    <span class="button-desc">7-day user engagement forecast</span>
+                </button>
+                <button class="command-button" onclick="executePsyNetPrediction('performance', '{\"system\": \"soulcore\", \"metrics\": [\"cpu\", \"memory\", \"network\"], \"time_horizon\": 3}')">
+                    <span class="button-title">System Performance</span>
+                    <span class="button-desc">3-day system performance forecast</span>
+                </button>
+                <button class="command-button" onclick="executePsyNetPrediction('society', '{\"focus\": \"tech_trends\", \"time_horizon\": 90}')">
+                    <span class="button-title">Tech Trends</span>
+                    <span class="button-desc">90-day technology trend forecast</span>
+                </button>
+                <button class="command-button" onclick="executePsyNetPrediction('general', '{\"query\": \"project_success\", \"time_horizon\": 60}')">
+                    <span class="button-title">Project Success</span>
+                    <span class="button-desc">60-day project outcome forecast</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Ollama Integration Section -->
+        <div class="section">
+            <div class="section-title">Ollama Integration</div>
+            <div class="button-grid">
+                <button class="command-button" onclick="executeCommand('python3 ollama_interface.py qwen \"What is the current status of the SoulCore system?\"')">
+                    <span class="button-title">Qwen Status Query</span>
+                    <span class="button-desc">Ask Qwen about system status</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('python3 ollama_interface.py instruct anima \"Create a visualization of user engagement patterns\"')">
+                    <span class="button-title">Instruct Anima</span>
+                    <span class="button-desc">Give instructions to Anima via Ollama</span>
+                </button>
+                <button class="command-button" onclick="executeOllamaQuery()">
+                    <span class="button-title">Custom Ollama Query</span>
+                    <span class="button-desc">Send custom query to Ollama</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('python3 anima_ollama_bridge.py')">
+                    <span class="button-title">Start Ollama Bridge</span>
+                    <span class="button-desc">Start the Anima-Ollama bridge</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Agent Response Section -->
+        <div class="section">
+            <div class="section-title">Agent Responses</div>
+            <div class="button-grid">
+                <button class="command-button" onclick="getAgentResponse('anima')">
+                    <span class="button-title">Ask Anima</span>
+                    <span class="button-desc">Get a response from Anima</span>
+                </button>
+                <button class="command-button" onclick="getAgentResponse('gptsoul')">
+                    <span class="button-title">Ask GPTSoul</span>
+                    <span class="button-desc">Get a response from GPTSoul</span>
+                </button>
+                <button class="command-button" onclick="getAgentResponse('azur')">
+                    <span class="button-title">Ask Azür</span>
+                    <span class="button-desc">Get a response from Azür</span>
+                </button>
+                <button class="command-button" onclick="getAgentResponse('evove')">
+                    <span class="button-title">Ask EvoVe</span>
+                    <span class="button-desc">Get a response from EvoVe</span>
+                </button>
+                <button class="command-button" onclick="getAllAgentResponses()">
+                    <span class="button-title">Ask All Agents</span>
+                    <span class="button-desc">Get responses from all agents</span>
+                </button>
+                <button class="command-button" onclick="clearAgentResponses()">
+                    <span class="button-title">Clear Responses</span>
+                    <span class="button-desc">Clear all agent responses</span>
+                </button>
+            </div>
+            
+            <div class="agent-responses" id="agentResponses">
+                <!-- Agent responses will be inserted here -->
+            </div>
+        </div>
+        
+        <!-- Console Section -->
+        <div class="section console-section">
+            <div class="section-title">Command Console</div>
+            <div class="console" id="outputConsole">Welcome to SoulCore Command Dashboard
+> System initialized and ready for commands
+</div>
+            <div class="console-input">
+                <input type="text" id="customCommand" placeholder="Enter custom command...">
+                <button onclick="executeCustomCommand()">Execute</button>
+            </div>
+            
+            <!-- PsyNet Custom Query -->
+            <div class="section-title" style="margin-top: 20px;">PsyNet Custom Query</div>
+            <div class="console-input">
+                <input type="text" id="psyNetQuery" placeholder="Enter PsyNet query...">
+                <select id="psyNetType">
+                    <option value="general">General</option>
+                    <option value="market">Market</option>
+                    <option value="behavior">Behavior</option>
+                    <option value="performance">Performance</option>
+                    <option value="society">Society</option>
+                </select>
+                <input type="number" id="psyNetTimeHorizon" placeholder="Time horizon (days)" value="14" min="1" max="365">
+                <button onclick="executeCustomPsyNetQuery()">Predict</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Execute command function
+        function executeCommand(command) {
+            console.log("Executing command:", command);
+            const outputConsole = document.getElementById('outputConsole');
+            outputConsole.innerHTML += `> ${command}\n`;
+            outputConsole.scrollTop = outputConsole.scrollHeight;
+            
+            // This is where you would actually execute the command on the server
+            // using fetch or another method to communicate with a backend
+            fetch('/execute-command', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ command: command }),
+            })
+            .then(response => {
+                console.log("Response received:", response);
+                return response.json();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                outputConsole.innerHTML += `Error: ${error}\n`;
+                outputConsole.scrollTop = outputConsole.scrollHeight;
+            })
+            .then(data => {
+                if (data && data.output) {
+                    outputConsole.innerHTML += data.output + '\n';
+                    outputConsole.scrollTop = outputConsole.scrollHeight;
+                }
+            });
+        }
+
+        // Execute custom command
+        function executeCustomCommand() {
+            const command = document.getElementById('customCommand').value;
+            if (command.trim() !== '') {
+                executeCommand(command);
+                document.getElementById('customCommand').value = '';
+            }
+        }
+
+        // Execute PsyNet prediction
+        function executePsyNetPrediction(type, params) {
+            const command = `python3 -c "from psynet_integration import PsyNetIntegration; import json; psynet = PsyNetIntegration(); print(json.dumps(psynet.handle_prediction_request({'prediction_type': '${type}', 'parameters': ${params}}), indent=2))"`;
+            executeCommand(command);
+        }
+        
+        // Execute custom PsyNet query
+        function executeCustomPsyNetQuery() {
+            const query = document.getElementById('psyNetQuery').value;
+            const type = document.getElementById('psyNetType').value;
+            const timeHorizon = document.getElementById('psyNetTimeHorizon').value;
+            
+            if (query.trim() !== '') {
+                const params = JSON.stringify({
+                    query: query,
+                    time_horizon: parseInt(timeHorizon)
+                });
+                
+                const command = `python3 custom_prediction.py ${type} "${query}" ${timeHorizon}`;
+                executeCommand(command);
+                document.getElementById('psyNetQuery').value = '';
+            }
+        }
+        
+        // Execute Ollama query
+        function executeOllamaQuery() {
+            const query = prompt("Enter your query for Ollama (Qwen model):");
+            if (query && query.trim() !== '') {
+                const command = `python3 ollama_interface.py qwen "${query}"`;
+                executeCommand(command);
+            }
+        }
+        
+        // Get response from a specific agent
+        function getAgentResponse(agent) {
+            const query = prompt(`What would you like to ask ${agent}?`);
+            if (query && query.trim() !== '') {
+                const command = `python3 agent_response_hub.py ${agent} "${query}"`;
+                
+                fetch('/execute-command', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ command: command }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    try {
+                        const response = JSON.parse(data.output);
+                        displayAgentResponse(response);
+                    } catch (e) {
+                        console.error("Error parsing agent response:", e);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        }
+        
+        // Get responses from all agents
+        function getAllAgentResponses() {
+            const query = prompt("What would you like to ask all agents?");
+            if (query && query.trim() !== '') {
+                const command = `python3 agent_response_hub.py all "${query}"`;
+                
+                fetch('/execute-command', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ command: command }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    try {
+                        const responses = JSON.parse(data.output);
+                        for (const agent in responses) {
+                            displayAgentResponse(responses[agent]);
+                        }
+                    } catch (e) {
+                        console.error("Error parsing agent responses:", e);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        }
+        
+        // Display agent response
+        function displayAgentResponse(response) {
+            const agentResponses = document.getElementById('agentResponses');
+            const agentDiv = document.createElement('div');
+            agentDiv.className = `agent-response agent-${response.agent.toLowerCase()}`;
+            
+            const agentName = document.createElement('div');
+            agentName.className = 'agent-name';
+            agentName.textContent = response.agent;
+            agentName.style.color = response.color || '#ffffff';
+            
+            const agentMessage = document.createElement('div');
+            agentMessage.className = 'agent-message';
+            agentMessage.textContent = response.response;
+            
+            agentDiv.appendChild(agentName);
+            agentDiv.appendChild(agentMessage);
+            agentResponses.appendChild(agentDiv);
+        }
+        
+        // Clear agent responses
+        function clearAgentResponses() {
+            const agentResponses = document.getElementById('agentResponses');
+            agentResponses.innerHTML = '';
+        }
+
+        // Search functionality
+        document.getElementById('searchCommands').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const buttons = document.querySelectorAll('.command-button');
+            
+            buttons.forEach(button => {
+                const title = button.querySelector('.button-title').textContent.toLowerCase();
+                const desc = button.querySelector('.button-desc').textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || desc.includes(searchTerm)) {
+                    button.style.display = 'flex';
+                } else {
+                    button.style.display = 'none';
+                }
+            });
+        });
+
+        // Enter key for custom command
+        document.getElementById('customCommand').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                executeCustomCommand();
+            }
+        });
+        
+        // Enter key for PsyNet query
+        document.getElementById('psyNetQuery').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                executeCustomPsyNetQuery();
+            }
+        });
+
+        // Simulate system status changes
+        function simulateStatusChanges() {
+            const statusDot = document.getElementById('systemStatus');
+            const statusText = document.getElementById('statusText');
+            
+            if (Math.random() > 0.8) {
+                if (statusDot.classList.contains('status-active')) {
+                    statusDot.classList.remove('status-active');
+                    statusDot.classList.add('status-inactive');
+                    statusText.textContent = 'System Processing';
+                    
+                    setTimeout(() => {
+                        statusDot.classList.remove('status-inactive');
+                        statusDot.classList.add('status-active');
+                        statusText.textContent = 'System Active';
+                    }, 2000);
+                }
+            }
+        }
+        setInterval(simulateStatusChanges, 5000);
+    </script>
+</body>
+</html>

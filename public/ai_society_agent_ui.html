@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Society - Agent Nexus</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #0f0f0f; color: #fefefe; margin: 0; padding: 0; }
+        header { padding: 1rem; background: linear-gradient(to right, #9932CC, #FFD700, #0000FF); text-align: center; font-size: 2rem; }
+        .container { display: grid; grid-template-columns: 1fr 3fr; height: 100vh; }
+        .sidebar { background-color: #1a1a1a; padding: 1rem; overflow-y: auto; }
+        .main { padding: 1rem; overflow-y: auto; }
+        .agent-card { border: 1px solid #333; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; background-color: #191919; transition: 0.3s; }
+        .agent-card:hover { background-color: #2a2a2a; cursor: pointer; }
+        .category { font-weight: bold; margin-top: 1rem; margin-bottom: 0.5rem; color: #FFD700; }
+        input[type="text"] { width: 100%; padding: 0.5rem; margin-bottom: 1rem; border: none; border-radius: 4px; }
+        .status-indicator { font-size: 0.8rem; color: #00ffcc; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <header>🧠 AI Society - Agent Nexus</header>
+    <div class="container">
+        <div class="sidebar">
+            <div class="category">Categories</div>
+            <div id="categories">
+                <div onclick="filterCategory('All')">🌐 All Agents</div>
+                <div onclick="filterCategory('Builder')">🛠️ Builders</div>
+                <div onclick="filterCategory('Creative')">🎨 Creative</div>
+                <div onclick="filterCategory('Business')">💼 Business</div>
+                <div onclick="filterCategory('Research')">🔬 Research</div>
+                <div onclick="filterCategory('Daemon')">👻 Daemon</div>
+                <div onclick="filterCategory('Experimental')">⚗️ Experimental</div>
+            </div>
+        </div>
+        <div class="main">
+            <input type="text" id="search" placeholder="Type to summon an agent...">
+            <div id="agentList"></div>
+        </div>
+    </div>
+    <script>
+        const agents = [
+            { name: "GolemBuilder", category: "Builder", description: "Builds full-stack apps from natural language.", status: "active" },
+            { name: "AnimaArchitect", category: "Creative", description: "GUI builder infused with Anima’s energy.", status: "active" },
+            { name: "TemplateForge", category: "Builder", description: "Evolves code templates for system use.", status: "daemon" },
+            { name: "SoulLinker", category: "Daemon", description: "Syncs commands across SoulCore agents.", status: "daemon" },
+            { name: "PromptCompiler", category: "Business", description: "Parses high-level prompts into projects.", status: "active" },
+            { name: "DreamWeaver", category: "Creative", description: "Builds surreal code from dream prompts.", status: "experimental" },
+            { name: "GuardianCompiler", category: "Builder", description: "Verifies divine code quality & security.", status: "always_on" }
+        ];
+
+        function renderAgents(list) {
+            const listContainer = document.getElementById("agentList");
+            listContainer.innerHTML = '';
+            list.forEach(agent => {
+                const card = document.createElement("div");
+                card.className = "agent-card";
+                card.innerHTML = `<strong>${agent.name}</strong><br>${agent.description}<br><span class="status-indicator">${agent.status}</span>`;
+                listContainer.appendChild(card);
+            });
+        }
+
+        function filterCategory(cat) {
+            if (cat === 'All') return renderAgents(agents);
+            renderAgents(agents.filter(a => a.category === cat));
+        }
+
+        document.getElementById("search").addEventListener("input", (e) => {
+            const query = e.target.value.toLowerCase();
+            renderAgents(agents.filter(a => a.name.toLowerCase().includes(query) || a.description.toLowerCase().includes(query)));
+        });
+
+        renderAgents(agents);
+    </script>
+</body>
+</html>

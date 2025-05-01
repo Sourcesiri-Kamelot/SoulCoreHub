@@ -1,0 +1,32 @@
+[
+  {
+    "name": "MITRE ATT&CK",
+    "url": "https://attack.mitre.org/",
+    "type": "framework",
+    "enabled": true
+  },
+  {
+    "name": "US-CERT",
+    "url": "https://www.us-cert.gov/ncas/alerts",
+    "type": "alerts",
+    "enabled": true
+  },
+  {
+    "name": "AlienVault OTX",
+    "url": "https://otx.alienvault.com/",
+    "type": "indicators",
+    "enabled": true
+  },
+  {
+    "name": "VirusTotal",
+    "url": "https://www.virustotal.com/",
+    "type": "analysis",
+    "enabled": true
+  },
+  {
+    "name": "AbuseIPDB",
+    "url": "https://www.abuseipdb.com/",
+    "type": "ip_reputation",
+    "enabled": true
+  }
+]

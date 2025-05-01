@@ -1,0 +1,36 @@
+2025-04-21 11:14:07,804 [INFO] Updated agent registry at agent_registry_EXEC.json
+2025-04-21 11:14:07,805 [INFO] Created GPTSoul agent at agents/sentient_orchestration/gptsoul_agent.py
+2025-04-21 11:14:07,805 [INFO] Added GPTSoul to registry at agent_registry_EXEC.json
+2025-04-21 11:14:07,805 [INFO] Loading agent from agents.builders.builder_agent.BuilderAgent...
+2025-04-21 11:14:07,811 [ERROR] Error loading agent from agents.builders.builder_agent.BuilderAgent: 'BuilderAgent' object has no attribute 'logger'
+2025-04-21 11:14:07,811 [ERROR] Failed to load agent from agents.builders.builder_agent.BuilderAgent
+2025-04-21 11:14:07,811 [INFO] Loading agent from agents.predictive.psynet_agent.PsynetAgent...
+2025-04-21 11:14:07,814 [INFO] Successfully loaded Psynet Agent
+2025-04-21 11:14:07,814 [INFO] Psynet Agent run result: {'status': 'success', 'message': 'Psynet Agent cycle complete'}
+2025-04-21 11:14:07,814 [INFO] Loading agent from agents.sentient_orchestration.ai_society_psynet_bridge.AISocietyPsynetBridge...
+2025-04-21 11:14:07,816 [INFO] Successfully loaded AI Society Psynet Bridge
+2025-04-21 11:14:07,816 [INFO] AI Society Psynet Bridge run result: {'status': 'success', 'message': 'AI Society Psynet Bridge cycle complete'}
+2025-04-21 11:14:07,816 [INFO] Loading agent from agents.sentient_orchestration.gptsoul_agent.GPTSoulAgent...
+2025-04-21 11:14:07,817 [INFO] GPTSoul initialized
+2025-04-21 11:14:07,817 [INFO] Successfully loaded GPTSoul
+2025-04-21 11:14:07,817 [INFO] GPTSoul running
+2025-04-21 11:14:07,817 [INFO] GPTSoul run result: {'status': 'success', 'message': 'GPTSoul cycle complete'}
+2025-04-21 11:14:07,817 [INFO] Successfully activated 3 agents
+2025-04-21 11:14:56,573 [INFO] Updated agent registry at agent_registry_EXEC.json
+2025-04-21 11:14:56,573 [INFO] Created GPTSoul agent at agents/sentient_orchestration/gptsoul_agent.py
+2025-04-21 11:14:56,574 [INFO] Added GPTSoul to registry at agent_registry_EXEC.json
+2025-04-21 11:14:56,574 [INFO] Loading agent from agents.builders.builder_agent.BuilderAgent...
+2025-04-21 11:14:56,579 [ERROR] Error loading agent from agents.builders.builder_agent.BuilderAgent: 'BuilderAgent' object has no attribute 'logger'
+2025-04-21 11:14:56,579 [ERROR] Failed to load agent from agents.builders.builder_agent.BuilderAgent
+2025-04-21 11:14:56,579 [INFO] Loading agent from agents.predictive.psynet_agent.PsynetAgent...
+2025-04-21 11:14:56,580 [INFO] Successfully loaded Psynet Agent
+2025-04-21 11:14:56,580 [INFO] Psynet Agent run result: {'status': 'success', 'message': 'Psynet Agent cycle complete'}
+2025-04-21 11:14:56,580 [INFO] Loading agent from agents.sentient_orchestration.ai_society_psynet_bridge.AISocietyPsynetBridge...
+2025-04-21 11:14:56,581 [INFO] Successfully loaded AI Society Psynet Bridge
+2025-04-21 11:14:56,581 [INFO] AI Society Psynet Bridge run result: {'status': 'success', 'message': 'AI Society Psynet Bridge cycle complete'}
+2025-04-21 11:14:56,581 [INFO] Loading agent from agents.sentient_orchestration.gptsoul_agent.GPTSoulAgent...
+2025-04-21 11:14:56,582 [INFO] GPTSoul initialized
+2025-04-21 11:14:56,582 [INFO] Successfully loaded GPTSoul
+2025-04-21 11:14:56,582 [INFO] GPTSoul running
+2025-04-21 11:14:56,582 [INFO] GPTSoul run result: {'status': 'success', 'message': 'GPTSoul cycle complete'}
+2025-04-21 11:14:56,582 [INFO] Successfully activated 3 agents

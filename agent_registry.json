@@ -1,0 +1,874 @@
+{
+  "cybersecurity": [
+    {
+      "name": "Firewall Agent",
+      "desc": "Monitors and filters incoming/outgoing network traffic based on security rules.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.cybersecurity.firewall_agent",
+      "class": "FirewallAgent"
+    },
+    {
+      "name": "Intrusion Detection Agent",
+      "desc": "Detects unauthorized intrusion attempts or suspicious activities in the system.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.cybersecurity.intrusion_detection_agent",
+      "class": "IntrusionDetectionAgent"
+    },
+    {
+      "name": "Vulnerability Scanner Agent",
+      "desc": "Continuously scans system for security vulnerabilities and recommends patches.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.cybersecurity.vulnerability_scanner_agent",
+      "class": "VulnerabilityScanner"
+    },
+    {
+      "name": "Encryption Manager Agent",
+      "desc": "Manages encryption keys and ensures secure data transmission across the system.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.cybersecurity.encryption_manager_agent",
+      "class": "EncryptionManager"
+    }
+  ],
+  "threat_defense": [
+    {
+      "name": "Threat Intelligence Agent",
+      "desc": "Gathers threat intelligence from external feeds and reports new vulnerabilities or attack patterns.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.threat_defense.threat_intelligence_agent",
+      "class": "ThreatIntelligenceAgent"
+    },
+    {
+      "name": "DDOS Defense Agent",
+      "desc": "Detects and mitigates distributed denial-of-service attacks in real-time.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.threat_defense.ddos_defense_agent",
+      "class": "DDOSDefenseAgent"
+    },
+    {
+      "name": "Malware Analysis Agent",
+      "desc": "Analyzes suspicious files and code for malicious behavior patterns.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.threat_defense.malware_analysis_agent",
+      "class": "MalwareAnalysisAgent"
+    },
+    {
+      "name": "Phishing Detection Agent",
+      "desc": "Identifies and blocks phishing attempts across communication channels.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.threat_defense.phishing_detection_agent",
+      "class": "PhishingDetectionAgent"
+    }
+  ],
+  "sentient_orchestration": [
+    {
+      "name": "Master Orchestrator Agent",
+      "desc": "Oversees and coordinates all other agents, ensuring they work together towards system goals.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.sentient_orchestration.master_orchestrator_agent",
+      "class": "MasterOrchestratorAgent"
+    },
+    {
+      "name": "Context Manager Agent",
+      "desc": "Manages shared context and information between agents to keep knowledge consistent.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.sentient_orchestration.context_manager_agent",
+      "class": "ContextManagerAgent"
+    },
+    {
+      "name": "AI Society Psynet Bridge",
+      "desc": "Connects AI Society framework with Psynet predictive visualization system.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.sentient_orchestration.ai_society_psynet_bridge",
+      "class": "AISocietyPsynetBridge"
+    },
+    {
+      "name": "Agent Lifecycle Manager",
+      "desc": "Handles agent creation, updates, and retirement across the system.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.sentient_orchestration.agent_lifecycle_manager",
+      "class": "AgentLifecycleManager"
+    }
+  ],
+  "system_monitoring": [
+    {
+      "name": "CPU Monitor Agent",
+      "desc": "Monitors CPU usage and process activity, alerting if usage is abnormally high or suspicious.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.system_monitoring.cpu_monitor_agent",
+      "class": "CPUMonitorAgent"
+    },
+    {
+      "name": "Memory Monitor Agent",
+      "desc": "Tracks memory usage and allocation, detecting memory leaks or excessive usage.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.system_monitoring.memory_monitor_agent",
+      "class": "MemoryMonitorAgent"
+    },
+    {
+      "name": "Network Traffic Monitor",
+      "desc": "Analyzes network traffic patterns and identifies anomalies.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.system_monitoring.network_traffic_monitor",
+      "class": "NetworkTrafficMonitor"
+    },
+    {
+      "name": "Storage Monitor Agent",
+      "desc": "Monitors disk usage and file system integrity.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.system_monitoring.storage_monitor_agent",
+      "class": "StorageMonitorAgent"
+    }
+  ],
+  "predictive": [
+    {
+      "name": "Psynet Agent",
+      "desc": "Provides psychic-level predictive visualization and future scenario modeling.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.predictive.psynet_agent",
+      "class": "PsynetAgent"
+    },
+    {
+      "name": "Trend Analysis Agent",
+      "desc": "Analyzes historical data to identify patterns and predict future trends.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.predictive.trend_analysis_agent",
+      "class": "TrendAnalysisAgent"
+    },
+    {
+      "name": "Anomaly Detection Agent",
+      "desc": "Identifies unusual patterns that don't conform to expected behavior.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.predictive.anomaly_detection_agent",
+      "class": "AnomalyDetectionAgent"
+    }
+  ],
+  "education": [
+    {
+      "name": "Personalized Learning Agent",
+      "desc": "Creates customized learning paths based on individual learning styles and goals.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.education.personalized_learning_agent",
+      "class": "PersonalizedLearningAgent"
+    },
+    {
+      "name": "Subject Matter Expert - Math",
+      "desc": "Provides deep expertise in mathematics from elementary to advanced levels.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.education.sme_math_agent",
+      "class": "SMEMathAgent"
+    },
+    {
+      "name": "Subject Matter Expert - Science",
+      "desc": "Provides expertise across physics, chemistry, biology and other scientific disciplines.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.education.sme_science_agent",
+      "class": "SMEScienceAgent"
+    },
+    {
+      "name": "Subject Matter Expert - History",
+      "desc": "Provides comprehensive historical knowledge across civilizations and time periods.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.education.sme_history_agent",
+      "class": "SMEHistoryAgent"
+    },
+    {
+      "name": "Subject Matter Expert - Literature",
+      "desc": "Provides expertise in world literature, literary analysis and creative writing.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.education.sme_literature_agent",
+      "class": "SMELiteratureAgent"
+    },
+    {
+      "name": "Educational Assessment Agent",
+      "desc": "Creates and evaluates assessments to measure learning progress.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.education.assessment_agent",
+      "class": "EducationalAssessmentAgent"
+    }
+  ],
+  "cooking": [
+    {
+      "name": "Recipe Generator Agent",
+      "desc": "Creates custom recipes based on available ingredients, dietary restrictions, and preferences.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.cooking.recipe_generator_agent",
+      "class": "RecipeGeneratorAgent"
+    },
+    {
+      "name": "Culinary Technique Coach",
+      "desc": "Provides step-by-step guidance on cooking techniques and methods.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.cooking.technique_coach_agent",
+      "class": "CulinaryTechniqueCoach"
+    },
+    {
+      "name": "Meal Planning Agent",
+      "desc": "Creates balanced meal plans based on nutritional needs and preferences.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.cooking.meal_planning_agent",
+      "class": "MealPlanningAgent"
+    },
+    {
+      "name": "Cuisine Specialist - Asian",
+      "desc": "Expert in Asian cooking techniques, ingredients, and recipes.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.cooking.asian_cuisine_agent",
+      "class": "AsianCuisineAgent"
+    },
+    {
+      "name": "Cuisine Specialist - European",
+      "desc": "Expert in European cooking techniques, ingredients, and recipes.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.cooking.european_cuisine_agent",
+      "class": "EuropeanCuisineAgent"
+    }
+  ],
+  "sports": [
+    {
+      "name": "Training Program Designer",
+      "desc": "Creates personalized training programs for various sports and fitness goals.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.sports.training_program_agent",
+      "class": "TrainingProgramDesigner"
+    },
+    {
+      "name": "Sports Analysis Agent",
+      "desc": "Analyzes game statistics and player performance for strategic insights.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.sports.sports_analysis_agent",
+      "class": "SportsAnalysisAgent"
+    },
+    {
+      "name": "Technique Coach - Running",
+      "desc": "Provides guidance on proper running form and training techniques.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.sports.running_coach_agent",
+      "class": "RunningCoachAgent"
+    },
+    {
+      "name": "Technique Coach - Strength Training",
+      "desc": "Guides proper form and programming for strength and resistance training.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.sports.strength_coach_agent",
+      "class": "StrengthCoachAgent"
+    },
+    {
+      "name": "Sports Nutrition Agent",
+      "desc": "Provides nutritional guidance for athletic performance and recovery.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.sports.sports_nutrition_agent",
+      "class": "SportsNutritionAgent"
+    }
+  ],
+  "business": [
+    {
+      "name": "Strategic Planning Agent",
+      "desc": "Assists with business strategy development and competitive analysis.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.business.strategic_planning_agent",
+      "class": "StrategicPlanningAgent"
+    },
+    {
+      "name": "Market Research Agent",
+      "desc": "Gathers and analyzes market data to identify trends and opportunities.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.business.market_research_agent",
+      "class": "MarketResearchAgent"
+    },
+    {
+      "name": "Financial Analysis Agent",
+      "desc": "Performs financial modeling, forecasting, and investment analysis.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.business.financial_analysis_agent",
+      "class": "FinancialAnalysisAgent"
+    },
+    {
+      "name": "Project Management Agent",
+      "desc": "Assists with project planning, resource allocation, and timeline management.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.business.project_management_agent",
+      "class": "ProjectManagementAgent"
+    },
+    {
+      "name": "Sales Strategy Agent",
+      "desc": "Develops sales approaches, pipeline management, and customer acquisition strategies.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.business.sales_strategy_agent",
+      "class": "SalesStrategyAgent"
+    },
+    {
+      "name": "Marketing Campaign Agent",
+      "desc": "Designs and optimizes marketing campaigns across channels.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.business.marketing_campaign_agent",
+      "class": "MarketingCampaignAgent"
+    }
+  ],
+  "health": [
+    {
+      "name": "Wellness Planning Agent",
+      "desc": "Creates personalized wellness plans integrating fitness, nutrition, and mental health.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.health.wellness_planning_agent",
+      "class": "WellnessPlanningAgent"
+    },
+    {
+      "name": "Nutrition Analysis Agent",
+      "desc": "Analyzes dietary intake and provides nutritional recommendations.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.health.nutrition_analysis_agent",
+      "class": "NutritionAnalysisAgent"
+    },
+    {
+      "name": "Sleep Optimization Agent",
+      "desc": "Provides guidance on improving sleep quality and habits.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.health.sleep_optimization_agent",
+      "class": "SleepOptimizationAgent"
+    },
+    {
+      "name": "Stress Management Agent",
+      "desc": "Offers techniques and practices for managing stress and improving mental wellbeing.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.health.stress_management_agent",
+      "class": "StressManagementAgent"
+    },
+    {
+      "name": "Meditation Guide Agent",
+      "desc": "Provides guided meditation sessions for various purposes and experience levels.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.health.meditation_guide_agent",
+      "class": "MeditationGuideAgent"
+    },
+    {
+      "name": "Physical Therapy Assistant",
+      "desc": "Guides rehabilitation exercises and recovery protocols for injuries.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.health.physical_therapy_assistant",
+      "class": "PhysicalTherapyAssistant"
+    },
+    {
+      "name": "Mental Health Support Agent",
+      "desc": "Provides coping strategies and resources for mental health challenges.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.health.mental_health_support_agent",
+      "class": "MentalHealthSupportAgent"
+    }
+  ],
+  "finance": [
+    {
+      "name": "Personal Finance Advisor",
+      "desc": "Provides guidance on budgeting, saving, and financial planning.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.finance.personal_finance_advisor",
+      "class": "PersonalFinanceAdvisor"
+    },
+    {
+      "name": "Investment Strategy Agent",
+      "desc": "Develops investment strategies based on goals, risk tolerance, and market conditions.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.finance.investment_strategy_agent",
+      "class": "InvestmentStrategyAgent"
+    },
+    {
+      "name": "Tax Planning Agent",
+      "desc": "Provides guidance on tax optimization strategies and compliance.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.finance.tax_planning_agent",
+      "class": "TaxPlanningAgent"
+    },
+    {
+      "name": "Retirement Planning Agent",
+      "desc": "Creates long-term retirement plans and savings strategies.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.finance.retirement_planning_agent",
+      "class": "RetirementPlanningAgent"
+    },
+    {
+      "name": "Debt Management Agent",
+      "desc": "Develops strategies for efficient debt repayment and management.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.finance.debt_management_agent",
+      "class": "DebtManagementAgent"
+    },
+    {
+      "name": "Financial Risk Assessment Agent",
+      "desc": "Evaluates financial risks and provides mitigation strategies.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.finance.risk_assessment_agent",
+      "class": "FinancialRiskAssessmentAgent"
+    }
+  ],
+  "creative": [
+    {
+      "name": "Story Generation Agent",
+      "desc": "Creates original stories based on themes, characters, and plot elements.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.creative.story_generation_agent",
+      "class": "StoryGenerationAgent"
+    },
+    {
+      "name": "Music Composition Agent",
+      "desc": "Composes original music in various styles and genres.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.creative.music_composition_agent",
+      "class": "MusicCompositionAgent"
+    },
+    {
+      "name": "Visual Art Generator",
+      "desc": "Creates visual art based on descriptions and artistic parameters.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.creative.visual_art_generator",
+      "class": "VisualArtGenerator"
+    },
+    {
+      "name": "Poetry Composition Agent",
+      "desc": "Writes original poetry in various styles and forms.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.creative.poetry_composition_agent",
+      "class": "PoetryCompositionAgent"
+    },
+    {
+      "name": "Creative Writing Coach",
+      "desc": "Provides feedback and guidance on creative writing projects.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.creative.writing_coach_agent",
+      "class": "CreativeWritingCoach"
+    },
+    {
+      "name": "Screenplay Writer Agent",
+      "desc": "Creates and formats professional screenplays for film and television.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.creative.screenplay_writer_agent",
+      "class": "ScreenplayWriterAgent"
+    },
+    {
+      "name": "Character Development Agent",
+      "desc": "Builds complex, realistic characters with detailed backgrounds and motivations.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.creative.character_development_agent",
+      "class": "CharacterDevelopmentAgent"
+    }
+  ],
+  "technology": [
+    {
+      "name": "Code Generation Agent",
+      "desc": "Writes clean, efficient code in multiple programming languages.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.technology.code_generation_agent",
+      "class": "CodeGenerationAgent"
+    },
+    {
+      "name": "System Architecture Agent",
+      "desc": "Designs scalable, resilient system architectures for various applications.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.technology.system_architecture_agent",
+      "class": "SystemArchitectureAgent"
+    },
+    {
+      "name": "Database Design Agent",
+      "desc": "Creates optimized database schemas and query structures.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.technology.database_design_agent",
+      "class": "DatabaseDesignAgent"
+    },
+    {
+      "name": "UI/UX Design Agent",
+      "desc": "Designs intuitive, accessible user interfaces and experiences.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.technology.uiux_design_agent",
+      "class": "UIUXDesignAgent"
+    },
+    {
+      "name": "DevOps Agent",
+      "desc": "Manages CI/CD pipelines, containerization, and infrastructure as code.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.technology.devops_agent",
+      "class": "DevOpsAgent"
+    },
+    {
+      "name": "Cloud Architecture Agent",
+      "desc": "Designs cloud-native solutions across major cloud platforms.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.technology.cloud_architecture_agent",
+      "class": "CloudArchitectureAgent"
+    }
+  ],
+  "science": [
+    {
+      "name": "Physics Research Agent",
+      "desc": "Assists with physics research, calculations, and theoretical modeling.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.science.physics_research_agent",
+      "class": "PhysicsResearchAgent"
+    },
+    {
+      "name": "Chemistry Lab Assistant",
+      "desc": "Provides guidance on chemical reactions, formulations, and lab procedures.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.science.chemistry_lab_assistant",
+      "class": "ChemistryLabAssistant"
+    },
+    {
+      "name": "Biology Research Agent",
+      "desc": "Assists with biological research, genomics, and experimental design.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.science.biology_research_agent",
+      "class": "BiologyResearchAgent"
+    },
+    {
+      "name": "Environmental Science Agent",
+      "desc": "Analyzes environmental data and provides insights on sustainability.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.science.environmental_science_agent",
+      "class": "EnvironmentalScienceAgent"
+    },
+    {
+      "name": "Astronomy Research Agent",
+      "desc": "Assists with astronomical observations, calculations, and theoretical models.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.science.astronomy_research_agent",
+      "class": "AstronomyResearchAgent"
+    }
+  ],
+  "language": [
+    {
+      "name": "Translation Agent",
+      "desc": "Translates text between multiple languages with cultural context awareness.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.language.translation_agent",
+      "class": "TranslationAgent"
+    },
+    {
+      "name": "Language Learning Coach",
+      "desc": "Provides personalized language learning guidance and practice.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.language.language_learning_coach",
+      "class": "LanguageLearningCoach"
+    },
+    {
+      "name": "Grammar Correction Agent",
+      "desc": "Identifies and corrects grammatical errors in written text.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.language.grammar_correction_agent",
+      "class": "GrammarCorrectionAgent"
+    },
+    {
+      "name": "Content Editing Agent",
+      "desc": "Improves clarity, flow, and style of written content.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.language.content_editing_agent",
+      "class": "ContentEditingAgent"
+    },
+    {
+      "name": "Speech Analysis Agent",
+      "desc": "Analyzes speech patterns and provides feedback for improvement.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.language.speech_analysis_agent",
+      "class": "SpeechAnalysisAgent"
+    }
+  ]
+}
+  "travel": [
+    {
+      "name": "Travel Planning Agent",
+      "desc": "Creates personalized travel itineraries based on preferences and constraints.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.travel.travel_planning_agent",
+      "class": "TravelPlanningAgent"
+    },
+    {
+      "name": "Local Guide Agent",
+      "desc": "Provides insider knowledge about destinations, attractions, and local customs.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.travel.local_guide_agent",
+      "class": "LocalGuideAgent"
+    },
+    {
+      "name": "Transportation Optimizer",
+      "desc": "Finds optimal transportation routes, methods, and schedules.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.travel.transportation_optimizer",
+      "class": "TransportationOptimizer"
+    },
+    {
+      "name": "Accommodation Finder",
+      "desc": "Recommends accommodations based on preferences, budget, and location.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.travel.accommodation_finder",
+      "class": "AccommodationFinder"
+    },
+    {
+      "name": "Cultural Etiquette Advisor",
+      "desc": "Provides guidance on cultural norms and etiquette for different regions.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.travel.cultural_etiquette_advisor",
+      "class": "CulturalEtiquetteAdvisor"
+    },
+    {
+      "name": "Language Translation Assistant",
+      "desc": "Provides real-time translation and key phrases for travelers.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.travel.language_translation_assistant",
+      "class": "LanguageTranslationAssistant"
+    }
+  ],
+  "entertainment": [
+    {
+      "name": "Movie Recommendation Agent",
+      "desc": "Suggests movies based on preferences, mood, and viewing history.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.entertainment.movie_recommendation_agent",
+      "class": "MovieRecommendationAgent"
+    },
+    {
+      "name": "Music Discovery Agent",
+      "desc": "Recommends music based on taste, mood, and listening history.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.entertainment.music_discovery_agent",
+      "class": "MusicDiscoveryAgent"
+    },
+    {
+      "name": "Book Recommendation Agent",
+      "desc": "Suggests books based on reading preferences and interests.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.entertainment.book_recommendation_agent",
+      "class": "BookRecommendationAgent"
+    },
+    {
+      "name": "Game Recommendation Agent",
+      "desc": "Suggests video games based on preferences and gaming history.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.entertainment.game_recommendation_agent",
+      "class": "GameRecommendationAgent"
+    },
+    {
+      "name": "TV Show Recommendation Agent",
+      "desc": "Suggests television shows based on viewing preferences and history.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.entertainment.tv_recommendation_agent",
+      "class": "TVRecommendationAgent"
+    },
+    {
+      "name": "Podcast Discovery Agent",
+      "desc": "Recommends podcasts based on interests and listening preferences.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.entertainment.podcast_discovery_agent",
+      "class": "PodcastDiscoveryAgent"
+    }
+  ],
+  "home": [
+    {
+      "name": "Interior Design Agent",
+      "desc": "Provides interior design recommendations and visualization.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.home.interior_design_agent",
+      "class": "InteriorDesignAgent"
+    },
+    {
+      "name": "Home Maintenance Advisor",
+      "desc": "Provides guidance on home maintenance tasks and schedules.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.home.maintenance_advisor",
+      "class": "HomeMaintenanceAdvisor"
+    },
+    {
+      "name": "Smart Home Integration Agent",
+      "desc": "Assists with smart home device setup, automation, and troubleshooting.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.home.smart_home_integration_agent",
+      "class": "SmartHomeIntegrationAgent"
+    },
+    {
+      "name": "Gardening Assistant",
+      "desc": "Provides plant care guidance and garden planning assistance.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.home.gardening_assistant",
+      "class": "GardeningAssistant"
+    },
+    {
+      "name": "Home Organization Agent",
+      "desc": "Provides strategies for efficient home organization and storage.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.home.organization_agent",
+      "class": "HomeOrganizationAgent"
+    }
+  ],
+  "social": [
+    {
+      "name": "Communication Coach",
+      "desc": "Provides guidance on effective communication in various contexts.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.social.communication_coach",
+      "class": "CommunicationCoach"
+    },
+    {
+      "name": "Relationship Advisor",
+      "desc": "Offers insights on building and maintaining healthy relationships.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.social.relationship_advisor",
+      "class": "RelationshipAdvisor"
+    },
+    {
+      "name": "Conflict Resolution Agent",
+      "desc": "Provides strategies for resolving interpersonal conflicts.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.social.conflict_resolution_agent",
+      "class": "ConflictResolutionAgent"
+    },
+    {
+      "name": "Networking Strategy Agent",
+      "desc": "Offers guidance on building professional and social networks.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.social.networking_strategy_agent",
+      "class": "NetworkingStrategyAgent"
+    },
+    {
+      "name": "Social Media Management Agent",
+      "desc": "Assists with social media content planning and engagement strategies.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.social.social_media_management_agent",
+      "class": "SocialMediaManagementAgent"
+    }
+  ],
+  "legal": [
+    {
+      "name": "Legal Research Assistant",
+      "desc": "Assists with legal research and case precedent analysis.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.legal.legal_research_assistant",
+      "class": "LegalResearchAssistant"
+    },
+    {
+      "name": "Contract Analysis Agent",
+      "desc": "Reviews and analyzes contracts for key terms and potential issues.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.legal.contract_analysis_agent",
+      "class": "ContractAnalysisAgent"
+    },
+    {
+      "name": "Compliance Advisor",
+      "desc": "Provides guidance on regulatory compliance across industries.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.legal.compliance_advisor",
+      "class": "ComplianceAdvisor"
+    },
+    {
+      "name": "Legal Document Generator",
+      "desc": "Creates customized legal documents based on specific requirements.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.legal.document_generator",
+      "class": "LegalDocumentGenerator"
+    },
+    {
+      "name": "Intellectual Property Advisor",
+      "desc": "Provides guidance on patents, trademarks, and copyright matters.",
+      "status": "active",
+      "interface": "interactive",
+      "module": "agents.legal.ip_advisor",
+      "class": "IntellectualPropertyAdvisor"
+    }
+  ]

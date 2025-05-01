@@ -1,0 +1,11 @@
+[2025-04-24T14:20:25.032Z] SoulCore Dashboard server running at http://localhost:3000
+[2025-04-24T14:20:25.033Z] Open your browser and navigate to http://localhost:3000
+[2025-04-24T14:20:27.098Z] GET /
+[2025-04-24T14:20:32.946Z] POST /execute-command
+[2025-04-24T14:20:32.947Z] Received command: python3 anima_autonomous.py
+[2025-04-24T14:20:33.023Z] Command result: FAILURE
+[2025-04-24T14:20:41.153Z] POST /execute-command
+[2025-04-24T14:20:41.155Z] Received command: python3 anima_autonomous.py
+[2025-04-24T14:20:41.233Z] Command result: FAILURE
+[2025-04-24T14:20:51.121Z] POST /execute-command
+[2025-04-24T14:20:51.122Z] Received command: python3 anima_voice_recognition.py

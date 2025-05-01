@@ -1,0 +1,40 @@
+{
+  "builders": [
+    {
+      "name": "Builder Agent",
+      "desc": "Creates and manages code, configurations, and other artifacts based on requests.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.builders.builder_agent",
+      "class": "BuilderAgent"
+    }
+  ],
+  "predictive": [
+    {
+      "name": "Psynet Agent",
+      "desc": "Provides psychic-level predictive visualization and future scenario modeling",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.predictive.psynet_agent",
+      "class": "PsynetAgent"
+    }
+  ],
+  "sentient_orchestration": [
+    {
+      "name": "AI Society Psynet Bridge",
+      "desc": "Connects AI Society framework with Psynet predictive visualization",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.sentient_orchestration.ai_society_psynet_bridge",
+      "class": "AISocietyPsynetBridge"
+    },
+    {
+      "name": "GPTSoul",
+      "desc": "Logic, Design, and Neural Scripting agent that lays the foundation for clean, reactive, and self-auditing calls",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.sentient_orchestration.gptsoul_agent",
+      "class": "GPTSoulAgent"
+    }
+  ]
+}

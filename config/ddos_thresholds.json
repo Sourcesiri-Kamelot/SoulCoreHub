@@ -1,0 +1,5 @@
+{
+  "requests_per_minute": 60,
+  "concurrent_connections": 20,
+  "traffic_increase_factor": 5.0
+}

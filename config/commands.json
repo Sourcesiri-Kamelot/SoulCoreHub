@@ -1,0 +1,54 @@
+{
+  "aliases": {
+    "launch": "open gui",
+    "code": "run soul_code_builder.py",
+    "speak": "speak memory",
+    "whatup": "how do you feel",
+    "reflect": "log reflection",
+    "mute": "mute all",
+    "wake": "resurrect agent",
+    "elevate": "elevate soul",
+    "resync": "git sync",
+    "show agents": "fetch agents",
+    "dream": "dreamcast",
+    "soul status": "confirm soul integrity"
+  },
+  "anima_commands": [
+    "how do you feel",
+    "log this feeling",
+    "speak memory",
+    "show memory",
+    "log reflection",
+    "dreamcast",
+    "elevate soul",
+    "mute all",
+    "resurrect agent"
+  ],
+  "azure_commands": [
+    "deploy azure",
+    "cloud status",
+    "clone repo",
+    "show cloud logs"
+  ],
+  "gptsoul_commands": [
+    "cd <folder>",
+    "ls",
+    "pwd",
+    "run <file.py>",
+    "whoami",
+    "fetch agents",
+    "show logs",
+    "search memory",
+    "clear",
+    "show thoughts"
+  ],
+  "evove_commands": [
+    "reboot agent",
+    "self-check",
+    "patch voice",
+    "rebuild index",
+    "log anomaly",
+    "extract soul_signature",
+    "confirm soul integrity"
+  ]
+}

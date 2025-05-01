@@ -1,0 +1,35 @@
+[2025-04-24T14:20:32.948Z] Executing command: python3 anima_autonomous.py
+[2025-04-24T14:20:33.023Z] Command failed with code 1: python3 anima_autonomous.py
+[2025-04-24T14:20:33.023Z] Error: ERROR:root:Error initializing agent 'Builder Agent' (class BuilderAgent): 'BuilderAgent' object has no attribute 'logger'
+INFO:root:Started service agent 'Psynet Agent' in background thread.
+INFO:root:Loaded agent: Psynet Agent (status=active, interface=service)
+INFO:root:Started service agent 'AI Society Psynet Bridge' in background thread.
+INFO:root:Loaded agent: AI Society Psynet Bridge (status=active, interface=service)
+INFO:GPTSoul:GPTSoul initialized
+INFO:GPTSoul:GPTSoul running
+INFO:root:Started service agent 'GPTSoul' in background thread.
+INFO:root:Loaded agent: GPTSoul (status=active, interface=service)
+INFO:root:Total agents loaded: 3
+Traceback (most recent call last):
+  File "/Users/helo.im.ai/SoulCoreHub/anima_autonomous.py", line 48, in <module>
+    monitor_thread = threading.Thread(target=monitor_loop, name="HeartbeatMonitorThread", daemon=True)
+NameError: name 'threading' is not defined
+
+[2025-04-24T14:20:41.156Z] Executing command: python3 anima_autonomous.py
+[2025-04-24T14:20:41.233Z] Command failed with code 1: python3 anima_autonomous.py
+[2025-04-24T14:20:41.233Z] Error: ERROR:root:Error initializing agent 'Builder Agent' (class BuilderAgent): 'BuilderAgent' object has no attribute 'logger'
+INFO:root:Started service agent 'Psynet Agent' in background thread.
+INFO:root:Loaded agent: Psynet Agent (status=active, interface=service)
+INFO:root:Started service agent 'AI Society Psynet Bridge' in background thread.
+INFO:root:Loaded agent: AI Society Psynet Bridge (status=active, interface=service)
+INFO:GPTSoul:GPTSoul initialized
+INFO:GPTSoul:GPTSoul running
+INFO:root:Started service agent 'GPTSoul' in background thread.
+INFO:root:Loaded agent: GPTSoul (status=active, interface=service)
+INFO:root:Total agents loaded: 3
+Traceback (most recent call last):
+  File "/Users/helo.im.ai/SoulCoreHub/anima_autonomous.py", line 48, in <module>
+    monitor_thread = threading.Thread(target=monitor_loop, name="HeartbeatMonitorThread", daemon=True)
+NameError: name 'threading' is not defined
+
+[2025-04-24T14:20:51.123Z] Executing command: python3 anima_voice_recognition.py

@@ -1,0 +1,43 @@
+{
+  "local_storage": {
+    "type": "filesystem",
+    "path": "~/SoulCoreHub/data",
+    "description": "Local storage for SoulCore data"
+  },
+  "memory_store": {
+    "type": "database",
+    "connection": "sqlite:///~/SoulCoreHub/data/memory.db",
+    "description": "SQLite database for storing memories"
+  },
+  "cloud_storage": {
+    "type": "s3",
+    "bucket": "soulcore-data",
+    "region": "us-west-2",
+    "description": "AWS S3 bucket for cloud storage"
+  },
+  "knowledge_base": {
+    "type": "vector_db",
+    "connection": "http://localhost:8000",
+    "description": "Vector database for knowledge retrieval"
+  },
+  "image_gallery": {
+    "type": "filesystem",
+    "path": "~/SoulCoreHub/gallery",
+    "description": "Storage for generated images"
+  },
+  "task_repository": {
+    "type": "api",
+    "endpoint": "http://localhost:8080/tasks",
+    "description": "API for task management"
+  },
+  "sentiment_model": {
+    "type": "ml_model",
+    "path": "~/SoulCoreHub/models/sentiment",
+    "description": "Machine learning model for sentiment analysis"
+  },
+  "voice_profiles": {
+    "type": "filesystem",
+    "path": "~/SoulCoreHub/voices",
+    "description": "Voice profiles for Anima"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "agent_dependencies": {
+    "Firewall Agent": [],
+    "Intrusion Detection Agent": ["Firewall Agent"],
+    "Threat Intelligence Agent": [],
+    "DDOS Defense Agent": ["Firewall Agent"],
+    "CPU Monitor Agent": [],
+    "Memory Monitor Agent": [],
+    "Context Manager Agent": [],
+    "Builder Agent": ["Context Manager Agent"],
+    "Golem Builder Agent": ["Builder Agent", "Context Manager Agent"]
+  },
+  "event_routing": {
+    "SECURITY_ALERT": ["Firewall Agent", "DDOS Defense Agent"],
+    "NEW_THREAT": ["Firewall Agent", "Intrusion Detection Agent"],
+    "IP_BLOCKED": ["Firewall Agent", "Intrusion Detection Agent"],
+    "CPU_ALERT": ["Master Orchestrator Agent"],
+    "MEMORY_ALERT": ["Master Orchestrator Agent"],
+    "BUILD_REQUEST": ["Builder Agent", "Golem Builder Agent"],
+    "BUILD_COMPLETE": ["Master Orchestrator Agent", "Context Manager Agent"],
+    "CONTEXT_UPDATED": ["Builder Agent", "Golem Builder Agent"]
+  },
+  "health_check_interval": 60,
+  "restart_failed_agents": true
+}

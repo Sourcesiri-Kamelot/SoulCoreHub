@@ -1,0 +1,15 @@
+{
+  "max_concurrent_builds": 1,
+  "build_timeout": 300,
+  "templates": {
+    "python_agent": "templates/python_agent.py",
+    "javascript_module": "templates/javascript_module.js",
+    "config_file": "templates/config.json"
+  },
+  "build_types": [
+    "agent",
+    "module",
+    "config",
+    "custom"
+  ]
+}

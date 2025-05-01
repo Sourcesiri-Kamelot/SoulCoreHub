@@ -1,0 +1,7 @@
+{
+  "high_memory": 80.0,
+  "critical_memory": 95.0,
+  "sustained_period": 60,
+  "process_memory_threshold": 30.0,
+  "leak_detection_increase": 5.0
+}

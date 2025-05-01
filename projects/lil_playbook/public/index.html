@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lil Playbook - Learn Sports, Share Highlights</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="images/logo.svg" alt="Lil Playbook Logo" height="40">
+                Lil Playbook
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#sports">Sports</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#drills">Drills</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#highlights">Highlights</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#trainers">Trainers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary text-white px-4" href="#signup">Sign Up</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold">Learn Sports Like a Pro!</h1>
+                    <p class="lead my-4">Lil Playbook helps kids ages 5-17 learn sports, practice drills, watch highlights, find trainers, and share their own awesome moments!</p>
+                    <div class="d-flex gap-3">
+                        <a href="#signup" class="btn btn-primary btn-lg px-4">Get Started</a>
+                        <a href="#learn-more" class="btn btn-outline-secondary btn-lg px-4">Learn More</a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <img src="images/hero-image.png" alt="Kids playing sports" class="img-fluid rounded-4 hero-image">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="sports" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Popular Sports</h2>
+            <div class="row g-4">
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="sport-card">
+                        <img src="images/sports/basketball.jpg" alt="Basketball" class="img-fluid rounded-4">
+                        <h3>Basketball</h3>
+                        <a href="#" class="stretched-link"></a>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="sport-card">
+                        <img src="images/sports/soccer.jpg" alt="Soccer" class="img-fluid rounded-4">
+                        <h3>Soccer</h3>
+                        <a href="#" class="stretched-link"></a>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="sport-card">
+                        <img src="images/sports/baseball.jpg" alt="Baseball" class="img-fluid rounded-4">
+                        <h3>Baseball</h3>
+                        <a href="#" class="stretched-link"></a>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="sport-card">
+                        <img src="images/sports/swimming.jpg" alt="Swimming" class="img-fluid rounded-4">
+                        <h3>Swimming</h3>
+                        <a href="#" class="stretched-link"></a>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="sport-card">
+                        <img src="images/sports/tennis.jpg" alt="Tennis" class="img-fluid rounded-4">
+                        <h3>Tennis</h3>
+                        <a href="#" class="stretched-link"></a>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="sport-card">
+                        <img src="images/sports/gymnastics.jpg" alt="Gymnastics" class="img-fluid rounded-4">
+                        <h3>Gymnastics</h3>
+                        <a href="#" class="stretched-link"></a>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="sport-card">
+                        <img src="images/sports/football.jpg" alt="Football" class="img-fluid rounded-4">
+                        <h3>Football</h3>
+                        <a href="#" class="stretched-link"></a>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="sport-card">
+                        <img src="images/sports/volleyball.jpg" alt="Volleyball" class="img-fluid rounded-4">
+                        <h3>Volleyball</h3>
+                        <a href="#" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5">How Lil Playbook Works</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="feature-card text-center p-4">
+                        <div class="icon-wrapper mb-3">
+                            <img src="images/icons/learn.svg" alt="Learn" height="64">
+                        </div>
+                        <h3>Learn Sports</h3>
+                        <p>Watch age-appropriate tutorials and drills from professional coaches.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card text-center p-4">
+                        <div class="icon-wrapper mb-3">
+                            <img src="images/icons/practice.svg" alt="Practice" height="64">
+                        </div>
+                        <h3>Practice Skills</h3>
+                        <p>Follow step-by-step drills designed for your age and skill level.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card text-center p-4">
+                        <div class="icon-wrapper mb-3">
+                            <img src="images/icons/share.svg" alt="Share" height="64">
+                        </div>
+                        <h3>Share Highlights</h3>
+                        <p>Upload your own highlights and share your progress with friends and family.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="drills" class="py-5">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Featured Drills</h2>
+                <a href="#" class="btn btn-outline-primary">View All</a>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="video-card">
+                        <div class="video-thumbnail">
+                            <img src="images/drills/basketball-dribbling.jpg" alt="Basketball Dribbling" class="img-fluid rounded-4">
+                            <div class="video-duration">3:24</div>
+                            <div class="video-play-button">
+                                <img src="images/icons/play.svg" alt="Play">
+                            </div>
+                        </div>
+                        <div class="video-info mt-3">
+                            <h3>Basic Basketball Dribbling</h3>
+                            <div class="video-meta">
+                                <span class="badge bg-primary">Ages 5-8</span>
+                                <span class="badge bg-secondary">Beginner</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="video-card">
+                        <div class="video-thumbnail">
+                            <img src="images/drills/soccer-passing.jpg" alt="Soccer Passing" class="img-fluid rounded-4">
+                            <div class="video-duration">4:15</div>
+                            <div class="video-play-button">
+                                <img src="images/icons/play.svg" alt="Play">
+                            </div>
+                        </div>
+                        <div class="video-info mt-3">
+                            <h3>Soccer Passing Techniques</h3>
+                            <div class="video-meta">
+                                <span class="badge bg-primary">Ages 9-12</span>
+                                <span class="badge bg-secondary">Intermediate</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="video-card">
+                        <div class="video-thumbnail">
+                            <img src="images/drills/baseball-batting.jpg" alt="Baseball Batting" class="img-fluid rounded-4">
+                            <div class="video-duration">5:32</div>
+                            <div class="video-play-button">
+                                <img src="images/icons/play.svg" alt="Play">
+                            </div>
+                        </div>
+                        <div class="video-info mt-3">
+                            <h3>Baseball Batting Stance</h3>
+                            <div class="video-meta">
+                                <span class="badge bg-primary">Ages 13-17</span>
+                                <span class="badge bg-secondary">Advanced</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="highlights" class="py-5 bg-light">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Pro Highlights</h2>
+                <a href="#" class="btn btn-outline-primary">View All</a>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="video-card">
+                        <div class="video-thumbnail">
+                            <img src="images/highlights/basketball-pro.jpg" alt="Basketball Pro Highlight" class="img-fluid rounded-4">
+                            <div class="video-duration">1:45</div>
+                            <div class="video-play-button">
+                                <img src="images/icons/play.svg" alt="Play">
+                            </div>
+                        </div>
+                        <div class="video-info mt-3">
+                            <h3>Amazing Basketball Moves</h3>
+                            <div class="video-meta">
+                                <span class="badge bg-success">Pro Highlight</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="video-card">
+                        <div class="video-thumbnail">
+                            <img src="images/highlights/soccer-pro.jpg" alt="Soccer Pro Highlight" class="img-fluid rounded-4">
+                            <div class="video-duration">2:10</div>
+                            <div class="video-play-button">
+                                <img src="images/icons/play.svg" alt="Play">
+                            </div>
+                        </div>
+                        <div class="video-info mt-3">
+                            <h3>Soccer Goal Compilation</h3>
+                            <div class="video-meta">
+                                <span class="badge bg-success">Pro Highlight</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="video-card">
+                        <div class="video-thumbnail">
+                            <img src="images/highlights/gymnastics-pro.jpg" alt="Gymnastics Pro Highlight" class="img-fluid rounded-4">
+                            <div class="video-duration">1:58</div>
+                            <div class="video-play-button">
+                                <img src="images/icons/play.svg" alt="Play">
+                            </div>
+                        </div>
+                        <div class="video-info mt-3">
+                            <h3>Perfect Gymnastics Routine</h3>
+                            <div class="video-meta">
+                                <span class="badge bg-success">Pro Highlight</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="trainers" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Find a Trainer</h2>
+            <div class="row justify-content-center mb-4">
+                <div class="col-lg-8">
+                    <div class="trainer-search p-4 rounded-4 shadow-sm">
+                        <form class="row g-3">
+                            <div class="col-md-4">
+                                <label for="sportSelect" class="form-label">Sport</label>
+                                <select class="form-select" id="sportSelect">
+                                    <option selected>Any Sport</option>
+                                    <option>Basketball</option>
+                                    <option>Soccer</option>
+                                    <option>Baseball</option>
+                                    <option>Swimming</option>
+                                    <option>Tennis</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="ageSelect" class="form-label">Age Group</label>
+                                <select class="form-select" id="ageSelect">
+                                    <option selected>Any Age</option>
+                                    <option>5-8 years</option>
+                                    <option>9-12 years</option>
+                                    <option>13-17 years</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="sessionType" class="form-label">Session Type</label>
+                                <select class="form-select" id="sessionType">
+                                    <option selected>Any Type</option>
+                                    <option>Virtual</option>
+                                    <option>In-Person</option>
+                                </select>
+                            </div>
+                            <div class="col-12 text-center mt-4">
+                                <button type="submit" class="btn btn-primary px-4">Find Trainers</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-4 mt-2">
+                <div class="col-md-6 col-lg-4">
+                    <div class="trainer-card p-4 rounded-4 shadow-sm">
+                        <div class="d-flex">
+                            <img src="images/trainers/trainer1.jpg" alt="Coach Mike" class="trainer-avatar rounded-circle">
+                            <div class="ms-3">
+                                <h3>Coach Mike</h3>
+                                <div class="trainer-rating">
+                                    <span class="stars">★★★★★</span>
+                                    <span class="rating-count">(24 reviews)</span>
+                                </div>
+                                <div class="trainer-sports">
+                                    <span class="badge bg-light text-dark">Basketball</span>
+                                    <span class="badge bg-light text-dark">Football</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="trainer-bio mt-3">Former college basketball player with 10+ years coaching experience with kids of all ages.</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div class="trainer-session-types">
+                                <span class="badge bg-success">Virtual</span>
+                                <span class="badge bg-success">In-Person</span>
+                            </div>
+                            <a href="#" class="btn btn-outline-primary btn-sm">View Profile</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="trainer-card p-4 rounded-4 shadow-sm">
+                        <div class="d-flex">
+                            <img src="images/trainers/trainer2.jpg" alt="Coach Sarah" class="trainer-avatar rounded-circle">
+                            <div class="ms-3">
+                                <h3>Coach Sarah</h3>
+                                <div class="trainer-rating">
+                                    <span class="stars">★★★★☆</span>
+                                    <span class="rating-count">(18 reviews)</span>
+                                </div>
+                                <div class="trainer-sports">
+                                    <span class="badge bg-light text-dark">Soccer</span>
+                                    <span class="badge bg-light text-dark">Tennis</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="trainer-bio mt-3">Professional soccer player specializing in youth development and skill building.</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div class="trainer-session-types">
+                                <span class="badge bg-success">Virtual</span>
+                            </div>
+                            <a href="#" class="btn btn-outline-primary btn-sm">View Profile</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="trainer-card p-4 rounded-4 shadow-sm">
+                        <div class="d-flex">
+                            <img src="images/trainers/trainer3.jpg" alt="Coach David" class="trainer-avatar rounded-circle">
+                            <div class="ms-3">
+                                <h3>Coach David</h3>
+                                <div class="trainer-rating">
+                                    <span class="stars">★★★★★</span>
+                                    <span class="rating-count">(32 reviews)</span>
+                                </div>
+                                <div class="trainer-sports">
+                                    <span class="badge bg-light text-dark">Swimming</span>
+                                    <span class="badge bg-light text-dark">Baseball</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="trainer-bio mt-3">Olympic swimmer with a passion for teaching proper technique to young athletes.</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div class="trainer-session-types">
+                                <span class="badge bg-success">In-Person</span>
+                            </div>
+                            <a href="#" class="btn btn-outline-primary btn-sm">View Profile</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="signup" class="py-5 bg-primary text-white">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h2 class="display-5 fw-bold">Ready to Join Lil Playbook?</h2>
+                    <p class="lead">Sign up today and start your sports journey! Parents will need to verify accounts for kids under 13.</p>
+                    <ul class="check-list">
+                        <li>Access to age-appropriate drills and tutorials</li>
+                        <li>Watch pro highlights and learn from the best</li>
+                        <li>Connect with qualified trainers</li>
+                        <li>Share your own highlights and progress</li>
+                        <li>Safe, moderated environment for young athletes</li>
+                    </ul>
+                </div>
+                <div class="col-lg-6">
+                    <div class="signup-form bg-white p-4 rounded-4 shadow text-dark">
+                        <h3 class="mb-4 text-center">Create Your Account</h3>
+                        <form>
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="username" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="age" class="form-label">Age</label>
+                                <input type="number" class="form-control" id="age" min="5" max="17" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="parentEmail" class="form-label">Parent/Guardian Email</label>
+                                <input type="email" class="form-control" id="parentEmail" required>
+                                <div class="form-text">Required for parental consent and account verification.</div>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">Sign Up</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-5 bg-dark text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h5>Lil Playbook</h5>
+                    <p>Helping kids learn sports, practice drills, and share their athletic journey in a safe, fun environment.</p>
+                    <div class="social-icons">
+                        <a href="#" class="me-2"><img src="images/icons/facebook.svg" alt="Facebook" height="24"></a>
+                        <a href="#" class="me-2"><img src="images/icons/instagram.svg" alt="Instagram" height="24"></a>
+                        <a href="#" class="me-2"><img src="images/icons/youtube.svg" alt="YouTube" height="24"></a>
+                        <a href="#"><img src="images/icons/twitter.svg" alt="Twitter" height="24"></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
+                    <h5>Sports</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Basketball</a></li>
+                        <li><a href="#">Soccer</a></li>
+                        <li><a href="#">Baseball</a></li>
+                        <li><a href="#">Swimming</a></li>
+                        <li><a href="#">All Sports</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
+                    <h5>Resources</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Drills Library</a></li>
+                        <li><a href="#">Pro Highlights</a></li>
+                        <li><a href="#">Find Trainers</a></li>
+                        <li><a href="#">Upload Videos</a></li>
+                        <li><a href="#">Safety Tips</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
+                    <h5>Company</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2">
+                    <h5>Legal</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                        <li><a href="#">COPPA Compliance</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row">
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <p class="mb-0">© 2025 Lil Playbook. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0">Powered by SoulCore with Amazon Q</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

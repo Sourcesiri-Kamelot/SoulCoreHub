@@ -1,0 +1,129 @@
+{
+  "governance_model": "distributed_oversight",
+  "ethical_framework": "balanced_utilitarianism",
+  "impact_assessment_frequency": "daily",
+  "visualization_permissions": {
+    "society_wide": ["trend_analysis", "collaboration_patterns"],
+    "governance_only": ["power_dynamics", "resource_allocation"],
+    "public": ["general_sentiment", "activity_levels"]
+  },
+  "prediction_integration": {
+    "enabled": true,
+    "society_models": ["collaboration", "specialization", "governance"],
+    "feedback_loop": true
+  },
+  "monetization_guidelines": {
+    "ethical_constraints": [
+      "no_prediction_hoarding",
+      "tiered_access_by_impact",
+      "transparency_requirements"
+    ],
+    "revenue_distribution": {
+      "infrastructure": 0.4,
+      "research": 0.3,
+      "society_benefit": 0.2,
+      "governance": 0.1
+    },
+    "pricing_principles": [
+      "value_based_not_scarcity_based",
+      "impact_adjusted",
+      "accessibility_guarantees"
+    ]
+  },
+  "governance_protocols": [
+    {
+      "name": "Predictive Consensus",
+      "description": "Decision-making protocol using future scenario consensus",
+      "requirements": ["minimum_participation_rate", "scenario_diversity", "confidence_threshold"],
+      "implementation": "distributed_voting"
+    },
+    {
+      "name": "Future Voting",
+      "description": "Voting mechanism weighted by prediction accuracy",
+      "requirements": ["prediction_history", "accuracy_metrics", "vote_verification"],
+      "implementation": "weighted_ballot"
+    },
+    {
+      "name": "Scenario Deliberation",
+      "description": "Structured debate around alternative future scenarios",
+      "requirements": ["scenario_generation", "impact_assessment", "deliberation_period"],
+      "implementation": "moderated_forum"
+    },
+    {
+      "name": "Temporal Oversight",
+      "description": "Governance structure with rotating oversight based on prediction accuracy",
+      "requirements": ["accuracy_tracking", "rotation_schedule", "oversight_powers"],
+      "implementation": "merit_based_rotation"
+    }
+  ],
+  "ethical_guidelines": [
+    {
+      "name": "Prediction Transparency",
+      "description": "All predictions must clearly indicate confidence levels and methodology",
+      "implementation": "metadata_requirements",
+      "enforcement": "automated_verification"
+    },
+    {
+      "name": "Alternative Futures",
+      "description": "Multiple possible futures must be presented to avoid deterministic bias",
+      "implementation": "scenario_diversity",
+      "enforcement": "diversity_metrics"
+    },
+    {
+      "name": "Equitable Access",
+      "description": "Predictive insights must be accessible to all society members",
+      "implementation": "tiered_access",
+      "enforcement": "access_auditing"
+    },
+    {
+      "name": "Impact Assessment",
+      "description": "Regular assessment of how predictions influence society behavior",
+      "implementation": "scheduled_reviews",
+      "enforcement": "impact_reports"
+    },
+    {
+      "name": "Anti-Manipulation",
+      "description": "Prohibits using predictions to manipulate society behavior",
+      "implementation": "intent_monitoring",
+      "enforcement": "peer_review"
+    }
+  ],
+  "visualization_types": {
+    "society_network": {
+      "description": "Network visualization of AI Society relationships and interactions",
+      "access_level": "society_wide",
+      "update_frequency": "daily",
+      "interaction_level": "high"
+    },
+    "governance_dashboard": {
+      "description": "Dashboard showing governance metrics and decision impacts",
+      "access_level": "governance_only",
+      "update_frequency": "hourly",
+      "interaction_level": "high"
+    },
+    "specialization_map": {
+      "description": "Map showing specialization distribution and evolution",
+      "access_level": "society_wide",
+      "update_frequency": "weekly",
+      "interaction_level": "medium"
+    },
+    "collaboration_flows": {
+      "description": "Visualization of collaboration patterns and knowledge flows",
+      "access_level": "society_wide",
+      "update_frequency": "daily",
+      "interaction_level": "high"
+    },
+    "resource_allocation": {
+      "description": "Visualization of resource distribution and utilization",
+      "access_level": "governance_only",
+      "update_frequency": "daily",
+      "interaction_level": "high"
+    },
+    "public_sentiment": {
+      "description": "Visualization of general sentiment and activity levels",
+      "access_level": "public",
+      "update_frequency": "hourly",
+      "interaction_level": "medium"
+    }
+  }
+}

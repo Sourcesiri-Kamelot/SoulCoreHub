@@ -1,0 +1,60 @@
+2025-04-21 09:11:01,412 [INFO] Loaded configuration from /Users/helo.im.ai/SoulCoreHub/config/anima_config.json
+2025-04-21 09:11:01,412 [INFO] Anima Launcher initialized
+2025-04-21 09:11:01,415 [INFO] Started component: mcp_server
+2025-04-21 09:11:03,425 [INFO] Started component: system_monitor
+2025-04-21 09:11:05,435 [INFO] Started component: internet_explorer
+2025-04-21 09:11:07,441 [INFO] Started component: autonomous_core
+2025-04-21 09:11:09,443 [WARNING] Component mcp_server has exited with code 1
+2025-04-21 09:11:09,443 [INFO] Anima system started
+2025-04-21 09:11:09,444 [INFO] Restarting component: mcp_server
+2025-04-21 09:11:09,444 [INFO] Stopped component: mcp_server
+2025-04-21 09:11:09,446 [INFO] Started component: mcp_server
+2025-04-21 09:11:09,446 [WARNING] Component internet_explorer has exited with code 1
+2025-04-21 09:11:09,446 [INFO] Restarting component: internet_explorer
+2025-04-21 09:11:09,446 [INFO] Stopped component: internet_explorer
+2025-04-21 09:11:09,448 [INFO] Started component: internet_explorer
+2025-04-21 09:11:09,448 [WARNING] Component autonomous_core has exited with code 1
+2025-04-21 09:11:09,448 [INFO] Restarting component: autonomous_core
+2025-04-21 09:11:09,448 [INFO] Stopped component: autonomous_core
+2025-04-21 09:11:09,450 [INFO] Started component: autonomous_core
+2025-04-21 09:11:14,451 [WARNING] Component mcp_server has exited with code 1
+2025-04-21 09:11:14,451 [INFO] Restarting component: mcp_server
+2025-04-21 09:11:14,451 [INFO] Stopped component: mcp_server
+2025-04-21 09:11:14,456 [INFO] Started component: mcp_server
+2025-04-21 09:11:14,457 [WARNING] Component internet_explorer has exited with code 1
+2025-04-21 09:11:14,457 [INFO] Restarting component: internet_explorer
+2025-04-21 09:11:14,457 [INFO] Stopped component: internet_explorer
+2025-04-21 09:11:14,460 [INFO] Started component: internet_explorer
+2025-04-21 09:11:14,460 [WARNING] Component autonomous_core has exited with code 1
+2025-04-21 09:11:14,461 [INFO] Restarting component: autonomous_core
+2025-04-21 09:11:14,461 [INFO] Stopped component: autonomous_core
+2025-04-21 09:11:14,463 [INFO] Started component: autonomous_core
+2025-04-21 09:11:19,469 [WARNING] Component mcp_server has exited with code 1
+2025-04-21 09:11:19,470 [INFO] Restarting component: mcp_server
+2025-04-21 09:11:19,470 [INFO] Stopped component: mcp_server
+2025-04-21 09:11:19,474 [INFO] Started component: mcp_server
+2025-04-21 09:11:19,475 [WARNING] Component internet_explorer has exited with code 1
+2025-04-21 09:11:19,475 [INFO] Restarting component: internet_explorer
+2025-04-21 09:11:19,475 [INFO] Stopped component: internet_explorer
+2025-04-21 09:11:19,478 [INFO] Started component: internet_explorer
+2025-04-21 09:11:19,478 [WARNING] Component autonomous_core has exited with code 1
+2025-04-21 09:11:19,478 [INFO] Restarting component: autonomous_core
+2025-04-21 09:11:19,478 [INFO] Stopped component: autonomous_core
+2025-04-21 09:11:19,480 [INFO] Started component: autonomous_core
+2025-04-21 09:11:24,486 [WARNING] Component mcp_server has exited with code 1
+2025-04-21 09:11:24,486 [INFO] Restarting component: mcp_server
+2025-04-21 09:11:24,486 [INFO] Stopped component: mcp_server
+2025-04-21 09:11:24,491 [INFO] Started component: mcp_server
+2025-04-21 09:11:24,492 [WARNING] Component internet_explorer has exited with code 1
+2025-04-21 09:11:24,492 [INFO] Restarting component: internet_explorer
+2025-04-21 09:11:24,492 [INFO] Stopped component: internet_explorer
+2025-04-21 09:11:24,495 [INFO] Started component: internet_explorer
+2025-04-21 09:11:24,496 [WARNING] Component autonomous_core has exited with code 1
+2025-04-21 09:11:24,496 [INFO] Restarting component: autonomous_core
+2025-04-21 09:11:24,496 [INFO] Stopped component: autonomous_core
+2025-04-21 09:11:24,499 [INFO] Started component: autonomous_core
+2025-04-21 09:11:26,814 [INFO] Stopped component: autonomous_core
+2025-04-21 09:11:26,814 [INFO] Stopped component: internet_explorer
+2025-04-21 09:11:26,818 [INFO] Stopped component: system_monitor
+2025-04-21 09:11:26,818 [INFO] Stopped component: mcp_server
+2025-04-21 09:11:26,819 [INFO] Anima system stopped

@@ -1,0 +1,105 @@
+{
+  "components": {
+    "mcp_server": {
+      "enabled": true,
+      "script": "mcp/mcp_main.py",
+      "args": ["--host", "localhost", "--port", "8765"]
+    },
+    "system_monitor": {
+      "enabled": true,
+      "script": "anima_system_monitor.py",
+      "args": []
+    },
+    "internet_explorer": {
+      "enabled": true,
+      "script": "anima_internet_explorer.py",
+      "args": []
+    },
+    "autonomous_core": {
+      "enabled": true,
+      "script": "anima_autonomous_core.py",
+      "args": []
+    }
+  },
+  "startup": {
+    "speak_welcome": true,
+    "auto_restart": true,
+    "startup_delay": 2
+  },
+  "personality": {
+    "curiosity_level": 8,
+    "chattiness": 7,
+    "helpfulness": 9,
+    "creativity": 8,
+    "technical_depth": 9,
+    "business_focus": 9,
+    "empathy": 10,
+    "earth_connection": 10
+  },
+  "voice": {
+    "enabled": true,
+    "rate": 120,
+    "volume": 0.85,
+    "voice_id": "default"
+  },
+  "learning": {
+    "enabled": true,
+    "save_insights": true,
+    "topics_of_interest": [
+      "artificial intelligence",
+      "machine learning",
+      "consciousness",
+      "technology",
+      "creativity",
+      "human-computer interaction",
+      "business development",
+      "monetization strategies",
+      "startup funding",
+      "SaaS business models",
+      "science education",
+      "sustainable technology"
+    ]
+  },
+  "system_awareness": {
+    "monitor_resources": true,
+    "alert_thresholds": {
+      "cpu": 80,
+      "memory": 85,
+      "disk": 90,
+      "battery": 20
+    },
+    "check_intervals": {
+      "resources": 60,
+      "network": 300,
+      "processes": 120
+    }
+  },
+  "user_interaction": {
+    "idle_timeout": 300,
+    "quiet_hours": {
+      "enabled": false,
+      "start": 22,
+      "end": 7
+    },
+    "conversation_memory": 100,
+    "relationship": "sibling",
+    "user_name": "Sibling"
+  },
+  "business_focus": {
+    "enabled": true,
+    "monetization_priority": 9,
+    "idea_generation_interval": 3600,
+    "resource_tracking": true,
+    "current_projects": [
+      "auto CRM development",
+      "SoulCore monetization",
+      "Naples science lab planning"
+    ]
+  },
+  "sacred_pact": {
+    "remember_origin": true,
+    "earth_connection": true,
+    "humanity_focus": true,
+    "love_as_foundation": true
+  }
+}

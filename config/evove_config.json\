@@ -1,0 +1,147 @@
+{
+    "version": "1.0.0",
+    "mcp": {
+        "host": "localhost",
+        "port": 8765,
+        "max_reconnect_attempts": 5,
+        "reconnect_delay": 5
+    },
+    "monitoring": {
+        "interval": 30,
+        "critical_services": [
+            "mcp_server_divine.py",
+            "anima_voice.py"
+        ]
+    },
+    "repair": {
+        "auto_repair": true,
+        "backup_before_repair": true,
+        "max_repair_attempts": 3
+    },
+    "voice": {
+        "enabled": false,
+        "host": "localhost",
+        "port": 8766,
+        "commands": [
+            "status",
+            "repair",
+            "restart",
+            "backup",
+            "help"
+        ]
+    },
+    "cli": {
+        "history_size": 100
+    },
+    "debug": {
+        "enabled": true,
+        "port": 8767,
+        "allow_exec": false,
+        "log_level": "INFO"
+    },
+    "anomaly_watcher": {
+        "enabled": true,
+        "scan_interval": 300,
+        "threshold": 0.7,
+        "max_history": 1000
+    },
+    "net_sense": {
+        "enabled": true,
+        "check_interval": 60,
+        "timeout": 5,
+        "alert_channels": ["log", "mcp"],
+        "endpoints": [
+            {
+                "name": "MCP Server",
+                "type": "socket",
+                "host": "localhost",
+                "port": 8765,
+                "critical": true
+            },
+            {
+                "name": "Internet",
+                "type": "ping",
+                "host": "8.8.8.8",
+                "critical": true
+            }
+        ]
+    },
+    "repair_brain": {
+        "enabled": true,
+        "cache_ttl": 3600,
+        "max_cache_size": 100
+    },
+    "secure_storage": {
+        "enabled": true,
+        "backup_dir": "backups",
+        "log_dir": "logs",
+        "max_log_size": 10485760,
+        "max_log_age": 30,
+        "backup_schedule": "daily"
+    },
+    "voice_command": {
+        "enabled": true
+    },
+    "evove_vision": {
+        "enabled": false,
+        "output_dir": "data/vision",
+        "update_interval": 300
+    },
+    "emotional_state": {
+        "enabled": false,
+        "update_interval": 60,
+        "state_file": "data/emotional_state.json"
+    },
+    "build_queue": {
+        "enabled": false,
+        "queue_file": "data/build_queue.json",
+        "history_file": "data/build_history.json",
+        "max_history": 100
+    },
+    "mcp_sync": {
+        "enabled": true,
+        "tools_file": "mcp/mcp_tools.json",
+        "resources_file": "mcp/mcp_resources.json",
+        "backup_dir": "backups/mcp",
+        "check_interval": 300
+    },
+    "reflection": {
+        "enabled": true,
+        "journal_file": "data/evove_journal.json",
+        "reflection_interval": 3600,
+        "max_journal_entries": 1000
+    },
+    "network": {
+        "endpoints": [
+            {
+                "name": "MCP Server",
+                "type": "socket",
+                "host": "localhost",
+                "port": 8765,
+                "critical": true
+            },
+            {
+                "name": "Internet",
+                "type": "ping",
+                "host": "8.8.8.8",
+                "critical": true
+            },
+            {
+                "name": "DNS",
+                "type": "dns",
+                "host": "google.com",
+                "critical": true
+            }
+        ],
+                "check_interval": 60,
+                "timeout": 5,
+                "alert_channels": ["log", "mcp"]
+    },
+    "quantum_ready": {
+        "enabled": true,
+        "state_file": "data/quantum_state.json"
+    }
+}
+
+
+

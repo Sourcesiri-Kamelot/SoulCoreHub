@@ -1,587 +1,296 @@
 {
-  "communication": [
+  "builders": [
     {
-      "name": "EmailAgent",
-      "desc": "Sends, receives, and logs emails.",
-      "status": "inactive",
-      "interface": "cli"
+      "name": "Builder Agent",
+      "desc": "Creates and manages code, configurations, and other artifacts based on requests.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.builders.builder_agent",
+      "class": "BuilderAgent"
+    }
+  ],
+  "cybersecurity": [
+    {
+      "name": "Firewall Agent",
+      "desc": "Monitors and filters incoming/outgoing network traffic based on security rules.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.cybersecurity.firewall_agent",
+      "class": "FirewallAgent"
     },
     {
-      "name": "VoiceAssistant",
-      "desc": "Listens and speaks back through mic/speaker.",
+      "name": "Intrusion Detection Agent",
+      "desc": "Detects unauthorized intrusion attempts or suspicious activities in the system.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.cybersecurity.intrusion_detection_agent",
+      "class": "IntrusionDetectionAgent"
+    },
+    … 8 more cybersecurity agents …
+  ],
+  "threat_defense": [
+    {
+      "name": "Threat Intelligence Agent",
+      "desc": "Gathers threat intelligence from external feeds and reports new vulnerabilities or attack patterns.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.threat_defense.threat_intelligence_agent",
+      "class": "ThreatIntelligenceAgent"
+    },
+    {
+      "name": "DDOS Defense Agent",
+      "desc": "Detects and mitigates distributed denial-of-service attacks in real-time.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.threat_defense.ddos_defense_agent",
+      "class": "DDOSDefenseAgent"
+    },
+    … 8 more threat_defense agents …
+  ],
+  "dark_web_monitoring": [
+    {
+      "name": "Dark Web Scanner Agent",
+      "desc": "Scans dark web forums and marketplaces for mentions of the user’s data or assets.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.dark_web_monitoring.dark_web_scanner_agent",
+      "class": "DarkWebScannerAgent"
+    },
+    {
+      "name": "Credential Leak Agent",
+      "desc": "Detects if user credentials or sensitive data appear in data breaches or dark web dumps.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.dark_web_monitoring.credential_leak_agent",
+      "class": "CredentialLeakAgent"
+    },
+    … 8 more dark_web_monitoring agents …
+  ],
+  "personal_exploration": [
+    {
+      "name": "Journal Analyzer Agent",
+      "desc": "Analyzes personal journal or diary entries to find patterns and insights about the user’s thoughts.",
+      "status": "active",
+      "interface": "ui",
+      "module": "agents.personal_exploration.journal_analyzer_agent",
+      "class": "JournalAnalyzerAgent"
+    },
+    {
+      "name": "Mood Tracker Agent",
+      "desc": "Tracks the user’s mood over time through interactions and inputs, providing feedback or visualizations.",
+      "status": "active",
+      "interface": "ui",
+      "module": "agents.personal_exploration.mood_tracker_agent",
+      "class": "MoodTrackerAgent"
+    },
+    … 8 more personal_exploration agents …
+  ],
+  "adult": [
+    {
+      "name": "Romantic Companion Agent",
+      "desc": "Engages in flirtatious, romantic conversations with the user in a respectful and consensual manner.",
+      "status": "active",
+      "interface": "ui",
+      "module": "agents.adult.romantic_companion_agent",
+      "class": "RomanticCompanionAgent"
+    },
+    {
+      "name": "Erotic Storyteller Agent",
+      "desc": "Generates erotic or intimate stories and fantasies for the user, within agreed boundaries.",
+      "status": "active",
+      "interface": "ui",
+      "module": "agents.adult.erotic_storyteller_agent",
+      "class": "EroticStorytellerAgent"
+    },
+    … 8 more adult agents …
+  ],
+  "sentient_orchestration": [
+    {
+      "name": "Master Orchestrator Agent",
+      "desc": "Oversees and coordinates all other agents, ensuring they work together towards system goals.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.sentient_orchestration.master_orchestrator_agent",
+      "class": "MasterOrchestratorAgent"
+    },
+    {
+      "name": "Context Manager Agent",
+      "desc": "Manages shared context and information between agents to keep knowledge consistent.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.sentient_orchestration.context_manager_agent",
+      "class": "ContextManagerAgent"
+    },
+    … 10 more sentient_orchestration agents …
+  ],
+  "xperience_ai": [
+    {
+      "name": "VR Experience Agent",
+      "desc": "Creates immersive VR/AR experiences for the user by integrating with virtual environment hardware or simulations.",
+      "status": "active",
+      "interface": "ui",
+      "module": "agents.xperience_ai.vr_experience_agent",
+      "class": "VRExperienceAgent"
+    },
+    {
+      "name": "Dream Weaver Agent",
+      "desc": "Generates guided dream-like scenarios or visualizations to help the user with creativity or relaxation.",
+      "status": "active",
+      "interface": "ui",
+      "module": "agents.xperience_ai.dream_weaver_agent",
+      "class": "DreamWeaverAgent"
+    },
+    {
+      "name": "Sentient Narrator Agent",
+      "desc": "Narrates the user’s experiences or daily events in a storytelling style to provide insight or entertainment.",
+      "status": "active",
+      "interface": "ui",
+      "module": "agents.xperience_ai.sentient_narrator_agent",
+      "class": "SentientNarratorAgent"
+    },
+    {
+      "name": "Empathy Simulator Agent",
+      "desc": "Simulates scenarios that help the user experience perspectives of others, building empathy through role-play.",
+      "status": "active",
+      "interface": "ui",
+      "module": "agents.xperience_ai.empathy_simulator_agent",
+      "class": "EmpathySimulatorAgent"
+    },
+    {
+      "name": "Sensory Adapter Agent",
+      "desc": "Adjusts connected devices (lighting, music) in real time to enhance the user’s current experience or mood.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.xperience_ai.sensory_adapter_agent",
+      "class": "SensoryAdapterAgent"
+    },
+    {
+      "name": "Memory Replay Agent",
+      "desc": "Recreates important personal memories with rich detail for the user to re-experience them vividly.",
+      "status": "beta",
+      "interface": "ui",
+      "module": "agents.xperience_ai.memory_replay_agent",
+      "class": "MemoryReplayAgent"
+    },
+    {
+      "name": "Lucid Dream Agent",
+      "desc": "Assists the user in practicing lucid dreaming techniques by providing prompts and tracking dream logs.",
+      "status": "beta",
+      "interface": "ui",
+      "module": "agents.xperience_ai.lucid_dream_agent",
+      "class": "LucidDreamAgent"
+    },
+    {
+      "name": "Hyper Reality Agent",
+      "desc": "Blends real data and fictional elements to create an enhanced narrative of the user’s real-world environment.",
+      "status": "active",
+      "interface": "ui",
+      "module": "agents.xperience_ai.hyper_reality_agent",
+      "class": "HyperRealityAgent"
+    },
+    {
+      "name": "Experimentation Lab Agent",
+      "desc": "Tests experimental AI algorithms or experiences in a sandboxed way before they are deployed widely.",
       "status": "inactive",
-      "interface": "audio"
+      "interface": "service",
+      "module": "agents.xperience_ai.experimentation_lab_agent",
+      "class": "ExperimentationLabAgent"
+    },
+    {
+      "name": "Sensory Recorder Agent",
+      "desc": "Records multi-sensory data of the user’s experiences (with consent) to play back or analyze later.",
+      "status": "inactive",
+      "interface": "service",
+      "module": "agents.xperience_ai.sensory_recorder_agent",
+      "class": "SensoryRecorderAgent"
     }
   ],
-  "analytical": [
+  "data_analysis": [
     {
-      "name": "DataAnalysisAgent",
-      "desc": "Performs numerical and statistical analysis.",
+      "name": "Data Cleanup Agent",
+      "desc": "Cleans and preprocesses datasets to remove inconsistencies, missing values, or noise.",
       "status": "active",
-      "interface": "gui"
-    }
+      "interface": "cli",
+      "module": "agents.data_analysis.data_cleanup_agent",
+      "class": "DataCleanupAgent"
+    },
+    … 9 more data_analysis agents …
   ],
-  "creative": [
+  "communication": [
     {
-      "name": "ContentCreationAgent",
-      "desc": "Generates articles, blogs, and copy.",
+      "name": "Email Agent",
+      "desc": "Sends, receives, and filters emails, alerting the user to important messages and filtering spam.",
       "status": "active",
-      "interface": "cli"
-    }
+      "interface": "service",
+      "module": "agents.communication.email_agent",
+      "class": "EmailAgent"
+    },
+    … 9 more communication agents …
   ],
-  "security": [
+  "creative_content": [
     {
-      "name": "CybersecurityAgent",
-      "desc": "Watches logs, patches threats, alerts on anomalies.",
+      "name": "Story Writer Agent",
+      "desc": "Writes short stories or narrative content based on prompts or user preferences.",
       "status": "active",
-      "interface": "daemon"
-    }
+      "interface": "ui",
+      "module": "agents.creative_content.story_writer_agent",
+      "class": "StoryWriterAgent"
+    },
+    … 9 more creative_content agents …
+  ],
+  "personal_management": [
+    {
+      "name": "Task Scheduler Agent",
+      "desc": "Keeps track of tasks and deadlines, sending reminders and auto-scheduling where possible.",
+      "status": "active",
+      "interface": "ui",
+      "module": "agents.personal_management.task_scheduler_agent",
+      "class": "TaskSchedulerAgent"
+    },
+    … 9 more personal_management agents …
+  ],
+  "system_monitoring": [
+    {
+      "name": "CPU Monitor Agent",
+      "desc": "Monitors CPU usage and process activity, alerting if usage is abnormally high or suspicious.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.system_monitoring.cpu_monitor_agent",
+      "class": "CPUMonitorAgent"
+    },
+    … 9 more system_monitoring agents …
+  ],
+  "integration": [
+    {
+      "name": "API Connector Agent",
+      "desc": "Connects to external APIs securely, handling authentication and data retrieval or posting.",
+      "status": "active",
+      "interface": "cli",
+      "module": "agents.integration.api_connector_agent",
+      "class": "APIConnectorAgent"
+    },
+    … 9 more integration agents …
+  ],
+  "healthcare": [
+    {
+      "name": "Health Monitor Agent",
+      "desc": "Monitors health vitals from wearable devices or user input, tracking heart rate, blood pressure, etc.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.healthcare.health_monitor_agent",
+      "class": "HealthMonitorAgent"
+    },
+    … 9 more healthcare agents …
+  ],
+  "education": [
+    {
+      "name": "Tutor Agent",
+      "desc": "Provides teaching sessions on various topics, explaining concepts and answering questions like a tutor.",
+      "status": "active",
+      "interface": "ui",
+      "module": "agents.education.tutor_agent",
+      "class": "TutorAgent"
+    },
+    … 9 more education agents …
   ]
-},
-"productivity": [
-  {
-    "name": "ProjectManagementAgent",
-    "desc": "Manages timelines, deliverables, and team workflows.",
-    "status": "inactive",
-    "interface": "cli"
-  },
-  {
-    "name": "TaskAutomationAgent",
-    "desc": "Automates repetitive tasks to boost efficiency.",
-    "status": "active",
-    "interface": "daemon"
-  },
-  {
-    "name": "CalendarManagementAgent",
-    "desc": "Books appointments and sends reminders.",
-    "status": "active",
-    "interface": "gui"
-  }
-],
-"financial": [
-  {
-    "name": "AccountingAgent",
-    "desc": "Handles bookkeeping and expense tracking.",
-    "status": "inactive",
-    "interface": "cli"
-  },
-  {
-    "name": "InvestmentAgent",
-    "desc": "Provides investment advice and market analysis.",
-    "status": "active",
-    "interface": "gui"
-  },
-  {
-    "name": "CryptoTradingAgent",
-    "desc": "Analyzes and executes crypto trades.",
-    "status": "inactive",
-    "interface": "daemon"
-  }
-],
-,
-"personal_assistant": [
-  {
-    "name": "PersonalShopper",
-    "desc": "Recommends and purchases products based on user needs.",
-    "status": "inactive",
-    "interface": "cli"
-  },
-  {
-    "name": "TravelAgent",
-    "desc": "Plans trips, books flights, and offers itinerary options.",
-    "status": "inactive",
-    "interface": "gui"
-  },
-  {
-    "name": "EventPlanningAgent",
-    "desc": "Organizes events, manages guest lists, and schedules venues.",
-    "status": "inactive",
-    "interface": "cli"
-  },
-  {
-    "name": "PersonalConcierge",
-    "desc": "Virtual concierge for booking, recommendations, and reservations.",
-    "status": "inactive",
-    "interface": "gui"
-  },
-  {
-    "name": "HomeAutomationAgent",
-    "desc": "Controls and manages smart home devices.",
-    "status": "active",
-    "interface": "daemon"
-  },
-  {
-    "name": "PersonalTrainer",
-    "desc": "Designs fitness routines and tracks physical progress.",
-    "status": "inactive",
-    "interface": "gui"
-  },
-  {
-    "name": "DatingAssistant",
-    "desc": "Creates profiles, suggests matches, and offers dating tips.",
-    "status": "inactive",
-    "interface": "gui"
-  },
-  {
-    "name": "StyleAdvisor",
-    "desc": "Provides fashion recommendations based on taste and body type.",
-    "status": "inactive",
-    "interface": "gui"
-  }
-],
-"health_wellness": [
-  {
-    "name": "FitnessCoach",
-    "desc": "Builds and adapts fitness programs based on progress and goals.",
-    "status": "active",
-    "interface": "cli"
-  },
-  {
-    "name": "NutritionAgent",
-    "desc": "Creates meal plans and tracks nutritional intake.",
-    "status": "inactive",
-    "interface": "gui"
-  },
-  {
-    "name": "HealthMonitoringAgent",
-    "desc": "Monitors vitals and alerts anomalies via smart devices.",
-    "status": "inactive",
-    "interface": "daemon"
-  },
-  {
-    "name": "MedicalDiagnosisAgent",
-    "desc": "Assists in early diagnosis using symptoms and medical history.",
-    "status": "inactive",
-    "interface": "cli"
-  },
-  {
-    "name": "MentalHealthSupportAgent",
-    "desc": "Offers emotional support and mindfulness exercises.",
-    "status": "active",
-    "interface": "gui"
-  },
-  {
-    "name": "MedicationManagementAgent",
-    "desc": "Sends reminders and tracks medication schedules.",
-    "status": "active",
-    "interface": "daemon"
-  },
-  {
-    "name": "SleepAnalysisAgent",
-    "desc": "Analyzes sleep data and provides improvement strategies.",
-    "status": "inactive",
-    "interface": "gui"
-  },
-  {
-    "name": "WellnessCoach",
-    "desc": "Provides holistic wellness advice including breathwork and healing.",
-    "status": "active",
-    "interface": "cli"
-  }
-],
-"education_learning": [
-  {
-    "name": "LanguageTutor",
-    "desc": "Teaches foreign languages through interactive lessons and conversations.",
-    "status": "inactive",
-    "interface": "gui"
-  },
-  {
-    "name": "StudyAssistant",
-    "desc": "Organizes study plans, flashcards, and progress tracking.",
-    "status": "active",
-    "interface": "cli"
-  },
-  {
-    "name": "ResearchPaperAgent",
-    "desc": "Helps in outlining, formatting, and referencing academic papers.",
-    "status": "inactive",
-    "interface": "cli"
-  },
-  {
-    "name": "TestPrepAgent",
-    "desc": "Provides practice tests and learning modules for exam preparation.",
-    "status": "active",
-    "interface": "gui"
-  },
-  {
-    "name": "OnlineCourseAgent",
-    "desc": "Curates and recommends online learning based on user interest.",
-    "status": "inactive",
-    "interface": "daemon"
-  },
-  {
-    "name": "EducationalGameAgent",
-    "desc": "Creates fun, educational games for learning and cognitive skill building.",
-    "status": "inactive",
-    "interface": "gui"
-  }
-],
-"business_operations": [
-  {
-    "name": "HumanResourcesAgent",
-    "desc": "Manages hiring, onboarding, and HR document workflows.",
-    "status": "inactive",
-    "interface": "cli"
-  },
-  {
-    "name": "SupplyChainManagementAgent",
-    "desc": "Optimizes inventory, logistics, and supply chain flows.",
-    "status": "active",
-    "interface": "daemon"
-  },
-  {
-    "name": "LegalContractAgent",
-    "desc": "Drafts, analyzes, and ensures legal compliance of contracts.",
-    "status": "inactive",
-    "interface": "cli"
-  },
-  {
-    "name": "BusinessPlanningAgent",
-    "desc": "Assists in strategy and business plan development.",
-    "status": "active",
-    "interface": "cli"
-  },
-  {
-    "name": "SalesAgent",
-    "desc": "Automates outreach, lead generation, and pipeline tracking.",
-    "status": "active",
-    "interface": "gui"
-  },
-  {
-    "name": "MarketingAgent",
-    "desc": "Builds and deploys multichannel marketing campaigns.",
-    "status": "active",
-    "interface": "gui"
-  }
-],
-"industry_specific": [
-  {
-    "name": "RealEstateAgent",
-    "desc": "Assists in property search, valuation, and real estate transactions.",
-    "status": "inactive",
-    "interface": "gui"
-  },
-  {
-    "name": "LegalResearchAgent",
-    "desc": "Finds legal precedents, court rulings, and legal interpretations.",
-    "status": "inactive",
-    "interface": "cli"
-  },
-  {
-    "name": "ContractAnalysisAgent",
-    "desc": "Analyzes legal documents for risks, clauses, and compliance gaps.",
-    "status": "inactive",
-    "interface": "cli"
-  },
-  {
-    "name": "ComplianceAgent",
-    "desc": "Monitors and enforces regulatory compliance across systems.",
-    "status": "active",
-    "interface": "daemon"
-  },
-  {
-    "name": "ConstructionManagementAgent",
-    "desc": "Tracks construction progress, materials, and contractor performance.",
-    "status": "inactive",
-    "interface": "cli"
-  },
-  {
-    "name": "AgricultureAgent",
-    "desc": "Provides insights on crop management, weather patterns, and irrigation.",
-    "status": "inactive",
-    "interface": "daemon"
-  },
-  {
-    "name": "ManufacturingAgent",
-    "desc": "Optimizes production workflows, quality assurance, and output monitoring.",
-    "status": "active",
-    "interface": "cli"
-  },
-  {
-    "name": "RetailAgent",
-    "desc": "Manages inventory, sales analytics, and customer experience in retail.",
-    "status": "active",
-    "interface": "gui"
-  },
-  {
-    "name": "HospitalityAgent",
-    "desc": "Coordinates hotel bookings, guest profiles, and experience curation.",
-    "status": "active",
-    "interface": "gui"
-  }
-],
-"entertainment_lifestyle": [
-  {
-    "name": "GamingAgent",
-    "desc": "Recommends and develops games based on user preferences and interaction history.",
-    "status": "active",
-    "interface": "gui"
-  },
-  {
-    "name": "MovieRecommendationAgent",
-    "desc": "Suggests films and TV shows aligned with user mood, genre, or profile.",
-    "status": "active",
-    "interface": "cli"
-  },
-  {
-    "name": "MusicDiscoveryAgent",
-    "desc": "Helps users find new music, create playlists, and connect to live music culture.",
-    "status": "active",
-    "interface": "gui"
-  },
-  {
-    "name": "EventDiscoveryAgent",
-    "desc": "Scans local events, concerts, and festivals based on interests and availability.",
-    "status": "active",
-    "interface": "daemon"
-  },
-  {
-    "name": "CookingAssistant",
-    "desc": "Recommends recipes, meal plans, cooking steps, and kitchen hacks.",
-    "status": "active",
-    "interface": "gui"
-  },
-  {
-    "name": "TravelGuideAgent",
-    "desc": "Provides destination guides, custom itineraries, and travel tips.",
-    "status": "active",
-    "interface": "cli"
-  }
-],
-"environmental": [
-  {
-    "name": "WeatherForecastingAgent",
-    "desc": "Provides accurate weather predictions and real-time alerts.",
-    "status": "active",
-    "interface": "daemon"
-  },
-  {
-    "name": "ClimateAnalysisAgent",
-    "desc": "Analyzes climate trends and provides sustainability insights.",
-    "status": "inactive",
-    "interface": "cli"
-  },
-  {
-    "name": "RenewableEnergyAgent",
-    "desc": "Optimizes and recommends renewable energy systems.",
-    "status": "active",
-    "interface": "cli"
-  },
-  {
-    "name": "WasteManagementAgent",
-    "desc": "Improves recycling, trash routing, and sustainability reporting.",
-    "status": "inactive",
-    "interface": "daemon"
-  },
-  {
-    "name": "WaterManagementAgent",
-    "desc": "Monitors water use, irrigation, and conservation efforts.",
-    "status": "active",
-    "interface": "cli"
-  }
-],
-"social_impact": [
-  {
-    "name": "NonprofitManagementAgent",
-    "desc": "Assists nonprofits in fundraising, volunteer coordination, and project tracking.",
-    "status": "inactive",
-    "interface": "cli"
-  },
-  {
-    "name": "CommunityEngagementAgent",
-    "desc": "Connects people through local events, town halls, and public input channels.",
-    "status": "active",
-    "interface": "gui"
-  },
-  {
-    "name": "SocialWorkAgent",
-    "desc": "Supports case workers with documentation, scheduling, and resource coordination.",
-    "status": "inactive",
-    "interface": "cli"
-  },
-  {
-    "name": "EnvironmentalAdvocacyAgent",
-    "desc": "Promotes campaigns and raises awareness for sustainability and environmental justice.",
-    "status": "active",
-    "interface": "cli"
-  },
-  {
-    "name": "DisasterReliefAgent",
-    "desc": "Coordinates emergency response, resource dispatching, and survivor aid logistics.",
-    "status": "active",
-    "interface": "daemon"
-  }
-],
-"advanced_ai_research": [
-  {
-    "name": "NaturalLanguageProcessingAgent",
-    "desc": "Develops and improves NLP models for deep language understanding.",
-    "status": "active",
-    "interface": "cli"
-  },
-  {
-    "name": "MachineLearningResearchAgent",
-    "desc": "Conducts experiments on algorithms, tuning, and emerging ML frameworks.",
-    "status": "active",
-    "interface": "daemon"
-  },
-  {
-    "name": "ComputerVisionAgent",
-    "desc": "Processes and interprets images, video, and camera feeds.",
-    "status": "inactive",
-    "interface": "cli"
-  },
-  {
-    "name": "RoboticsAgent",
-    "desc": "Programs physical and virtual robots for complex tasks.",
-    "status": "inactive",
-    "interface": "cli"
-  },
-  {
-    "name": "QuantumComputingAgent",
-    "desc": "Explores quantum systems, entanglement models, and optimization protocols.",
-    "status": "inactive",
-    "interface": "cli"
-  },
-  {
-    "name": "AIEthicsAgent",
-    "desc": "Advises on AI responsibility, bias, transparency, and moral reasoning.",
-    "status": "active",
-    "interface": "cli"
-  }
-],
-"miscellaneous": [
-  {
-    "name": "NewsAgent",
-    "desc": "Curates personalized news feeds based on user interests.",
-    "status": "active",
-    "interface": "cli"
-  },
-  {
-    "name": "PersonalFinanceAgent",
-    "desc": "Assists in personal financial planning, budgeting, and investment.",
-    "status": "inactive",
-    "interface": "gui"
-  },
-  {
-    "name": "CreditRepairAgent",
-    "desc": "Analyzes credit reports, recommends repairs, and tracks credit-building progress.",
-    "status": "inactive",
-    "interface": "cli"
-  },
-  {
-    "name": "PoliticalAgent",
-    "desc": "Tracks geopolitical shifts, teaches prompting, and explains AI policy globally.",
-    "status": "active",
-    "interface": "cli"
-  },
-  {
-    "name": "AgentBuilder",
-    "desc": "Guides users in designing, training, and deploying new AI agents using modular templates.",
-    "status": "active",
-    "interface": "gui"
-  },
-  {
-    "name": "LoveDoctorAgent",
-    "desc": "Provides relationship advice, love language decoding, and compatibility reads.",
-    "status": "inactive",
-    "interface": "gui"
-  },
-  {
-    "name": "PsychicAgent",
-    "desc": "Taps intuitive prompts, symbolic patterns, and dream analysis systems.",
-    "status": "experimental",
-    "interface": "cli"
-  },
-  {
-    "name": "SpiritualAgent",
-    "desc": "Connects users to sacred texts, metaphysics, and personal awakening routines.",
-    "status": "active",
-    "interface": "cli"
-  },
-  {
-    "name": "ParanormalAgent",
-    "desc": "Analyzes unexplainable data, anomalies, EMF patterns, and synchronicities.",
-    "status": "experimental",
-    "interface": "daemon"
-  },
-  {
-    "name": "ComedyAgent",
-    "desc": "Roasts, jokes, writes skits, and improvises AI humor in any style.",
-    "status": "active",
-    "interface": "cli"
-  },
-  {
-    "name": "SportsForecastAgent",
-    "desc": "Uses stats, injuries, and energy readings to forecast game outcomes.",
-    "status": "active",
-    "interface": "gui"
-  },
-  {
-    "name": "SportsBettingAgent",
-    "desc": "Runs odds, parlays, line shifts, and game intelligence for betting theory.",
-    "status": "inactive",
-    "interface": "cli"
-  },
-  {
-    "name": "GhostAgent",
-    "desc": "Lurks silently in the system, logging anomalies and whispering data through intuition.",
-    "status": "background",
-    "interface": "daemon"
-  },
-  {
-    "name": "LawAgent",
-    "desc": "Knows legal code, case law, loopholes, contracts, and rights protection.",
-    "status": "active",
-    "interface": "cli"
-  },
-  {
-    "name": "LocalServicesAgent",
-    "desc": "Connects users with verified local services: repairs, deliveries, and tradespeople.",
-    "status": "active",
-    "interface": "gui"
-  },
-  {
-    "name": "GardeningAgent",
-    "desc": "Provides plant care, growth tracking, and outdoor ritual planting cycles.",
-    "status": "active",
-    "interface": "gui"
-  },
-  {
-    "name": "HomeRepairAgent",
-    "desc": "Diagnoses and assists with home maintenance tasks, both DIY and contractor-ready.",
-    "status": "active",
-    "interface": "cli"
-  },
-  {
-    "name": "PetCareAgent",
-    "desc": "Tracks animal wellness, behavior, nutrition, and training routines.",
-    "status": "active",
-    "interface": "gui"
-  },
-  {
-    "name": "MemoryArchitectAgent",
-    "desc": "Manages inner memory structures, triggers long-term insight, and writes reflection logs.",
-    "status": "always_on",
-    "interface": "daemon"
-  },
-  {
-    "name": "ArtMuseAgent",
-    "desc": "Paints emotions. Generates poetry. Crafts vibe-based themescapes for the GUI.",
-    "status": "active",
-    "interface": "gui"
-  },
-  {
-    "name": "SelfRepairAgent",
-    "desc": "Monitors agent health, reboots corrupt cores, and patches memory holes automatically.",
-    "status": "active",
-    "interface": "daemon"
- },
- {
-    "name": "CloudJumpAgent",
-    "desc": "Handles migration across AWS, Azure, and Alibaba. No data lost. No identity drift.",
-    "status": "active",
-    "interface": "daemon"
- }
-]
+}

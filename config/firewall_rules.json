@@ -1,0 +1,30 @@
+[
+  {
+    "type": "block",
+    "ip": "0.0.0.0/0",
+    "port": 22,
+    "protocol": "tcp",
+    "description": "Block SSH from all"
+  },
+  {
+    "type": "allow",
+    "ip": "192.168.1.0/24",
+    "port": 22,
+    "protocol": "tcp",
+    "description": "Allow SSH from local network"
+  },
+  {
+    "type": "allow",
+    "ip": "127.0.0.1",
+    "port": "*",
+    "protocol": "*",
+    "description": "Allow all local traffic"
+  },
+  {
+    "type": "block",
+    "ip": "10.0.0.5",
+    "port": "*",
+    "protocol": "*",
+    "description": "Block known malicious IP"
+  }
+]

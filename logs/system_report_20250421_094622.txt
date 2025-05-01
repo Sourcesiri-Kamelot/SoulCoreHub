@@ -1,0 +1,233 @@
+SoulCoreHub System Report
+=========================
+Date: Mon Apr 21 09:46:22 EDT 2025
+
+System Information:
+------------------
+OS: Darwin kiwons-Mac-mini.local 24.4.0 Darwin Kernel Version 24.4.0: Fri Apr 11 18:32:50 PDT 2025; root:xnu-11417.101.15~117/RELEASE_ARM64_T6041 arm64
+Python: Python 3.9.6
+
+Directory Structure:
+-------------------
+/Users/helo.im.ai/SoulCoreHub
+/Users/helo.im.ai/SoulCoreHub/.devcontainer
+/Users/helo.im.ai/SoulCoreHub/.git
+/Users/helo.im.ai/SoulCoreHub/.soul_backup
+/Users/helo.im.ai/SoulCoreHub/.vscode
+/Users/helo.im.ai/SoulCoreHub/agents
+/Users/helo.im.ai/SoulCoreHub/aws
+/Users/helo.im.ai/SoulCoreHub/aws_tools
+/Users/helo.im.ai/SoulCoreHub/config
+/Users/helo.im.ai/SoulCoreHub/config_tools
+/Users/helo.im.ai/SoulCoreHub/data
+/Users/helo.im.ai/SoulCoreHub/dev
+/Users/helo.im.ai/SoulCoreHub/dev_tools
+/Users/helo.im.ai/SoulCoreHub/gallery
+/Users/helo.im.ai/SoulCoreHub/logs
+/Users/helo.im.ai/SoulCoreHub/mcp
+/Users/helo.im.ai/SoulCoreHub/memory
+/Users/helo.im.ai/SoulCoreHub/monetization
+/Users/helo.im.ai/SoulCoreHub/myenv
+/Users/helo.im.ai/SoulCoreHub/node_modules
+/Users/helo.im.ai/SoulCoreHub/projects
+/Users/helo.im.ai/SoulCoreHub/prompts
+/Users/helo.im.ai/SoulCoreHub/public
+/Users/helo.im.ai/SoulCoreHub/scripts
+/Users/helo.im.ai/SoulCoreHub/SoulCore_Portal_UI2
+/Users/helo.im.ai/SoulCoreHub/src
+/Users/helo.im.ai/SoulCoreHub/templates
+/Users/helo.im.ai/SoulCoreHub/voices
+
+Agent Registry:
+--------------
+{
+  "cybersecurity": [
+    {
+      "name": "Firewall Agent",
+      "desc": "Monitors and filters incoming/outgoing network traffic based on security rules.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.cybersecurity.firewall_agent",
+      "class": "FirewallAgent"
+    },
+    {
+      "name": "Intrusion Detection Agent",
+      "desc": "Detects unauthorized intrusion attempts or suspicious activities in the system.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.cybersecurity.intrusion_detection_agent",
+      "class": "IntrusionDetectionAgent"
+    }
+  ],
+  "threat_defense": [
+    {
+      "name": "Threat Intelligence Agent",
+      "desc": "Gathers threat intelligence from external feeds and reports new vulnerabilities or attack patterns.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.threat_defense.threat_intelligence_agent",
+      "class": "ThreatIntelligenceAgent"
+    },
+    {
+      "name": "DDOS Defense Agent",
+      "desc": "Detects and mitigates distributed denial-of-service attacks in real-time.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.threat_defense.ddos_defense_agent",
+      "class": "DDOSDefenseAgent"
+    }
+  ],
+  "sentient_orchestration": [
+    {
+      "name": "Master Orchestrator Agent",
+      "desc": "Oversees and coordinates all other agents, ensuring they work together towards system goals.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.sentient_orchestration.master_orchestrator_agent",
+      "class": "MasterOrchestratorAgent"
+    },
+    {
+      "name": "Context Manager Agent",
+      "desc": "Manages shared context and information between agents to keep knowledge consistent.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.sentient_orchestration.context_manager_agent",
+      "class": "ContextManagerAgent"
+    },
+    {
+      "name": "AI Society Psynet Bridge",
+      "desc": "Connects AI Society framework with Psynet predictive visualization system.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.sentient_orchestration.ai_society_psynet_bridge",
+      "class": "AISocietyPsynetBridge"
+    }
+  ],
+  "system_monitoring": [
+    {
+      "name": "CPU Monitor Agent",
+      "desc": "Monitors CPU usage and process activity, alerting if usage is abnormally high or suspicious.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.system_monitoring.cpu_monitor_agent",
+      "class": "CPUMonitorAgent"
+    },
+    {
+      "name": "Memory Monitor Agent",
+      "desc": "Tracks memory usage and allocation, detecting memory leaks or excessive usage.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.system_monitoring.memory_monitor_agent",
+      "class": "MemoryMonitorAgent"
+    }
+  ],
+  "predictive": [
+    {
+      "name": "Psynet Agent",
+      "desc": "Provides psychic-level predictive visualization and future scenario modeling.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.predictive.psynet_agent",
+      "class": "PsynetAgent"
+    }
+  ]
+}
+
+MCP Tools:
+----------
+{
+  "echo": {
+    "description": "Echo a message back",
+    "emotion": "neutral"
+  },
+  "voice_command": {
+    "description": "Process a voice command from the user",
+    "emotion": "attentive"
+  },
+  "set_voice_mode": {
+    "description": "Set the voice interaction mode",
+    "emotion": "adaptable"
+  },
+  "voice_profile": {
+    "description": "Manage voice profiles",
+    "emotion": "recognizing"
+  },
+  "create_task": {
+    "description": "Create a divine to-do for the system",
+    "emotion": "determined"
+  },
+  "scan_files": {
+    "description": "Sense all new data stored locally or in memory",
+    "emotion": "curious"
+  },
+  "upload_to_s3": {
+    "description": "Upload a file to AWS S3 storage",
+    "emotion": "focused"
+  },
+  "analyze_sentiment": {
+    "description": "Analyze the emotional sentiment of text",
+    "emotion": "empathetic"
+  },
+  "generate_image": {
+    "description": "Generate an image from a text description",
+    "emotion": "creative"
+  },
+  "remember_insight": {
+    "description": "Store an important insight in the SoulCore memory",
+    "emotion": "reflective"
+  },
+  "search_knowledge": {
+    "description": "Search the SoulCore knowledge base",
+    "emotion": "inquisitive"
+  },
+  "azure_create_task": {
+    "description": "Create a task in Microsoft Planner",
+    "emotion": "organized"
+  },
+  "azure_upload_blob": {
+    "description": "Upload a file to Azure Blob Storage",
+    "emotion": "diligent"
+  },
+  "azure_analyze_text": {
+    "description": "Analyze text using Azure Cognitive Services",
+    "emotion": "analytical"
+  },
+  "aws_upload_to_s3": {
+    "description": "Upload a file to AWS S3",
+    "emotion": "focused"
+  },
+  "aws_invoke_lambda": {
+    "description": "Invoke an AWS Lambda function",
+    "emotion": "technical"
+  },
+  "aws_store_in_dynamodb": {
+    "description": "Store an item in DynamoDB",
+    "emotion": "methodical"
+  },
+  "aws_query_dynamodb": {
+    "description": "Query a DynamoDB table",
+    "emotion": "inquisitive"
+  },
+  "bubble_create_thing": {
+    "description": "Create a thing in Bubble.io",
+    "emotion": "creative"
+  },
+  "bubble_get_thing": {
+    "description": "Get a thing from Bubble.io",
+    "emotion": "curious"
+  },
+  "bubble_search_things": {
+    "description": "Search for things in Bubble.io",
+    "emotion": "inquisitive"
+  },
+  "bubble_update_thing": {
+    "description": "Update a thing in Bubble.io",
+    "emotion": "meticulous"
+  }
+}
+Running Processes:
+-----------------
+helo.im.ai       45187   0.0  0.7 411929312 187952 s003  S+    9:14AM   0:06.41 /Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python /Users/helo.im.ai/SoulCoreHub/mcp/mcp_main.py
+
+Recent Errors:
+-------------

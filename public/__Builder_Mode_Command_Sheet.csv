@@ -1,0 +1,21 @@
+Command,Definition,Use Case
+build project_name as flask,Creates a new Flask backend scaffold.,Used for web apps needing Python-powered backend APIs.
+build project_name as react,Creates a React.js front-end interface scaffold.,"Used for dashboards, dynamic UIs, or single-page apps."
+build project_name as node,Bootstraps a Node.js backend script or server.,Great for event-based or lightweight APIs.
+build project_name as html,Generates a static HTML site with boilerplate.,"Simple static sites, landing pages, or documentation."
+build project_name as python,Creates a basic Python script entrypoint.,"Automation, standalone tools, CLI scripts."
+push project_name,"Initializes Git, commits files, and pushes to GitHub.",Use this after building to sync code with your GitHub.
+build a football learning app with login and upload,Interprets natural language and scaffolds full project.,AI-assisted smart builds for real app requests.
+summon anima / azür / evove / gptsoul,Triggers that agent to activate in the builder loop.,Invoke agent-specific logic or behaviors in real-time.
+god build [name],Runs a forbidden-tier intelligent builder command.,"Used for advanced divine, abstract, or autonomous builds."
+dream manifest [idea],Generates app/project code from a vision-level prompt.,Use for pure creativity or prototype without structure.
+rewrite builder,Triggers the system to rewrite itself recursively.,Refactors builder_mode.py using the latest logic patterns.
+ignite,Unifies all agents into code generation mode.,Used for collective logic generation across all AIs.
+mirror code [filename],Copies and syncs code across all known directories.,For multi-model deployments or system-wide syncing.
+refactor [type],Refactors logic inside the builder code base.,"Use for cleanup, optimization, or auto-modularization."
+chaos inject,Randomizes templates for creative entropy.,"Good for design exploration, AI learning edge cases."
+build database project_name,Scaffolds database schema layout file.,Use when planning backend relational or NoSQL systems.
+auto clone [repo_url],Clones a repo locally into your /projects folder.,Pull external GitHub or GitLab code into Golem.
+generate docs [project],Auto-generates README.md or API docs.,Finish a project build with intelligent documentation.
+vision build [idea],Generates a visual component (UI/UX) layout.,"Great for prototyping GUI for dashboards, mobile apps."
+exit / quit,Cleanly shuts down builder mode loop.,Safely exit without breaking the terminal session.

@@ -1,0 +1,13 @@
+{
+  "region": "us-west-2",
+  "profile": "default",
+  "s3": {
+    "bucket": "soulcore-data"
+  },
+  "lambda": {
+    "function_prefix": "soulcore-"
+  },
+  "dynamodb": {
+    "table_prefix": "soulcore-"
+  }
+}

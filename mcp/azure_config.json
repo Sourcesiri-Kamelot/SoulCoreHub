@@ -1,0 +1,12 @@
+{
+  "tenant_id": "",
+  "client_id": "",
+  "client_secret": "",
+  "subscription_id": "",
+  "resource_group": "soulcore-resources",
+  "endpoints": {
+    "planner": "https://graph.microsoft.com/v1.0/planner/tasks",
+    "storage": "https://soulcorestorage.blob.core.windows.net",
+    "cognitive": "https://soulcore-cognitive.cognitiveservices.azure.com"
+  }
+}

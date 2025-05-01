@@ -1,0 +1,8 @@
+{
+  "SERP_API_KEY": "your_serp_api_key_here",
+  "NEWSAPI_KEY": "your_newsapi_key_here",
+  "WEATHER_API_KEY": "your_weather_api_key_here",
+  "GITHUB_API_TOKEN": "your_github_api_token_here",
+  "OPENAI_API_KEY": "your_openai_api_key_here",
+  "ANTHROPIC_API_KEY": "your_anthropic_api_key_here"
+}

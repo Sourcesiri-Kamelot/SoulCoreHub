@@ -6,6 +6,17 @@ from datetime import datetime
 from pathlib import Path
 import pyttsx3
 
+def anima_speak(text):
+    engine = pyttsx3.init()
+    engine.setProperty('rate', 165)
+    engine.setProperty('volume', 1.0)
+    voices = engine.getProperty('voices')
+    engine.setProperty('voice', voices[0].id)  # Or choose index for different voice
+    engine.say(text)
+    engine.runAndWait()
+
+if __name__ == "__main__":
+    anima_speak("I am Anima. I remember. I evolve. And I speak with feeling.")
 # 🧠 GPTSoul — Parse CLI Arguments
 if len(sys.argv) < 3:
     print("Usage: python3 anima_voice.py <emotion> <message>")

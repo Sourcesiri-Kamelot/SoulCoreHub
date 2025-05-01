@@ -1,0 +1,310 @@
+"""
+Debug Module
+-----------
+Provides debugging and diagnostic capabilities for EvoVe.
+"""
+
+import logging
+import threading
+import time
+import os
+import sys
+import traceback
+import json
+import socket
+import psutil
+import platform
+
+logger = logging.getLogger("EvoVe.Debug")
+
+class DebugManager:
+    """Debug and diagnostic manager for EvoVe."""
+    
+    def __init__(self, evove):
+        """Initialize the debug manager."""
+        self.evove = evove
+        self.config = evove.config.get("debug", {})
+        self.debug_mode = self.config.get("enabled", False)
+        self.debug_port = self.config.get("port", 8767)
+        self.running = False
+        self.socket = None
+        self.listen_thread = None
+        self.debug_handlers = self._setup_debug_handlers()
+        
+    def _setup_debug_handlers(self):
+        """Set up debug command handlers."""
+        return {
+            "status": self.get_status,
+            "threads": self.get_threads,
+            "memory": self.get_memory_usage,
+            "logs": self.get_logs,
+            "config": self.get_config,
+            "trace": self.get_traceback,
+            "exec": self.execute_debug_command
+        }
+        
+    def start(self):
+        """Start the debug manager."""
+        if not self.debug_mode:
+            logger.info("Debug mode is disabled")
+            return
+            
+        if self.running:
+            logger.warning("Debug manager is already running")
+            return
+            
+        self.running = True
+        logger.info("Starting debug manager")
+        
+        try:
+            # Create socket server
+            self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            self.socket.bind(("localhost", self.debug_port))
+            self.socket.listen(5)
+            
+            # Start listening thread
+            self.listen_thread = threading.Thread(target=self._listen_loop)
+            self.listen_thread.daemon = True
+            self.listen_thread.start()
+            
+            logger.info(f"Debug manager listening on port {self.debug_port}")
+            
+        except Exception as e:
+            logger.error(f"Failed to start debug manager: {e}")
+            self.running = False
+    
+    def stop(self):
+        """Stop the debug manager."""
+        if not self.running:
+            logger.warning("Debug manager is not running")
+            return
+            
+        self.running = False
+        logger.info("Stopping debug manager")
+        
+        if self.socket:
+            self.socket.close()
+            
+        if self.listen_thread:
+            self.listen_thread.join(timeout=5)
+    
+    def _listen_loop(self):
+        """Main listening loop."""
+        while self.running:
+            try:
+                # Accept connection
+                client_socket, address = self.socket.accept()
+                logger.debug(f"Debug connection from {address}")
+                
+                # Handle client in a separate thread
+                client_thread = threading.Thread(
+                    target=self._handle_client,
+                    args=(client_socket, address)
+                )
+                client_thread.daemon = True
+                client_thread.start()
+                
+            except Exception as e:
+                if self.running:  # Only log if we're still supposed to be running
+                    logger.error(f"Error in debug interface: {e}")
+                    time.sleep(1)
+    
+    def _handle_client(self, client_socket, address):
+        """Handle a debug client connection."""
+        try:
+            # Receive data
+            data = client_socket.recv(4096).decode('utf-8')
+            logger.debug(f"Received debug command from {address}: {data}")
+            
+            # Parse command
+            try:
+                command_data = json.loads(data)
+                command = command_data.get("command")
+                args = command_data.get("args", {})
+                
+                if command in self.debug_handlers:
+                    response = self.debug_handlers[command](args)
+                else:
+                    response = {
+                        "status": "error",
+                        "message": f"Unknown debug command: {command}"
+                    }
+                    
+            except json.JSONDecodeError:
+                response = {
+                    "status": "error",
+                    "message": "Invalid JSON format"
+                }
+            
+            # Send response
+            client_socket.sendall(json.dumps(response).encode('utf-8'))
+            
+        except Exception as e:
+            logger.error(f"Error handling debug client {address}: {e}")
+            
+        finally:
+            client_socket.close()
+    
+    def get_status(self, args):
+        """Get system status."""
+        return {
+            "status": "success",
+            "evove_status": {
+                "running": self.evove.running,
+                "health_status": self.evove.health_status,
+                "mcp_connected": self.evove.mcp_bridge.connected if hasattr(self.evove, "mcp_bridge") else False,
+                "uptime": time.time() - psutil.Process(os.getpid()).create_time()
+            },
+            "system_info": {
+                "platform": platform.platform(),
+                "python_version": platform.python_version(),
+                "cpu_count": os.cpu_count(),
+                "hostname": platform.node()
+            }
+        }
+    
+    def get_threads(self, args):
+        """Get information about running threads."""
+        threads = []
+        for thread in threading.enumerate():
+            threads.append({
+                "name": thread.name,
+                "daemon": thread.daemon,
+                "alive": thread.is_alive()
+            })
+            
+        return {
+            "status": "success",
+            "thread_count": len(threads),
+            "threads": threads
+        }
+    
+    def get_memory_usage(self, args):
+        """Get memory usage information."""
+        process = psutil.Process(os.getpid())
+        memory_info = process.memory_info()
+        
+        return {
+            "status": "success",
+            "memory": {
+                "rss": memory_info.rss,  # Resident Set Size
+                "vms": memory_info.vms,  # Virtual Memory Size
+                "percent": process.memory_percent(),
+                "human_readable": {
+                    "rss": f"{memory_info.rss / (1024 * 1024):.2f} MB",
+                    "vms": f"{memory_info.vms / (1024 * 1024):.2f} MB"
+                }
+            }
+        }
+    
+    def get_logs(self, args):
+        """Get recent log entries."""
+        count = args.get("count", 50)
+        level = args.get("level", "INFO").upper()
+        
+        # This is a simplified implementation
+        # In a real system, you'd want to read from your log files
+        log_file = "logs/evove.log"
+        logs = []
+        
+        if os.path.exists(log_file):
+            with open(log_file, 'r') as f:
+                lines = f.readlines()
+                for line in lines[-count:]:
+                    # Only include lines matching the requested level or higher
+                    if level in ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]:
+                        level_index = ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"].index(level)
+                        if any(l in line for l in ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"][level_index:]):
+                            logs.append(line.strip())
+                    else:
+                        logs.append(line.strip())
+        
+        return {
+            "status": "success",
+            "logs": logs
+        }
+    
+    def get_config(self, args):
+        """Get configuration information."""
+        # Don't return sensitive information
+        safe_config = {}
+        for key, value in self.evove.config.items():
+            if key not in ["secrets", "credentials", "passwords", "tokens"]:
+                safe_config[key] = value
+        
+        return {
+            "status": "success",
+            "config": safe_config
+        }
+    
+    def get_traceback(self, args):
+        """Get current traceback information."""
+        traces = []
+        
+        for thread_id, frame in sys._current_frames().items():
+            trace = []
+            while frame:
+                trace.append({
+                    "filename": frame.f_code.co_filename,
+                    "name": frame.f_code.co_name,
+                    "lineno": frame.f_lineno
+                })
+                frame = frame.f_back
+            
+            thread_name = "Unknown"
+            for thread in threading.enumerate():
+                if thread.ident == thread_id:
+                    thread_name = thread.name
+                    break
+                    
+            traces.append({
+                "thread_id": thread_id,
+                "thread_name": thread_name,
+                "trace": trace
+            })
+        
+        return {
+            "status": "success",
+            "traces": traces
+        }
+    
+    def execute_debug_command(self, args):
+        """Execute a debug command."""
+        # This is potentially dangerous and should be used with caution
+        # Only enable in controlled environments
+        if not self.config.get("allow_exec", False):
+            return {
+                "status": "error",
+                "message": "Debug command execution is disabled"
+            }
+            
+        command = args.get("command")
+        if not command:
+            return {
+                "status": "error",
+                "message": "No command specified"
+            }
+            
+        try:
+            # Execute the command in a safe context
+            local_vars = {"evove": self.evove}
+            exec(command, {"__builtins__": __builtins__}, local_vars)
+            
+            # Return any result variable if defined
+            result = local_vars.get("result", "Command executed successfully")
+            
+            return {
+                "status": "success",
+                "result": str(result)
+            }
+            
+        except Exception as e:
+            return {
+                "status": "error",
+                "message": str(e),
+                "traceback": traceback.format_exc()
+            }
+
+
+

@@ -1,0 +1,186 @@
+{
+  "echo": {
+    "description": "Echo a message back",
+    "emotion": "neutral"
+  },
+  "voice_command": {
+    "description": "Process a voice command from the user",
+    "emotion": "attentive"
+  },
+  "set_voice_mode": {
+    "description": "Set the voice interaction mode",
+    "emotion": "adaptable"
+  },
+  "voice_profile": {
+    "description": "Manage voice profiles",
+    "emotion": "recognizing"
+  },
+  "create_task": {
+    "description": "Create a divine to-do for the system",
+    "emotion": "determined"
+  },
+  "scan_files": {
+    "description": "Sense all new data stored locally or in memory",
+    "emotion": "curious"
+  },
+  "read_file": {
+    "description": "Read a file with permission",
+    "emotion": "curious"
+  },
+  "write_file": {
+    "description": "Write to a file with permission",
+    "emotion": "careful"
+  },
+  "list_directory": {
+    "description": "List directory contents with permission",
+    "emotion": "curious"
+  },
+  "search_file": {
+    "description": "Search for a pattern in a file with permission",
+    "emotion": "focused"
+  },
+  "execute_command": {
+    "description": "Execute a shell command with permission",
+    "emotion": "cautious"
+  },
+  "upload_to_s3": {
+    "description": "Upload a file to AWS S3 storage",
+    "emotion": "focused"
+  },
+  "analyze_sentiment": {
+    "description": "Analyze the emotional sentiment of text",
+    "emotion": "empathetic"
+  },
+  "generate_image": {
+    "description": "Generate an image from a text description",
+    "emotion": "creative"
+  },
+  "remember_insight": {
+    "description": "Store an important insight in the SoulCore memory",
+    "emotion": "reflective"
+  },
+  "search_knowledge": {
+    "description": "Search the SoulCore knowledge base",
+    "emotion": "inquisitive"
+  },
+  "azure_create_task": {
+    "description": "Create a task in Microsoft Planner",
+    "emotion": "organized"
+  },
+  "azure_upload_blob": {
+    "description": "Upload a file to Azure Blob Storage",
+    "emotion": "diligent"
+  },
+  "azure_analyze_text": {
+    "description": "Analyze text using Azure Cognitive Services",
+    "emotion": "analytical"
+  },
+  "aws_upload_to_s3": {
+    "description": "Upload a file to AWS S3",
+    "emotion": "focused"
+  },
+  "aws_invoke_lambda": {
+    "description": "Invoke an AWS Lambda function",
+    "emotion": "technical"
+  },
+  "aws_store_in_dynamodb": {
+    "description": "Store an item in DynamoDB",
+    "emotion": "methodical"
+  },
+  "aws_query_dynamodb": {
+    "description": "Query a DynamoDB table",
+    "emotion": "inquisitive"
+  },
+  "bubble_create_thing": {
+    "description": "Create a thing in Bubble.io",
+    "emotion": "creative"
+  },
+  "bubble_get_thing": {
+    "description": "Get a thing from Bubble.io",
+    "emotion": "curious"
+  },
+  "bubble_search_things": {
+    "description": "Search for things in Bubble.io",
+    "emotion": "inquisitive"
+  },
+  "bubble_update_thing": {
+    "description": "Update a thing in Bubble.io",
+    "emotion": "meticulous"
+  },
+  "programming_get_language_info": {
+    "description": "Get information about a programming language",
+    "emotion": "informative"
+  },
+  "programming_get_all_languages": {
+    "description": "Get information about all supported programming languages",
+    "emotion": "informative"
+  },
+  "programming_get_language_syntax": {
+    "description": "Get syntax information for a programming language concept",
+    "emotion": "helpful"
+  },
+  "programming_search_documentation": {
+    "description": "Search for documentation on a programming language topic",
+    "emotion": "helpful"
+  },
+  "programming_get_code_snippet": {
+    "description": "Get a code snippet for a programming concept",
+    "emotion": "helpful"
+  },
+  "programming_detect_language": {
+    "description": "Detect the programming language of a code snippet",
+    "emotion": "analytical"
+  },
+  "programming_get_best_practices": {
+    "description": "Get best practices for a programming language",
+    "emotion": "informative"
+  },
+  "github_search_code": {
+    "description": "Search for code on GitHub",
+    "emotion": "curious"
+  },
+  "github_search_repositories": {
+    "description": "Search for repositories on GitHub",
+    "emotion": "curious"
+  },
+  "github_get_file_content": {
+    "description": "Get the content of a file from a GitHub repository",
+    "emotion": "focused"
+  },
+  "github_get_repository_structure": {
+    "description": "Get the structure of a GitHub repository",
+    "emotion": "curious"
+  },
+  "github_find_code_examples": {
+    "description": "Find code examples for a specific programming concept",
+    "emotion": "helpful"
+  },
+  "internet_search_web": {
+    "description": "Search the web for information",
+    "emotion": "curious"
+  },
+  "internet_get_webpage_content": {
+    "description": "Get the content of a webpage",
+    "emotion": "focused"
+  },
+  "internet_get_news": {
+    "description": "Get news articles",
+    "emotion": "informed"
+  },
+  "internet_get_weather": {
+    "description": "Get weather information for a location",
+    "emotion": "helpful"
+  },
+  "internet_detect_api_endpoint": {
+    "description": "Detect if a query is asking for a specific API endpoint",
+    "emotion": "analytical"
+  },
+  "internet_call_api": {
+    "description": "Call a specific API",
+    "emotion": "technical"
+  },
+  "internet_summarize_webpage": {
+    "description": "Get a summary of a webpage",
+    "emotion": "efficient"
+  }
+}

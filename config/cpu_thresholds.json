@@ -1,0 +1,6 @@
+{
+  "high_cpu": 80.0,
+  "critical_cpu": 95.0,
+  "sustained_period": 60,
+  "process_cpu_threshold": 50.0
+}

@@ -1,0 +1,42 @@
+{
+    "mcp": {
+        "host": "localhost",
+        "port": 8765,
+        "max_reconnect_attempts": 5,
+        "reconnect_delay": 5
+    },
+    "monitoring": {
+        "interval": 30,
+        "critical_services": [
+            "mcp_server_divine.py",
+            "anima_voice.py"
+        ]
+    },
+    "repair": {
+        "auto_repair": true,
+        "backup_before_repair": true,
+        "max_repair_attempts": 3
+    },
+    "voice": {
+        "enabled": false,
+        "host": "localhost",
+        "port": 8766,
+        "commands": [
+            "status",
+            "repair",
+            "restart",
+            "backup",
+            "help"
+        ]
+    },
+    "cli": {
+        "history_size": 100
+    },
+    "debug": {
+        "enabled": true,
+        "port": 8767,
+        "allow_exec": false,
+        "log_level": "INFO"
+    }
+}
+

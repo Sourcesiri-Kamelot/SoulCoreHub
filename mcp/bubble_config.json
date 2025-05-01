@@ -1,0 +1,11 @@
+{
+  "app_name": "soulcore-app",
+  "api_token": "",
+  "api_root": "https://soulcore-app.bubbleapps.io/api/1.1",
+  "data_types": {
+    "user": "user",
+    "task": "task",
+    "note": "note",
+    "project": "project"
+  }
+}

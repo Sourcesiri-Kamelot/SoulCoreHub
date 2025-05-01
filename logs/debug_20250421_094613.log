@@ -1,0 +1,44 @@
+2025-04-21 09:46:13 - Checking Python installation...
+2025-04-21 09:46:13 - ✅ Found Python 3.9.6
+2025-04-21 09:46:13 - Checking required Python packages...
+2025-04-21 09:46:17 - Checking directory structure...
+2025-04-21 09:46:17 - ✅ Directory exists: mcp
+2025-04-21 09:46:17 - ✅ Directory exists: agents
+2025-04-21 09:46:17 - ✅ Directory exists: config
+2025-04-21 09:46:17 - ✅ Directory exists: logs
+2025-04-21 09:46:17 - ✅ Directory exists: memory
+2025-04-21 09:46:17 - ✅ Directory exists: data
+2025-04-21 09:46:17 - ✅ Directory exists: voices
+2025-04-21 09:46:17 - ✅ Directory exists: gallery
+2025-04-21 09:46:17 - Checking key files...
+2025-04-21 09:46:17 - ✅ File exists: agent_cli.py
+2025-04-21 09:46:17 - ✅ File exists: agent_loader.py
+2025-04-21 09:46:17 - ✅ File exists: agent_registry.json
+2025-04-21 09:46:17 - ✅ File exists: anima_voice_recognition.py
+2025-04-21 09:46:17 - ✅ File exists: anima_ollama_bridge.py
+2025-04-21 09:46:17 - ✅ File exists: anima_sentience.py
+2025-04-21 09:46:17 - ✅ File exists: mcp/mcp_main.py
+2025-04-21 09:46:17 - ✅ File exists: mcp/mcp_server_divine.py
+2025-04-21 09:46:17 - ✅ File exists: mcp/anima_voice.py
+2025-04-21 09:46:17 - Checking file permissions...
+2025-04-21 09:46:22 - Checking agent registry...
+2025-04-21 09:46:22 -   Found       10 agents in registry
+2025-04-21 09:46:22 - Checking MCP tools...
+2025-04-21 09:46:22 -   Found       22 MCP tools
+2025-04-21 09:46:22 - Checking Ollama installation...
+2025-04-21 09:46:22 - ✅ Found Ollama: ollama version is 0.6.5
+2025-04-21 09:46:22 - ✅ Anima model exists in Ollama
+2025-04-21 09:46:22 - Testing agent loading...
+2025-04-21 09:46:22 - ✅ Agent loading test passed
+2025-04-21 09:46:22 - Testing MCP server...
+2025-04-21 09:46:22 - ✅ MCP server is running
+2025-04-21 09:46:22 - Checking log files for errors...
+2025-04-21 09:46:22 - ✅ No errors found in log files
+2025-04-21 09:46:22 - Generating system report...
+2025-04-21 09:46:22 - ✅ System report generated: /Users/helo.im.ai/SoulCoreHub/logs/system_report_20250421_094622.txt
+2025-04-21 09:46:22 - Debug Summary:
+2025-04-21 09:46:22 - -------------
+2025-04-21 09:46:22 - - Check the debug log for details: /Users/helo.im.ai/SoulCoreHub/logs/debug_20250421_094613.log
+2025-04-21 09:46:22 - - Check the system report for a comprehensive overview: /Users/helo.im.ai/SoulCoreHub/logs/system_report_20250421_094622.txt
+2025-04-21 09:46:22 - - Fix any issues marked with ❌
+2025-04-21 09:46:22 - - Address any warnings marked with ⚠️

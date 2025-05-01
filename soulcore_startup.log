@@ -1,0 +1,17 @@
+2025-04-21 11:15:07,995 [INFO] Loading all active agents...
+2025-04-21 11:15:08,001 [ERROR] Error initializing agent 'Builder Agent' (class BuilderAgent): 'BuilderAgent' object has no attribute 'logger'
+2025-04-21 11:15:08,002 [INFO] Started service agent 'Psynet Agent' in background thread.
+2025-04-21 11:15:08,002 [INFO] Loaded agent: Psynet Agent (status=active, interface=service)
+2025-04-21 11:15:08,003 [INFO] Started service agent 'AI Society Psynet Bridge' in background thread.
+2025-04-21 11:15:08,003 [INFO] Loaded agent: AI Society Psynet Bridge (status=active, interface=service)
+2025-04-21 11:15:08,003 [INFO] GPTSoul initialized
+2025-04-21 11:15:08,003 [INFO] GPTSoul running
+2025-04-21 11:15:08,003 [INFO] Started service agent 'GPTSoul' in background thread.
+2025-04-21 11:15:08,003 [INFO] Loaded agent: GPTSoul (status=active, interface=service)
+2025-04-21 11:15:08,003 [INFO] Loaded 3 agents
+2025-04-21 11:15:08,003 [INFO] Loaded agents: Psynet Agent, AI Society Psynet Bridge, GPTSoul
+2025-04-21 11:15:08,003 [INFO] Psynet Agent is active
+2025-04-21 11:15:08,003 [INFO] AI Society Psynet Bridge is active
+2025-04-21 11:15:08,003 [INFO] GPTSoul is active
+2025-04-21 11:15:08,003 [INFO] SoulCore system is now running
+2025-04-21 11:15:08,003 [INFO] Press Ctrl+C to stop
