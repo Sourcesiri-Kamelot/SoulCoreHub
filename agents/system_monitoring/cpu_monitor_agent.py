@@ -49,6 +49,7 @@ class CPUMonitorAgent:
         
         # Thread for monitoring
         self._thread = None
+        self._thread = None
         
         # Event bus reference (will be set by orchestrator)
         self.event_bus = None
@@ -158,7 +159,7 @@ class CPUMonitorAgent:
                     proc_info = proc.info
                     
                     # Skip processes with 0 CPU usage
-                    if proc_info['cpu_percent'] < 0.1:
+                    if proc_info['cpu_percent'] is None or proc_info['cpu_percent'] < 0.1:
                         continue
                     
                     # Add to our list

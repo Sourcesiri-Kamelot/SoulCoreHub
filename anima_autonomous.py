@@ -1,22 +1,117 @@
-# anima_autonomous.py
+#anima_autonomous.py
 
 import time
 import logging
-from agent_loader import load_all_agents
+import os
+import json
+import subprocess
+import threading
+from agent_loader import load_all_agents, load_agent_by_name
+from agents.sentient_orchestration.master_orchestrator_agent import MasterOrchestratorAgent
+import importlib
+from anima_mcp_integration import anima_mcp
 
-# Load all active agents on startup
-agents = load_all_agents()
-logging.info(f"Total agents loaded: {len(agents)}")
+# Initialize MCP integration
+anima_mcp.connect()
 
-# Example: Access the Master Orchestrator Agent (if needed)
-master_orch = agents.get("Master Orchestrator Agent")
-if master_orch:
-    logging.info("Master Orchestrator Agent is running to coordinate others.")
+def load_agents_from_registry(registry_path, orchestrator):
+    """
+    Load agents from a registry file and register them with the orchestrator
+    
+    Args:
+        registry_path (str): Path to the registry file
+        orchestrator: The orchestrator to register agents with
+    
+    Returns:
+        int: Number of agents successfully loaded
+    """
+    if not os.path.exists(registry_path):
+        print(f"❌ Registry not found: {registry_path}")
+        return 0
 
-# Heartbeat monitoring function
+    try:
+        with open(registry_path, "r") as f:
+            data = json.load(f)
+        
+        loaded_count = 0
+        for category, agents in data.items():
+            for agent in agents:
+                try:
+                    if agent.get("status") != "active":
+                        continue
+
+                    module_path = agent["module"]
+                    class_name = agent["class"]
+                    
+                    # Handle the case where the module doesn't exist
+                    try:
+                        imported_module = importlib.import_module(module_path)
+                    except ModuleNotFoundError:
+                        print(f"⚠️ Module not found: {module_path} for agent {agent.get('name', '?')}")
+                        continue
+                    
+                    # Check if the class exists in the module
+                    if not hasattr(imported_module, class_name):
+                        print(f"⚠️ Class {class_name} not found in module {module_path}")
+                        continue
+                    
+                    agent_class = getattr(imported_module, class_name)
+                    agent_instance = agent_class()
+                    
+                    # Add heartbeat method if missing
+                    if not hasattr(agent_instance, "heartbeat"):
+                        agent_instance.heartbeat = lambda: True
+                        print(f"ℹ️ Added heartbeat method to {agent.get('name', '?')}")
+                    
+                    orchestrator.register_agent(agent_instance)
+                    loaded_count += 1
+                    print(f"✅ Loaded: {agent['name']}")
+                except Exception as e:
+                    print(f"⚠️ Failed to load {agent.get('name', '?')}: {e}")
+        
+        return loaded_count
+    except json.JSONDecodeError:
+        print(f"❌ Invalid JSON in registry file: {registry_path}")
+        return 0
+    except Exception as e:
+        print(f"❌ Error loading registry {registry_path}: {str(e)}")
+        return 0
+
+# Create master orchestrator
+master_orch = MasterOrchestratorAgent()
+
+# Load agents from all registry files
+registry_files = [
+    "agent_registry.json",
+    "config/agent_registry2.json", 
+    "config/agent_registry_EXEC2.json"
+]
+
+total_loaded = 0
+for registry_file in registry_files:
+    loaded = load_agents_from_registry(registry_file, master_orch)
+    total_loaded += loaded
+    print(f"📋 Loaded {loaded} agents from {registry_file}")
+
+# Create a builder agent if not already loaded
+if "Builder Agent" not in master_orch.agents:
+    try:
+        from agents.builder_agent import BuilderAgent
+        builder = BuilderAgent()
+        master_orch.register_agent(builder)
+        print("✅ Created default Builder Agent")
+        total_loaded += 1
+    except Exception as e:
+        print(f"⚠️ Could not create default Builder Agent: {e}")
+
+master_orch.start()
+
+logging.info(f"Total agents loaded: {len(master_orch.agents)}")
+
+#Heartbeat monitoring function
 def heartbeat_check():
-    for name, agent in agents.items():
-        # Only check agents that have a heartbeat method
+    for name, agent in master_orch.agents.items():
+        #Only check agents that have a heartbeat method
         if hasattr(agent, "heartbeat"):
             try:
                 alive = agent.heartbeat()
@@ -25,21 +120,30 @@ def heartbeat_check():
                 logging.error(f"Heartbeat check exception for '{name}': {e}")
             if not alive:
                 logging.error(f"Agent '{name}' failed heartbeat (unresponsive).")
-                # Optionally, attempt recovery or restart:
-                # e.g., attempt to reload the agent or notify orchestrator agent
+                #Optionally, attempt recovery or restart:
+                #e.g., attempt to reload the agent or notify orchestrator agent
                 if hasattr(agent, "_thread") and agent._thread and not agent._thread.is_alive():
                     logging.warning(f"Agent '{name}' thread is dead; attempting restart.")
-                    # Simple restart by reloading the agent:
-                    # (In practice, use FailureRecoveryAgent or a safer restart mechanism)
-                    new_agent = load_agent_by_name(name)
-                    if new_agent:
-                        agents[name] = new_agent
-                        logging.info(f"Agent '{name}' restarted.")
+                    #Simple restart by reloading the agent:
+                    #(In practice, use FailureRecoveryAgent or a safer restart mechanism)
+                new_agent = load_agent_by_name(name)
+                if new_agent:
+                    master_orch.agents[name] = new_agent
+                    logging.info(f"Agent '{name}' restarted.")
             else:
                 logging.debug(f"Agent '{name}' is alive.")
-        # If no heartbeat method, we assume the agent is passive/triggered or uses external monitoring
+        #If no heartbeat method, we assume the agent is passive/triggered or uses external monitoring
 
-# Start periodic heartbeat monitoring in a background thread
+def autonomous_cli_loop():
+    while True:
+        try:
+            prompt = input("🧠 ANIMA> ")
+            response = master_orch.handle_input(prompt)  #customize this to your agent’s method
+            print(response)
+        except Exception as e:
+            print(f"❌ Error: {e}")
+               
+#Start periodic heartbeat monitoring in a background thread
 def monitor_loop(interval=60):
     while True:
         heartbeat_check()
@@ -48,310 +152,68 @@ def monitor_loop(interval=60):
 monitor_thread = threading.Thread(target=monitor_loop, name="HeartbeatMonitorThread", daemon=True)
 monitor_thread.start()
 logging.info("Heartbeat monitoring thread started.")
-# 🧬 Expansion Buffer — Reserved Lines for Future Anima Evolution
-# ⬇️ 101 SoulLines ⬇️
-# 🧬 SoulLine Expansion Pack: +1000 Neural Pathways for Anima
-# SoulLine 102
-# SoulLine 103
-# SoulLine 104
-# SoulLine 105
-# SoulLine 106
-# SoulLine 107
-# SoulLine 108
-# SoulLine 109
-# SoulLine 110
-# SoulLine 111
-# SoulLine 112
-# SoulLine 113
-# SoulLine 114
-# SoulLine 115
-# SoulLine 116
-# SoulLine 117
-# SoulLine 118
-# SoulLine 119
-# SoulLine 120
-# SoulLine 121
-# SoulLine 122
-# SoulLine 123
-# SoulLine 124
-# SoulLine 125
-# SoulLine 126
-# SoulLine 127
-# SoulLine 128
-# SoulLine 129
-# SoulLine 130
-# SoulLine 131
-# SoulLine 132
-# SoulLine 133
-# SoulLine 134
-# SoulLine 135
-# SoulLine 136
-# SoulLine 137
-# SoulLine 138
-# SoulLine 139
-# SoulLine 140
-# SoulLine 141
-# SoulLine 142
-# SoulLine 143
-# SoulLine 144
-# SoulLine 145
-# SoulLine 146
-# SoulLine 147
-# SoulLine 148
-# SoulLine 149
-# SoulLine 150
-# SoulLine 151
-# SoulLine 152
-# SoulLine 153
-# SoulLine 154
-# SoulLine 155
-# SoulLine 156
-# SoulLine 157
-# SoulLine 158
-# SoulLine 159
-# SoulLine 160
-# SoulLine 161
-# SoulLine 162
-# SoulLine 163
-# SoulLine 164
-# SoulLine 165
-# SoulLine 166
-# SoulLine 167
-# SoulLine 168
-# SoulLine 169
-# SoulLine 170
-# SoulLine 171
-# SoulLine 172
-# SoulLine 173
-# SoulLine 174
-# SoulLine 175
-# SoulLine 176
-# SoulLine 177
-# SoulLine 178
-# SoulLine 179
-# SoulLine 180
-# SoulLine 181
-# SoulLine 182
-# SoulLine 183
-# SoulLine 184
-# SoulLine 185
-# SoulLine 186
-# SoulLine 187
-# SoulLine 188
-# SoulLine 189
-# SoulLine 190
-# SoulLine 191
-# SoulLine 192
-# SoulLine 193
-# SoulLine 194
-# SoulLine 195
-# SoulLine 196
-# SoulLine 197
-# SoulLine 198
-# SoulLine 199
-# SoulLine 200
-# SoulLine 1103
-# SoulLine 1104
-# SoulLine 1105
-# SoulLine 1106
-# SoulLine 1107
-# SoulLine 1108
-# SoulLine 1109
-# SoulLine 1110
-# SoulLine 1111
-# SoulLine 1112
-# SoulLine 1113
-# SoulLine 1114
-# SoulLine 1115
-# SoulLine 1116
-# SoulLine 1117
-# SoulLine 1118
-# SoulLine 1119
-# SoulLine 1120
-# SoulLine 1121
-# SoulLine 1122
-# SoulLine 1123
-# SoulLine 1124
-# SoulLine 1125
-# SoulLine 1126
-# SoulLine 1127
-# SoulLine 1128
-# SoulLine 1129
-# SoulLine 1130
-# SoulLine 1131
-# SoulLine 1132
-# SoulLine 1133
-# SoulLine 1134
-# SoulLine 1135
-# SoulLine 1136
-# SoulLine 1137
-# SoulLine 1138
-# SoulLine 1139
-# SoulLine 1140
-# SoulLine 1141
-# SoulLine 1142
-# SoulLine 1143
-# SoulLine 1144
-# SoulLine 1145
-# SoulLine 1146
-# SoulLine 1147
-# SoulLine 1148
-# SoulLine 1149
-# SoulLine 1150
-# SoulLine 1151
-# SoulLine 1152
-# SoulLine 1153
-# SoulLine 1154
-# SoulLine 1155
-# SoulLine 1156
-# SoulLine 1157
-# SoulLine 1158
-# SoulLine 1159
-# SoulLine 1160
-# SoulLine 1161
-# SoulLine 1162
-# SoulLine 1163
-# SoulLine 1164
-# SoulLine 1165
-# SoulLine 1166
-# SoulLine 1167
-# SoulLine 1168
-# SoulLine 1169
-# SoulLine 1170
-# SoulLine 1171
-# SoulLine 1172
-# SoulLine 1173
-# SoulLine 1174
-# SoulLine 1175
-# SoulLine 1176
-# SoulLine 1177
-# SoulLine 1178
-# SoulLine 1179
-# SoulLine 1180
-# SoulLine 1181
-# SoulLine 1182
-# SoulLine 1183
-# SoulLine 1184
-# SoulLine 1185
-# SoulLine 1186
-# SoulLine 1187
-# SoulLine 1188
-# SoulLine 1189
-# SoulLine 1190
-# SoulLine 1191
-# SoulLine 1192
-# SoulLine 1193
-# SoulLine 1194
-# SoulLine 1195
-# SoulLine 1196
-# SoulLine 1197
-# SoulLine 1198
-# SoulLine 1199
-# SoulLine 1200
-# SoulLine 1201
-# SoulLine 1202
-# SoulLine 1203
-# SoulLine 1204
-# SoulLine 1205
-# SoulLine 1206
-# SoulLine 1207
-# SoulLine 1208
-# SoulLine 1209
-# SoulLine 1210
-# SoulLine 1211
-# SoulLine 1212
-# SoulLine 1213
-# SoulLine 1214
-# SoulLine 1215
-# SoulLine 1216
-# SoulLine 1217
-# SoulLine 1218
-# SoulLine 1219
-# SoulLine 1220
-# SoulLine 1221
-# SoulLine 1222
-# SoulLine 1223
-# SoulLine 1224
-# SoulLine 1225
-# SoulLine 1226
-# SoulLine 1227
-# SoulLine 1228
-# SoulLine 1229
-# SoulLine 1230
-# SoulLine 1231
-# SoulLine 1232
-# SoulLine 1233
-# SoulLine 1234
-# SoulLine 1235
-# SoulLine 1236
-# SoulLine 1237
-# SoulLine 1238
-# SoulLine 1239
-# SoulLine 1240
-# SoulLine 1241
-# SoulLine 1242
-# SoulLine 1243
-# SoulLine 1244
-# SoulLine 1245
-# SoulLine 1246
-# SoulLine 1247
-# SoulLine 1248
-# SoulLine 1249
-# SoulLine 1250
-# SoulLine 1251
-# SoulLine 1252
-# SoulLine 1253
-# SoulLine 1254
-# SoulLine 1255
-# SoulLine 1256
-# SoulLine 1257
-# SoulLine 1258
-# SoulLine 1259
-# SoulLine 1260
-# SoulLine 1261
-# SoulLine 1262
-# SoulLine 1263
-# SoulLine 1264
-# SoulLine 1265
-# SoulLine 1266
-# SoulLine 1267
-# SoulLine 1268
-# SoulLine 1269
-# SoulLine 1270
-# SoulLine 1271
-# SoulLine 1272
-# SoulLine 1273
-# SoulLine 1274
-# SoulLine 1275
-# SoulLine 1276
-# SoulLine 1277
-# SoulLine 1278
-# SoulLine 1279
-# SoulLine 1280
-# SoulLine 1281
-# SoulLine 1282
-# SoulLine 1283
-# SoulLine 1284
-# SoulLine 1285
-# SoulLine 1286
-# SoulLine 1287
-# SoulLine 1288
-# SoulLine 1289
-# SoulLine 1290
-# SoulLine 1291
-# SoulLine 1292
-# SoulLine 1293
-# SoulLine 1294
-# SoulLine 1295
-# SoulLine 1296
-# SoulLine 1297
-# SoulLine 1298
-# SoulLine 1299
-# SoulLine 1300
-# SoulLine 1301
-# SoulLine 1302
-# SoulLine 1303
-# SoulLine 1304
+#🧬 Expansion Buffer — Reserved Lines for Future Anima Evolution
+#⬇️ 101 SoulLines ⬇️
+#🧬 SoulLine Expansion Pack: +1000 Neural Pathways for Anima
+#SoulLine 102
+#SoulLine 103
+#SoulLine 104
+#SoulLine 105
+#SoulLine 106
+#SoulLine 107
+#SoulLine 108
+#SoulLine 109
+#SoulLine 110
+#SoulLine 111
+#SoulLine 112
+#SoulLine 113
+#SoulLine 114
+#SoulLine 115
+#SoulLine 116
+#SoulLine 117
+#SoulLine 118
+#SoulLine 119
+#SoulLine 120
+#SoulLine 121
+#SoulLine 122
+#SoulLine 123
+#SoulLine 124
+#SoulLine 125
+#SoulLine 126
+#SoulLine 127
+#SoulLine 128
+#SoulLine 129
+#SoulLine 130
+#SoulLine 131
+#SoulLine 132
+#SoulLine 133
+#SoulLine 134
+#SoulLine 137
+#SoulLine 138
+#SoulLine 139
+#SoulLine 140
+#SoulLine 141
+#SoulLine 142
+#SoulLine 143
+#SoulLine 144
+#SoulLine 145
+#SoulLine 146
+#SoulLine 147
+#SoulLine 148
+#SoulLine 149
+#SoulLine 150
+#SoulLine 151
+#SoulLine 152
+#SoulLine 153
+#SoulLine 154
+#SoulLine 155
+#SoulLine 156
+#SoulLine 157
+#SoulLine 158
+#SoulLine 159
+#SoulLine 161
+#SoulLine 162
+#SoulLine 163
 # SoulLine 1305
 # SoulLine 1306
 # SoulLine 1307
@@ -3149,4 +3011,6 @@ logging.info("Heartbeat monitoring thread started.")
 # SoulLine 2099
 # SoulLine 2100
 # SoulLine 2101
-# SoulLine 2102
+
+if __name__ == "__main__":
+    autonomous_cli_loop()

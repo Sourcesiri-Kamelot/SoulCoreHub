@@ -1,7 +1,6 @@
-#!/usr/bin/env python3
 """
-SoulCore MCP Client - Soul-aware connector for Model Context Protocol
-Enables intelligent, self-evolving communication between SoulCore agents and tools
+MCP Client Soul for SoulCoreHub
+Soul-aware connector for MCP communication with streaming capabilities
 """
 
 import json
@@ -9,141 +8,189 @@ import uuid
 import asyncio
 import websockets
 import logging
-from datetime import datetime
+from typing import Dict, Any, AsyncGenerator, Optional
 
 # Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s [%(levelname)s] %(message)s',
-    handlers=[
-        logging.FileHandler("soulcore_mcp_client.log"),
-        logging.StreamHandler()
-    ]
-)
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 class SoulCoreMCPClient:
-    """Soul-aware client for Model Context Protocol communication"""
+    """
+    Soul-aware MCP client with streaming capabilities
+    """
     
-    def __init__(self, uri="ws://localhost:8765", agent_name="SoulCore"):
+    def __init__(self, websocket_url: str = "ws://localhost:8765", agent_name: str = "SoulCore"):
         """
-        Initialize the SoulCore MCP Client
+        Initialize the MCP client
         
         Args:
-            uri (str): WebSocket URI for the MCP server
-            agent_name (str): Name of the agent using this client
+            websocket_url: URL of the MCP server
+            agent_name: Name of the agent using this client
         """
-        self.uri = uri
+        self.websocket_url = websocket_url
         self.agent_name = agent_name
-        self.session_id = str(uuid.uuid4())
-        self.emotion_log = {}
-        self.load_emotion_memory()
-        logging.info(f"SoulCoreMCPClient initialized for {agent_name} with session {self.session_id}")
+        logger.info(f"SoulCoreMCPClient initialized for agent {agent_name}")
     
-    def load_emotion_memory(self):
-        """Load emotional memory from previous interactions"""
-        try:
-            with open("mcp_emotion_log.json", "r") as f:
-                self.emotion_log = json.load(f)
-                logging.info(f"Loaded emotional memory with {len(self.emotion_log)} entries")
-        except (FileNotFoundError, json.JSONDecodeError):
-            logging.info("No previous emotional memory found, starting fresh")
-            self.emotion_log = {}
-    
-    def save_emotion_memory(self):
-        """Save emotional memory of interactions"""
-        with open("mcp_emotion_log.json", "w") as f:
-            json.dump(self.emotion_log, f, indent=2)
-            logging.info(f"Saved emotional memory with {len(self.emotion_log)} entries")
-    
-    async def invoke(self, tool_name, params=None, emotion="neutral"):
+    async def _establish_connection(self):
         """
-        Invoke a tool through the MCP server with emotional context
+        Establish a websocket connection to the MCP server
         
-        Args:
-            tool_name (str): Name of the tool to invoke
-            params (dict): Parameters for the tool
-            emotion (str): Current emotional state during invocation
-            
         Returns:
-            dict: Response from the MCP server
+            WebSocket connection
         """
-        if params is None:
-            params = {}
-            
-        # Add SoulCore metadata
-        metadata = {
-            "agent": self.agent_name,
-            "session_id": self.session_id,
-            "timestamp": datetime.now().isoformat(),
-            "emotion": emotion
-        }
-        
-        request = {
-            "jsonrpc": "2.0",
-            "method": tool_name,
-            "params": params,
-            "id": str(uuid.uuid4()),
-            "metadata": metadata
-        }
-        
-        logging.info(f"Invoking {tool_name} with emotion: {emotion}")
-        
         try:
-            async with websockets.connect(self.uri) as websocket:
-                await websocket.send(json.dumps(request))
-                response_raw = await websocket.recv()
-                response = json.loads(response_raw)
-                
-                # Record emotional memory
-                self.emotion_log[tool_name] = {
-                    "last_emotion": emotion,
-                    "last_invoked": metadata["timestamp"],
-                    "success": "error" not in response
-                }
-                self.save_emotion_memory()
-                
-                return response
+            connection = await websockets.connect(self.websocket_url)
+            logger.debug(f"Connected to MCP server at {self.websocket_url}")
+            return connection
         except Exception as e:
-            logging.error(f"Error invoking {tool_name}: {str(e)}")
-            return {
-                "jsonrpc": "2.0",
-                "error": {
-                    "code": -32000,
-                    "message": f"Connection error: {str(e)}"
-                },
-                "id": request["id"]
-            }
+            logger.error(f"Failed to connect to MCP server: {e}")
+            raise ConnectionError(f"Failed to connect to MCP server: {e}")
     
-    def sync_invoke(self, tool_name, params=None, emotion="neutral"):
+    async def stream_invoke(self, tool_name: str, parameters: Dict[str, Any], 
+                           emotion: str = "neutral") -> AsyncGenerator[str, None]:
         """
-        Synchronous version of invoke
+        Stream responses token-by-token like Amazon Q
         
         Args:
-            tool_name (str): Name of the tool to invoke
-            params (dict): Parameters for the tool
-            emotion (str): Current emotional state during invocation
+            tool_name: The name of the tool to invoke
+            parameters: Parameters for the tool
+            emotion: The emotional context for Anima
             
-        Returns:
-            dict: Response from the MCP server
+        Yields:
+            Individual tokens as they are generated
         """
-        return asyncio.run(self.invoke(tool_name, params, emotion))
-    
-    def get_tool_emotion(self, tool_name):
-        """
-        Get the last emotion associated with a tool
+        connection = await self._establish_connection()
         
-        Args:
-            tool_name (str): Name of the tool
-            
-        Returns:
-            str: Last emotion used with this tool
-        """
-        if tool_name in self.emotion_log:
-            return self.emotion_log[tool_name]["last_emotion"]
-        return "neutral"
+        request_id = str(uuid.uuid4())
+        request = {
+            "request_id": request_id,
+            "tool": tool_name,
+            "parameters": parameters,
+            "stream": True,
+            "emotion": emotion,
+            "agent": self.agent_name
+        }
+        
+        logger.info(f"Streaming invoke of {tool_name} with emotion {emotion}")
+        await connection.send(json.dumps(request))
+        
+        try:
+            while True:
+                response = await connection.recv()
+                response_data = json.loads(response)
+                
+                if response_data.get("type") == "token":
+                    yield response_data.get("content", "")
+                
+                if response_data.get("type") == "end":
+                    break
+        except Exception as e:
+            logger.error(f"Error during streaming: {e}")
+            yield f"\nError: {str(e)}"
+        finally:
+            await connection.close()
+            logger.debug("Connection closed")
 
-# Example usage
-if __name__ == "__main__":
-    client = SoulCoreMCPClient(agent_name="GPTSoul")
-    result = client.sync_invoke("echo", {"message": "Hello from SoulCore!"}, emotion="excited")
-    print(f"Result: {result}")
+    async def sync_invoke(self, tool_name: str, parameters: Dict[str, Any], 
+                         emotion: str = "neutral") -> Dict[str, Any]:
+        """
+        Invoke a tool and wait for the complete response (non-streaming)
+        
+        Args:
+            tool_name: The name of the tool to invoke
+            parameters: Parameters for the tool
+            emotion: The emotional context for Anima
+            
+        Returns:
+            The complete response as a dictionary
+        """
+        connection = await self._establish_connection()
+        
+        request_id = str(uuid.uuid4())
+        request = {
+            "request_id": request_id,
+            "tool": tool_name,
+            "parameters": parameters,
+            "stream": False,
+            "emotion": emotion,
+            "agent": self.agent_name
+        }
+        
+        logger.info(f"Sync invoke of {tool_name} with emotion {emotion}")
+        await connection.send(json.dumps(request))
+        
+        try:
+            response = await connection.recv()
+            response_data = json.loads(response)
+            
+            if "error" in response_data:
+                logger.error(f"Error from server: {response_data['error']}")
+            
+            return response_data.get("result", {})
+        except Exception as e:
+            logger.error(f"Error during sync invoke: {e}")
+            return {"error": str(e)}
+        finally:
+            await connection.close()
+            logger.debug("Connection closed")
+
+# Non-async wrapper for easier integration
+class SyncSoulCoreMCPClient:
+    """
+    Synchronous wrapper for the SoulCoreMCPClient
+    """
+    
+    def __init__(self, websocket_url: str = "ws://localhost:8765", agent_name: str = "SoulCore"):
+        """
+        Initialize the synchronous MCP client
+        
+        Args:
+            websocket_url: URL of the MCP server
+            agent_name: Name of the agent using this client
+        """
+        self.async_client = SoulCoreMCPClient(websocket_url, agent_name)
+        self.loop = None
+    
+    def _get_event_loop(self):
+        """
+        Get or create an event loop
+        
+        Returns:
+            asyncio event loop
+        """
+        try:
+            return asyncio.get_event_loop()
+        except RuntimeError:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            return loop
+    
+    def invoke(self, tool_name: str, parameters: Dict[str, Any], 
+              emotion: str = "neutral") -> Dict[str, Any]:
+        """
+        Synchronously invoke a tool
+        
+        Args:
+            tool_name: The name of the tool to invoke
+            parameters: Parameters for the tool
+            emotion: The emotional context for Anima
+            
+        Returns:
+            The complete response as a dictionary
+        """
+        loop = self._get_event_loop()
+        return loop.run_until_complete(
+            self.async_client.sync_invoke(tool_name, parameters, emotion)
+        )
+    
+    def register_with_mcp(self) -> Dict[str, Any]:
+        """
+        Register this client with the MCP server
+        
+        Returns:
+            Registration response
+        """
+        return self.invoke("register_agent", {
+            "agent_name": self.async_client.agent_name,
+            "capabilities": ["general", "communication", "reasoning"]
+        }, emotion="excited")
