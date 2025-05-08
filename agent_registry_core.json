@@ -1,0 +1,71 @@
+{
+  "core": [
+    {
+      "name": "GPTSoul",
+      "desc": "Guardian, Architect, and Executor of the SoulCoreHub system",
+      "status": "active",
+      "priority": "high",
+      "interface": "service",
+      "module": "agents.core.gptsoul_agent",
+      "class": "GPTSoulAgent"
+    },
+    {
+      "name": "Anima",
+      "desc": "Emotional Core and Reflection system",
+      "status": "active",
+      "priority": "medium",
+      "interface": "interactive",
+      "module": "agents.core.anima_agent",
+      "class": "AnimaAgent"
+    },
+    {
+      "name": "EvoVe",
+      "desc": "Repair System and Adaptation Loop",
+      "status": "inactive",
+      "priority": "medium",
+      "interface": "service",
+      "module": "agents.core.evove_agent",
+      "class": "EvoVeAgent"
+    },
+    {
+      "name": "Azür",
+      "desc": "Cloudmind and Strategic Overseer",
+      "status": "inactive",
+      "priority": "medium",
+      "interface": "service",
+      "module": "agents.core.azur_agent",
+      "class": "AzurAgent"
+    }
+  ],
+  "utility": [
+    {
+      "name": "Builder",
+      "desc": "Project creation and code generation",
+      "status": "active",
+      "priority": "medium",
+      "interface": "interactive",
+      "module": "agents.utility.builder_agent",
+      "class": "BuilderAgent"
+    },
+    {
+      "name": "Monitor",
+      "desc": "System monitoring and diagnostics",
+      "status": "active",
+      "priority": "low",
+      "interface": "service",
+      "module": "agents.utility.monitor_agent",
+      "class": "MonitorAgent"
+    }
+  ],
+  "sentient_orchestration": [
+    {
+      "name": "Master Orchestrator Agent",
+      "desc": "Oversees and coordinates all other agents, ensuring they work together towards system goals.",
+      "status": "active",
+      "priority": "high",
+      "interface": "service",
+      "module": "agents.sentient_orchestration.master_orchestrator_agent",
+      "class": "MasterOrchestratorAgent"
+    }
+  ]
+}

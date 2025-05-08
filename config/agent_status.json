@@ -1,0 +1,52 @@
+{
+  "Master Orchestrator Agent": {
+    "health": "unhealthy",
+    "last_check": "2025-05-05T00:50:23.340915",
+    "status": "stopped",
+    "last_stop": "2025-05-03T01:14:24.175646"
+  },
+  "Context Manager Agent": {
+    "health": "healthy",
+    "last_check": "2025-05-05T01:03:12.191272",
+    "status": "running",
+    "last_stop": "2025-05-05T00:49:07.995657",
+    "last_start": "2025-05-05T00:49:09.004926"
+  },
+  "Builder Agent": {
+    "health": "healthy",
+    "last_check": "2025-05-05T01:03:12.195299"
+  },
+  "AI Society Psynet Bridge": {
+    "health": "healthy",
+    "last_check": "2025-05-03T04:14:50.069733"
+  },
+  "CPU Monitor Agent": {
+    "health": "healthy",
+    "last_check": "2025-05-05T01:03:12.192864",
+    "status": "running",
+    "last_stop": "2025-05-05T00:49:09.007476",
+    "last_start": "2025-05-05T00:49:10.013555"
+  },
+  "Psynet Agent": {
+    "health": "healthy",
+    "last_check": "2025-05-05T01:03:12.194207"
+  },
+  "Enhanced Builder Agent": {
+    "health": "healthy",
+    "last_check": "2025-05-03T05:20:53.733065"
+  },
+  "Email Agent": {
+    "health": "healthy",
+    "last_check": "2025-05-05T01:03:12.196739",
+    "status": "running",
+    "last_stop": "2025-05-05T00:49:10.018259",
+    "last_start": "2025-05-05T00:49:11.025560"
+  },
+  "Task Scheduler Agent": {
+    "health": "healthy",
+    "last_check": "2025-05-05T01:03:12.197446",
+    "status": "running",
+    "last_stop": "2025-05-05T00:49:11.030341",
+    "last_start": "2025-05-05T00:49:12.037673"
+  }
+}

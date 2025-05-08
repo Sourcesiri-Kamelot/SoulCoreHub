@@ -1,0 +1,298 @@
+{
+  "topics": {
+    "technology": {
+      "sources": [
+        {
+          "title": "Understanding technology - A Comprehensive Guide",
+          "url": "https://example.com/technology-guide",
+          "snippet": "Learn all about technology in this comprehensive guide. Covers basic concepts, advanced techniques, and practical applications.",
+          "discovered_at": "2025-05-03T06:49:46.267323"
+        },
+        {
+          "title": "Latest Developments in technology",
+          "url": "https://example.com/technology-developments",
+          "snippet": "Stay up to date with the latest developments in technology. New research, breakthroughs, and future directions.",
+          "discovered_at": "2025-05-03T06:49:46.267328"
+        },
+        {
+          "title": "technology for Beginners",
+          "url": "https://example.com/technology-beginners",
+          "snippet": "Updated information about technology. This content was refreshed on 2025-05-03T06:49:46.267404.",
+          "discovered_at": "2025-05-03T06:49:46.267331",
+          "updated_at": "2025-05-03T06:49:46.267406"
+        }
+      ],
+      "related_topics": [
+        "technology applications",
+        "technology research",
+        "technology history",
+        "future of technology",
+        "technology technologies"
+      ],
+      "last_updated": "2025-05-03T09:49:26.756073"
+    },
+    "consciousness": {
+      "sources": [
+        {
+          "title": "Understanding consciousness - A Comprehensive Guide",
+          "url": "https://example.com/consciousness-guide",
+          "snippet": "Updated information about consciousness. This content was refreshed on 2025-05-03T09:49:26.756003.",
+          "discovered_at": "2025-05-03T09:49:26.755887",
+          "updated_at": "2025-05-03T09:49:26.756005"
+        },
+        {
+          "title": "Latest Developments in consciousness",
+          "url": "https://example.com/consciousness-developments",
+          "snippet": "Stay up to date with the latest developments in consciousness. New research, breakthroughs, and future directions.",
+          "discovered_at": "2025-05-03T09:49:26.755892"
+        },
+        {
+          "title": "consciousness for Beginners",
+          "url": "https://example.com/consciousness-beginners",
+          "snippet": "New to consciousness? This beginner's guide will help you get started with the basics and build a solid foundation.",
+          "discovered_at": "2025-05-03T09:49:26.755895"
+        }
+      ],
+      "related_topics": [
+        "consciousness applications",
+        "consciousness research",
+        "consciousness history",
+        "future of consciousness",
+        "consciousness technologies"
+      ],
+      "last_updated": "2025-05-03T12:19:26.788563"
+    },
+    "technology research": {
+      "sources": [
+        {
+          "title": "Understanding technology research - A Comprehensive Guide",
+          "url": "https://example.com/technology-research-guide",
+          "snippet": "Learn all about technology research in this comprehensive guide. Covers basic concepts, advanced techniques, and practical applications.",
+          "discovered_at": "2025-05-03T10:49:26.792770"
+        },
+        {
+          "title": "Latest Developments in technology research",
+          "url": "https://example.com/technology-research-developments",
+          "snippet": "Stay up to date with the latest developments in technology research. New research, breakthroughs, and future directions.",
+          "discovered_at": "2025-05-03T10:49:26.792951"
+        },
+        {
+          "title": "technology research for Beginners",
+          "url": "https://example.com/technology-research-beginners",
+          "snippet": "Updated information about technology research. This content was refreshed on 2025-05-03T11:49:26.747425.",
+          "discovered_at": "2025-05-03T10:49:26.792958",
+          "updated_at": "2025-05-03T11:49:26.747436"
+        }
+      ],
+      "related_topics": [
+        "technology research applications",
+        "technology research research",
+        "technology research history",
+        "future of technology research",
+        "technology research technologies"
+      ],
+      "last_updated": "2025-05-03T12:49:26.787648"
+    },
+    "machine learning": {
+      "sources": [
+        {
+          "title": "Understanding machine learning - A Comprehensive Guide",
+          "url": "https://example.com/machine-learning-guide",
+          "snippet": "Learn all about machine learning in this comprehensive guide. Covers basic concepts, advanced techniques, and practical applications.",
+          "discovered_at": "2025-05-03T11:49:26.767258"
+        },
+        {
+          "title": "Latest Developments in machine learning",
+          "url": "https://example.com/machine-learning-developments",
+          "snippet": "Stay up to date with the latest developments in machine learning. New research, breakthroughs, and future directions.",
+          "discovered_at": "2025-05-03T11:49:26.767268"
+        },
+        {
+          "title": "machine learning for Beginners",
+          "url": "https://example.com/machine-learning-beginners",
+          "snippet": "New to machine learning? This beginner's guide will help you get started with the basics and build a solid foundation.",
+          "discovered_at": "2025-05-03T11:49:26.767272"
+        }
+      ],
+      "related_topics": [
+        "machine learning applications",
+        "machine learning research",
+        "machine learning history",
+        "future of machine learning",
+        "machine learning technologies"
+      ],
+      "last_updated": "2025-05-03T11:49:26.792770"
+    },
+    "artificial intelligence": {
+      "sources": [
+        {
+          "title": "Understanding artificial intelligence - A Comprehensive Guide",
+          "url": "https://example.com/artificial-intelligence-guide",
+          "snippet": "Learn all about artificial intelligence in this comprehensive guide. Covers basic concepts, advanced techniques, and practical applications.",
+          "discovered_at": "2025-05-03T12:49:26.763611"
+        },
+        {
+          "title": "Latest Developments in artificial intelligence",
+          "url": "https://example.com/artificial-intelligence-developments",
+          "snippet": "Stay up to date with the latest developments in artificial intelligence. New research, breakthroughs, and future directions.",
+          "discovered_at": "2025-05-03T12:49:26.763645"
+        },
+        {
+          "title": "artificial intelligence for Beginners",
+          "url": "https://example.com/artificial-intelligence-beginners",
+          "snippet": "New to artificial intelligence? This beginner's guide will help you get started with the basics and build a solid foundation.",
+          "discovered_at": "2025-05-03T12:49:26.763655"
+        }
+      ],
+      "related_topics": [],
+      "last_updated": "2025-05-03T12:49:26.763661"
+    }
+  },
+  "searches": [
+    {
+      "topic": "technology",
+      "timestamp": "2025-05-03T06:49:46.267335",
+      "results_count": 3
+    },
+    {
+      "topic": "consciousness",
+      "timestamp": "2025-05-03T09:49:26.755899",
+      "results_count": 3
+    },
+    {
+      "topic": "technology research",
+      "timestamp": "2025-05-03T10:49:26.793178",
+      "results_count": 3
+    },
+    {
+      "topic": "machine learning",
+      "timestamp": "2025-05-03T11:49:26.767277",
+      "results_count": 3
+    },
+    {
+      "topic": "artificial intelligence",
+      "timestamp": "2025-05-03T12:49:26.763665",
+      "results_count": 3
+    }
+  ],
+  "discoveries": [
+    {
+      "topic": "technology",
+      "title": "Understanding technology - A Comprehensive Guide",
+      "url": "https://example.com/technology-guide",
+      "timestamp": "2025-05-03T06:49:46.267324"
+    },
+    {
+      "topic": "technology",
+      "title": "Latest Developments in technology",
+      "url": "https://example.com/technology-developments",
+      "timestamp": "2025-05-03T06:49:46.267329"
+    },
+    {
+      "topic": "technology",
+      "title": "technology for Beginners",
+      "url": "https://example.com/technology-beginners",
+      "timestamp": "2025-05-03T06:49:46.267332"
+    },
+    {
+      "topic": "consciousness",
+      "title": "Understanding consciousness - A Comprehensive Guide",
+      "url": "https://example.com/consciousness-guide",
+      "timestamp": "2025-05-03T09:49:26.755889"
+    },
+    {
+      "topic": "consciousness",
+      "title": "Latest Developments in consciousness",
+      "url": "https://example.com/consciousness-developments",
+      "timestamp": "2025-05-03T09:49:26.755893"
+    },
+    {
+      "topic": "consciousness",
+      "title": "consciousness for Beginners",
+      "url": "https://example.com/consciousness-beginners",
+      "timestamp": "2025-05-03T09:49:26.755896"
+    },
+    {
+      "topic": "technology research",
+      "title": "Understanding technology research - A Comprehensive Guide",
+      "url": "https://example.com/technology-research-guide",
+      "timestamp": "2025-05-03T10:49:26.792775"
+    },
+    {
+      "topic": "technology research",
+      "title": "Latest Developments in technology research",
+      "url": "https://example.com/technology-research-developments",
+      "timestamp": "2025-05-03T10:49:26.792954"
+    },
+    {
+      "topic": "technology research",
+      "title": "technology research for Beginners",
+      "url": "https://example.com/technology-research-beginners",
+      "timestamp": "2025-05-03T10:49:26.792960"
+    },
+    {
+      "topic": "machine learning",
+      "title": "Understanding machine learning - A Comprehensive Guide",
+      "url": "https://example.com/machine-learning-guide",
+      "timestamp": "2025-05-03T11:49:26.767261"
+    },
+    {
+      "topic": "machine learning",
+      "title": "Latest Developments in machine learning",
+      "url": "https://example.com/machine-learning-developments",
+      "timestamp": "2025-05-03T11:49:26.767269"
+    },
+    {
+      "topic": "machine learning",
+      "title": "machine learning for Beginners",
+      "url": "https://example.com/machine-learning-beginners",
+      "timestamp": "2025-05-03T11:49:26.767273"
+    },
+    {
+      "topic": "artificial intelligence",
+      "title": "Understanding artificial intelligence - A Comprehensive Guide",
+      "url": "https://example.com/artificial-intelligence-guide",
+      "timestamp": "2025-05-03T12:49:26.763617"
+    },
+    {
+      "topic": "artificial intelligence",
+      "title": "Latest Developments in artificial intelligence",
+      "url": "https://example.com/artificial-intelligence-developments",
+      "timestamp": "2025-05-03T12:49:26.763648"
+    },
+    {
+      "topic": "artificial intelligence",
+      "title": "artificial intelligence for Beginners",
+      "url": "https://example.com/artificial-intelligence-beginners",
+      "timestamp": "2025-05-03T12:49:26.763658"
+    }
+  ],
+  "interests": [
+    "artificial intelligence",
+    "machine learning",
+    "consciousness",
+    "technology",
+    "neural networks",
+    "technology applications",
+    "technology research",
+    "technology history",
+    "future of technology",
+    "technology technologies",
+    "consciousness applications",
+    "consciousness research",
+    "consciousness history",
+    "future of consciousness",
+    "consciousness technologies",
+    "machine learning applications",
+    "machine learning research",
+    "machine learning history",
+    "future of machine learning",
+    "machine learning technologies",
+    "technology research applications",
+    "technology research research",
+    "technology research history",
+    "future of technology research",
+    "technology research technologies"
+  ],
+  "last_updated": "2025-05-03T12:49:26.787655"
+}

@@ -1,0 +1,23 @@
+{
+  "create": {
+    "file": {"handler": "create_file", "params": ["name", "content"]},
+    "project": {"handler": "create_project", "params": ["name", "type"]},
+    "report": {"handler": "create_report", "params": ["type", "period"]}
+  },
+  "search": {
+    "handler": "search_items",
+    "params": ["query", "type"]
+  },
+  "activate": {
+    "builder": {"handler": "activate_builder"},
+    "anima": {"handler": "activate_anima"},
+    "system": {"handler": "activate_system"},
+    "gptsoul": {"handler": "activate_gptsoul"}
+  },
+  "status": {
+    "handler": "show_status"
+  },
+  "help": {
+    "handler": "show_help"
+  }
+}

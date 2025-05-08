@@ -1,0 +1,2 @@
+[console_scripts]
+flumina = fireworks.flumina.cli:main

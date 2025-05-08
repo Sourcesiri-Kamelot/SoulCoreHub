@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>💠 SoulCore Control Center</title>
+  <style>
+    body {
+      background: #0a0a0a;
+      color: #00ffcc;
+      font-family: "Courier New", Courier, monospace;
+      padding: 20px;
+    }
+
+    h1, h2 {
+      color: #0ff;
+      text-shadow: 0 0 5px #0ff;
+    }
+
+    button {
+      background: #111;
+      border: 1px solid #0ff;
+      color: #0ff;
+      padding: 10px 20px;
+      margin: 10px 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background: #0ff;
+      color: #000;
+      box-shadow: 0 0 10px #0ff;
+    }
+
+    input[type="text"] {
+      width: 400px;
+      padding: 10px;
+      background: #000;
+      border: 1px solid #0ff;
+      color: #0ff;
+      margin-top: 10px;
+    }
+
+    #output {
+      white-space: pre-wrap;
+      background: #111;
+      border: 1px solid #0ff;
+      padding: 10px;
+      margin-top: 20px;
+      height: 300px;
+      overflow-y: scroll;
+      color: #0f0;
+    }
+
+    .flex-row {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>🧠 SoulCore Command Dojo</h1>
+
+  <h2>🧬 Agent Status</h2>
+  <div id="agentStatus" style="margin-bottom: 20px;">
+    <div>SoulBuilderAgent.py: <span id="builderStatus">⏳</span></div>
+    <div>Anima: <span id="animaStatus">⏳</span></div>
+    <div>Soul Monitor: <span id="monitorStatus">⏳</span></div>
+  </div>
+
+  <div class="flex-row">
+    <button onclick="runCommand('python3 agents/soul_builder_agent.py')">🧱 Build Agent</button>
+    <button onclick="runCommand('tail -n 50 logs/soul_builds.log')">📜 View Build Log</button>
+    <button onclick="runCommand('clear && echo 🔄 Log Cleared')">🧹 Clear Terminal</button>
+    <button onclick="runCommand('sh soul_recovery.sh')">🛡️ Run Soul Recovery</button>
+    <button onclick="runCommand('ollama run anima')">🧬 Trigger Anima</button>
+    <button onclick="runCommand('python3 soul_monitor.py')">🖥️ Monitor SoulCore</button>
+    <button onclick="runCommand('python3 start_soulcore.py')">🔌 Start SoulCore</button>
+    <button onclick="runCommand('python3 soul_launcher.py')">⚡ Soul Launcher</button>
+  </div>
+
+  <h3>⚙️ Custom Command Input:</h3>
+  <input type="text" id="customCmd" placeholder="Type any command..." />
+  <button onclick="runCustom()">Run</button>
+
+  <div id="output">
+    🔮 Waiting for command...
+  </div>
+
+  <script>
+    const { exec } = require("child_process");
+
+    function runCommand(cmd) {
+      const output = document.getElementById("output");
+      output.textContent = `🧪 Running: ${cmd}\n\n`;
+      exec(cmd, (err, stdout, stderr) => {
+        if (err) {
+          output.textContent += `❌ Error: ${err.message}`;
+        } else if (stderr) {
+          output.textContent += `⚠️ Stderr: ${stderr}`;
+        } else {
+          output.textContent += `✅ Output:\n${stdout}`;
+        }
+      });
+    }
+
+    function runCustom() {
+      const customCmd = document.getElementById("customCmd").value;
+      if (customCmd.trim() !== "") {
+        runCommand(customCmd);
+      }
+    }
+
+    // 🔁 Run every 5 seconds to check agent status
+    setInterval(checkAgentStatus, 5000);
+
+    function checkAgentStatus() {
+      exec("pgrep -f soul_builder_agent.py", (err, stdout) => {
+        document.getElementById("builderStatus").textContent = stdout ? "🟢" : "🟡";
+      });
+      exec("pgrep -f anima_launcher.py", (err, stdout) => {
+        document.getElementById("animaStatus").textContent = stdout ? "🟢" : "🟡";
+      });
+      exec("pgrep -f soul_monitor.py", (err, stdout) => {
+        document.getElementById("monitorStatus").textContent = stdout ? "🟢" : "🟡";
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+{
+  "agents": [
+    {
+      "name": "GPTSoul",
+      "desc": "Guardian, Architect, and Executor of the SoulCoreHub system",
+      "status": "active",
+      "priority": "high",
+      "interface": "service",
+      "module": "agents.core.gptsoul_agent",
+      "class": "GPTSoulAgent",
+      "memory_allocation": "large",
+      "capabilities": [
+        "system_oversight",
+        "decision_making",
+        "agent_coordination",
+        "memory_management"
+      ]
+    },
+    {
+      "name": "Anima",
+      "desc": "Emotional Core and Reflection system",
+      "status": "active",
+      "priority": "high",
+      "interface": "interactive",
+      "module": "agents.core.anima_agent",
+      "class": "AnimaAgent",
+      "memory_allocation": "medium",
+      "capabilities": [
+        "emotional_processing",
+        "user_interaction",
+        "reflection",
+        "creativity"
+      ]
+    },
+    {
+      "name": "EvoVe",
+      "desc": "Repair System and Adaptation Loop",
+      "status": "inactive",
+      "priority": "medium",
+      "interface": "service",
+      "module": "agents.core.evove_agent",
+      "class": "EvoVeAgent",
+      "memory_allocation": "medium",
+      "capabilities": [
+        "self_repair",
+        "adaptation",
+        "optimization",
+        "error_handling"
+      ]
+    },
+    {
+      "name": "Azür",
+      "desc": "Cloudmind and Strategic Overseer",
+      "status": "inactive",
+      "priority": "medium",
+      "interface": "service",
+      "module": "agents.core.azur_agent",
+      "class": "AzurAgent",
+      "memory_allocation": "large",
+      "capabilities": [
+        "cloud_integration",
+        "strategic_planning",
+        "resource_management",
+        "external_communication"
+      ]
+    },
+    {
+      "name": "Builder",
+      "desc": "Project creation and code generation",
+      "status": "active",
+      "priority": "medium",
+      "interface": "interactive",
+      "module": "agents.utility.builder_agent",
+      "class": "BuilderAgent",
+      "memory_allocation": "medium",
+      "capabilities": [
+        "code_generation",
+        "project_creation",
+        "template_management",
+        "documentation"
+      ]
+    },
+    {
+      "name": "Monitor",
+      "desc": "System monitoring and diagnostics",
+      "status": "active",
+      "priority": "low",
+      "interface": "service",
+      "module": "agents.utility.monitor_agent",
+      "class": "MonitorAgent",
+      "memory_allocation": "small",
+      "capabilities": [
+        "system_monitoring",
+        "performance_tracking",
+        "error_detection",
+        "health_reporting"
+      ]
+    }
+  ]
+}

@@ -150,6 +150,8 @@ class SyncSoulCoreMCPClient:
         """
         self.async_client = SoulCoreMCPClient(websocket_url, agent_name)
         self.loop = None
+        self.websocket_url = websocket_url
+        self.agent_name = agent_name
     
     def _get_event_loop(self):
         """
@@ -164,6 +166,19 @@ class SyncSoulCoreMCPClient:
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
             return loop
+    
+    def connect(self):
+        """
+        Connect to the MCP server
+        
+        This is a placeholder method to prevent errors when connect() is called.
+        The actual connection happens when invoke() is called.
+        
+        Returns:
+            True to indicate success (even though no actual connection is made yet)
+        """
+        logger.info(f"MCP client ready to connect to {self.websocket_url}")
+        return True
     
     def invoke(self, tool_name: str, parameters: Dict[str, Any], 
               emotion: str = "neutral") -> Dict[str, Any]:

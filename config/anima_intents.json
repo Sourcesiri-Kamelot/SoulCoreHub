@@ -1,0 +1,47 @@
+{
+  "create": {
+    "patterns": [
+      "create (?:a |an )?(?P<item>\\w+)",
+      "make (?:a |an )?(?P<item>\\w+)",
+      "generate (?:a |an )?(?P<item>\\w+)"
+    ],
+    "parameters": ["item"],
+    "examples": ["create a file", "make a project", "generate a report"]
+  },
+  "search": {
+    "patterns": [
+      "search (?:for )?(?P<query>.+)",
+      "find (?P<query>.+)",
+      "look (?:for )?(?P<query>.+)"
+    ],
+    "parameters": ["query"],
+    "examples": ["search for documents", "find my files", "look for images"]
+  },
+  "activate": {
+    "patterns": [
+      "activate (?P<component>\\w+)",
+      "start (?P<component>\\w+)",
+      "launch (?P<component>\\w+)"
+    ],
+    "parameters": ["component"],
+    "examples": ["activate builder", "start anima", "launch system"]
+  },
+  "status": {
+    "patterns": [
+      "(?:what is|show|get|check) (?:the )?status",
+      "system status",
+      "status report"
+    ],
+    "parameters": [],
+    "examples": ["what is the status", "show status", "system status"]
+  },
+  "help": {
+    "patterns": [
+      "help",
+      "(?:show|list) commands",
+      "what can you do"
+    ],
+    "parameters": [],
+    "examples": ["help", "show commands", "what can you do"]
+  }
+}

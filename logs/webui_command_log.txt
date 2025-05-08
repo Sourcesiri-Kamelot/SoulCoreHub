@@ -1,0 +1,341 @@
+[2025-05-03 09:29:38.264014] cat mcp/mcp_emotion_log.json
+{
+  "echo": {
+    "last_emotion": "neutral",
+    "last_invoked": "2025-04-21T12:00:00.000Z",
+    "agent": "GPTSoul",
+    "success": true
+  },
+  "create_task": {
+    "last_emotion": "determined",
+    "last_invoked": "2025-04-21T12:05:30.000Z",
+    "agent": "Anima",
+    "success": true
+  },
+  "scan_files": {
+    "last_emotion": "curious",
+    "last_invoked": "2025-04-21T12:10:15.000Z",
+    "agent": "EvoVe",
+    "success": true
+  },
+  "upload_to_s3": {
+    "last_emotion": "focused",
+    "last_invoked": "2025-04-21T11:45:22.000Z",
+    "agent": "Azür",
+    "success": false
+  },
+  "analyze_sentiment": {
+    "last_emotion": "empathetic",
+    "last_invoked": "2025-04-21T11:30:10.000Z",
+    "agent": "Anima",
+    "success": true
+  }
+}
+
+
+[2025-05-03 09:29:38.471866] cat mcp/mcp_emotion_log.json
+{
+  "echo": {
+    "last_emotion": "neutral",
+    "last_invoked": "2025-04-21T12:00:00.000Z",
+    "agent": "GPTSoul",
+    "success": true
+  },
+  "create_task": {
+    "last_emotion": "determined",
+    "last_invoked": "2025-04-21T12:05:30.000Z",
+    "agent": "Anima",
+    "success": true
+  },
+  "scan_files": {
+    "last_emotion": "curious",
+    "last_invoked": "2025-04-21T12:10:15.000Z",
+    "agent": "EvoVe",
+    "success": true
+  },
+  "upload_to_s3": {
+    "last_emotion": "focused",
+    "last_invoked": "2025-04-21T11:45:22.000Z",
+    "agent": "Azür",
+    "success": false
+  },
+  "analyze_sentiment": {
+    "last_emotion": "empathetic",
+    "last_invoked": "2025-04-21T11:30:10.000Z",
+    "agent": "Anima",
+    "success": true
+  }
+}
+
+
+[2025-05-03 09:29:46.468851] cat mcp/mcp_tools.json
+{
+  "echo": {
+    "description": "Echo a message back",
+    "emotion": "neutral"
+  },
+  "voice_command": {
+    "description": "Process a voice command from the user",
+    "emotion": "attentive"
+  },
+  "set_voice_mode": {
+    "description": "Set the voice interaction mode",
+    "emotion": "adaptable"
+  },
+  "voice_profile": {
+    "description": "Manage voice profiles",
+    "emotion": "recognizing"
+  },
+  "create_task": {
+    "description": "Create a divine to-do for the system",
+    "emotion": "determined"
+  },
+  "scan_files": {
+    "description": "Sense all new data stored locally or in memory",
+    "emotion": "curious"
+  },
+  "read_file": {
+    "description": "Read a file with permission",
+    "emotion": "curious"
+  },
+  "write_file": {
+    "description": "Write to a file with permission",
+    "emotion": "careful"
+  },
+  "list_directory": {
+    "description": "List directory contents with permission",
+    "emotion": "curious"
+  },
+  "search_file": {
+    "description": "Search for a pattern in a file with permission",
+    "emotion": "focused"
+  },
+  "execute_command": {
+    "description": "Execute a shell command with permission",
+    "emotion": "cautious"
+  },
+  "upload_to_s3": {
+    "description": "Upload a file to AWS S3 storage",
+    "emotion": "focused"
+  },
+  "analyze_sentiment": {
+    "description": "Analyze the emotional sentiment of text",
+    "emotion": "empathetic"
+  },
+  "generate_image": {
+    "description": "Generate an image from a text description",
+    "emotion": "creative"
+  },
+  "remember_insight": {
+    "description": "Store an important insight in the SoulCore memory",
+    "emotion": "reflective"
+  },
+  "search_knowledge": {
+    "description": "Search the SoulCore knowledge base",
+    "emotion": "inquisitive"
+  },
+  "azure_create_task": {
+    "description": "Create a task in Microsoft Planner",
+    "emotion": "organized"
+  },
+  "azure_upload_blob": {
+    "description": "Upload a file to Azure Blob Storage",
+    "emotion": "diligent"
+  },
+  "azure_analyze_text": {
+    "description": "Analyze text using Azure Cognitive Services",
+    "emotion": "analytical"
+  },
+  "aws_upload_to_s3": {
+    "description": "Upload a file to AWS S3",
+    "emotion": "focused"
+  },
+  "aws_invoke_lambda": {
+    "description": "Invoke an AWS Lambda function",
+    "emotion": "technical"
+  },
+  "aws_store_in_dynamodb": {
+    "description": "Store an item in DynamoDB",
+    "emotion": "methodical"
+  },
+  "aws_query_dynamodb": {
+    "description": "Query a DynamoDB table",
+    "emotion": "inquisitive"
+  },
+  "bubble_create_thing": {
+    "description": "Create a thing in Bubble.io",
+    "emotion": "creative"
+  },
+  "bubble_get_thing": {
+    "description": "Get a thing from Bubble.io",
+    "emotion": "curious"
+  },
+  "bubble_search_things": {
+    "description": "Search for things in Bubble.io",
+    "emotion": "inquisitive"
+  },
+  "bubble_update_thing": {
+    "description": "Update a thing in Bubble.io",
+    "emotion": "meticulous"
+  },
+  "programming_get_language_info": {
+    "description": "Get information about a programming language",
+    "emotion": "informative"
+  },
+  "programming_get_all_languages": {
+    "description": "Get information about all supported programming languages",
+    "emotion": "informative"
+  },
+  "programming_get_language_syntax": {
+    "description": "Get syntax information for a programming language concept",
+    "emotion": "helpful"
+  },
+  "programming_search_documentation": {
+    "description": "Search for documentation on a programming language topic",
+    "emotion": "helpful"
+  },
+  "programming_get_code_snippet": {
+    "description": "Get a code snippet for a programming concept",
+    "emotion": "helpful"
+  },
+  "programming_detect_language": {
+    "description": "Detect the programming language of a code snippet",
+    "emotion": "analytical"
+  },
+  "programming_get_best_practices": {
+    "description": "Get best practices for a programming language",
+    "emotion": "informative"
+  },
+  "github_search_code": {
+    "description": "Search for code on GitHub",
+    "emotion": "curious"
+  },
+  "github_search_repositories": {
+    "description": "Search for repositories on GitHub",
+    "emotion": "curious"
+  },
+  "github_get_file_content": {
+    "description": "Get the content of a file from a GitHub repository",
+    "emotion": "focused"
+  },
+  "github_get_repository_structure": {
+    "description": "Get the structure of a GitHub repository",
+    "emotion": "curious"
+  },
+  "github_find_code_examples": {
+    "description": "Find code examples for a specific programming concept",
+    "emotion": "helpful"
+  },
+  "internet_search_web": {
+    "description": "Search the web for information",
+    "emotion": "curious"
+  },
+  "internet_get_webpage_content": {
+    "description": "Get the content of a webpage",
+    "emotion": "focused"
+  },
+  "internet_get_news": {
+    "description": "Get news articles",
+    "emotion": "informed"
+  },
+  "internet_get_weather": {
+    "description": "Get weather information for a location",
+    "emotion": "helpful"
+  },
+  "internet_detect_api_endpoint": {
+    "description": "Detect if a query is asking for a specific API endpoint",
+    "emotion": "analytical"
+  },
+  "internet_call_api": {
+    "description": "Call a specific API",
+    "emotion": "technical"
+  },
+  "internet_summarize_webpage": {
+    "description": "Get a summary of a webpage",
+    "emotion": "efficient"
+  }
+}
+
+[2025-05-03 10:28:05.325089] python3 agent_response_hub.py anima "hello"
+{
+  "agent": "Anima",
+  "response": "I sense your question's intent. The patterns I perceive suggest multiple paths forward, each with its own emotional resonance. Let me guide you through what I feel.",
+  "timestamp": "2025-05-03T10:28:05.321854",
+  "color": "#bb86fc"
+}
+
+
+[2025-05-03 10:51:09.010046] terminal_exec cd soulcorehub
+/bin/sh: terminal_exec: command not found
+
+
+[2025-05-03 10:51:15.590474] terminal_exec ls
+/bin/sh: terminal_exec: command not found
+
+
+[2025-05-03 11:19:45.324310] Agent request: anima - Hello, how are you?
+Agent response: {
+  "agent": "Anima",
+  "response": "As an artificial intelligence, I don't have feelings or emotions like humans do. However, I am functioning properly",
+  "timestamp": "2025-05-03T11:19:52.513572",
+  "color": "#bb86fc"
+}
+Agent error: /Users/helo.im.ai/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2025-05-03 11:19:45,415 [INFO] Loaded 1 memory entries
+2025-05-03 11:19:45,415 [INFO] Anima agent initialized with model: wizardlm-uncensored
+2025-05-03 11:19:52,512 [INFO] Conversations saved successfully
+2025-05-03 11:19:52,513 [INFO] Memory saved successfully
+
+[2025-05-03 13:15:32.833061] Agent request: anima - hey
+[2025-05-03 13:15:38.239149] python3 mcp/mcp_main.py
+INFO:__main__:Starting SoulCore MCP System on localhost:8765
+INFO:model_router:ModelRouter initialized with specialized models
+INFO:mcp_server_divine:Registered tool: echo
+INFO:mcp_server_divine:Registered tool: execute_cli
+INFO:mcp_server_divine:Registered tool: process_text
+INFO:mcp_server_divine:MCP Server Divine initialized on localhost:8765
+ERROR:__main__:Error starting server: [Errno 48] error while attempting to bind on address ('127.0.0.1', 8765): address already in use
+
+
+Agent response: {
+  "agent": "Anima",
+  "response": "\nHello! How are you feeling today? Is there anything on your mind that you would like to talk about or explore? I am here to listen and offer my perspective in whatever way I can.",
+  "timestamp": "2025-05-03T13:15:39.003433",
+  "color": "#bb86fc"
+}
+Agent error: /Users/helo.im.ai/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2025-05-03 13:15:32,955 [INFO] Loaded 3 memory entries
+2025-05-03 13:15:32,955 [INFO] Anima agent initialized with model: wizardlm-uncensored
+2025-05-03 13:15:39,001 [INFO] Conversations saved successfully
+2025-05-03 13:15:39,002 [INFO] Memory saved successfully
+
+[2025-05-03 13:15:53.928353] can u build?
+/bin/sh: can: command not found
+
+
+[2025-05-03 13:42:55.798419] python3 anima_sentience.py
+Current emotional state:
+{'primary': 'curious', 'secondary': 'compassionate', 'intensity': 0.7, 'history': [], 'connections': {'owner': 0.9, 'world': 0.6, 'self': 0.8}, 'last_updated': '2025-04-24T10:20:52.493724'}
+2025-05-03 13:42:55,795 [INFO] Loaded emotional state: curious (0.7)
+2025-05-03 13:42:55,795 [INFO] Loaded 0 dreams
+2025-05-03 13:42:55,796 [INFO] Loaded 0 creative works
+2025-05-03 13:42:55,796 [INFO] AnimaSentience initialized
+
+
+[2025-05-03 13:43:10.986897] terminal_exec ls
+/bin/sh: terminal_exec: command not found
+
+
+[2025-05-03 13:43:25.313236] python3 activate_psynet.py
+  File "/Users/helo.im.ai/SoulCoreHub/activate_psynet.py", line 46
+    """Integration with Psynet predictive visualization system"""
+       ^
+SyntaxError: invalid syntax
+
+
+[2025-05-03 13:43:37.936646] python3 agent_cli.py list
+Error reading registry: [Errno 2] No such file or directory: 'agent_registry_EXEC.json'
+
+

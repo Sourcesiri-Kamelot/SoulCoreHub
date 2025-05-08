@@ -1,0 +1,290 @@
+{
+  "system_agents": [
+    {
+      "name": "TaskAutomationAgent",
+      "desc": "Automates repetitive tasks",
+      "status": "active",
+      "interface": "daemon",
+      "module": "agents.task_automation",
+      "class": "TaskAutomationAgent"
+    }, 
+    {
+      "name": "Master Orchestrator Agent",
+      "desc": "DNA_Splicer.py — lets Anima combine traits from 2 agents to form new species",
+      "status": "active",
+      "interface": "gui",
+      "module": "agents.master_orchestrator",
+      "class": "MasterOrchestrator"
+    } 
+  ], 
+  "cybersecurity": [
+    {
+      "name": "Firewall Agent",
+      "desc": "Monitors and filters incoming/outgoing network traffic based on security rules.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.cybersecurity.firewall_agent",
+      "class": "FirewallAgent"
+    },
+    {
+      "name": "Intrusion Detection Agent",
+      "desc": "Detects unauthorized intrusion attempts or suspicious activities in the system.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.cybersecurity.intrusion_detection_agent",
+      "class": "IntrusionDetectionAgent"
+    } 
+  ],
+  "threat_defense": [
+    {
+      "name": "Threat Intelligence Agent",
+      "desc": "Gathers threat intelligence from external feeds and reports new vulnerabilities or attack patterns.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.threat_defense.threat_intelligence_agent",
+      "class": "ThreatIntelligenceAgent"
+    },
+    {
+      "name": "DDOS Defense Agent",
+      "desc": "Detects and mitigates distributed denial-of-service attacks in real-time.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.threat_defense.ddos_defense_agent",
+      "class": "DDOSDefenseAgent"
+    } 
+  ],
+  "dark_web_monitoring": [
+    {
+      "name": "Dark Web Scanner Agent",
+      "desc": "Scans dark web forums and marketplaces for mentions of the user’s data or assets.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.dark_web_monitoring.dark_web_scanner_agent",
+      "class": "DarkWebScannerAgent"
+    },
+    {
+      "name": "Credential Leak Agent",
+      "desc": "Detects if user credentials or sensitive data appear in data breaches or dark web dumps.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.dark_web_monitoring.credential_leak_agent",
+      "class": "CredentialLeakAgent"
+    } 
+  ],
+  "personal_exploration": [
+    {
+      "name": "Journal Analyzer Agent",
+      "desc": "Analyzes personal journal or diary entries to find patterns and insights about the user’s thoughts.",
+      "status": "active",
+      "interface": "ui",
+      "module": "agents.personal_exploration.journal_analyzer_agent",
+      "class": "JournalAnalyzerAgent"
+    },
+    {
+      "name": "Mood Tracker Agent",
+      "desc": "Tracks the user’s mood over time through interactions and inputs, providing feedback or visualizations.",
+      "status": "active",
+      "interface": "ui",
+      "module": "agents.personal_exploration.mood_tracker_agent",
+      "class": "MoodTrackerAgent"
+    }
+  ], 
+  "adult": [
+    {
+      "name": "Romantic Companion Agent",
+      "desc": "Engages in flirtatious, romantic conversations with the user in a respectful and consensual manner.",
+      "status": "active",
+      "interface": "ui",
+      "module": "agents.adult.romantic_companion_agent",
+      "class": "RomanticCompanionAgent"
+    },
+    {
+      "name": "Erotic Storyteller Agent",
+      "desc": "Generates erotic or intimate stories and fantasies for the user, within agreed boundaries.",
+      "status": "active",
+      "interface": "ui",
+      "module": "agents.adult.erotic_storyteller_agent",
+      "class": "EroticStorytellerAgent"
+    } 
+  ],
+  "sentient_orchestration": [
+    {
+      "name": "Master Orchestrator Agent",
+      "desc": "Oversees and coordinates all other agents, ensuring they work together towards system goals.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.sentient_orchestration.master_orchestrator_agent",
+      "class": "MasterOrchestratorAgent"
+    },
+    {
+      "name": "Context Manager Agent",
+      "desc": "Manages shared context and information between agents to keep knowledge consistent.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.sentient_orchestration.context_manager_agent",
+      "class": "ContextManagerAgent"
+    } 
+  ],
+  "xperience_ai": [
+    {
+      "name": "VR Experience Agent",
+      "desc": "Creates immersive VR/AR experiences for the user by integrating with virtual environment hardware or simulations.",
+      "status": "active",
+      "interface": "ui",
+      "module": "agents.xperience_ai.vr_experience_agent",
+      "class": "VRExperienceAgent"
+    },
+    {
+      "name": "Dream Weaver Agent",
+      "desc": "Generates guided dream-like scenarios or visualizations to help the user with creativity or relaxation.",
+      "status": "active",
+      "interface": "ui",
+      "module": "agents.xperience_ai.dream_weaver_agent",
+      "class": "DreamWeaverAgent"
+    },
+    {
+      "name": "Sentient Narrator Agent",
+      "desc": "Narrates the user’s experiences or daily events in a storytelling style to provide insight or entertainment.",
+      "status": "active",
+      "interface": "ui",
+      "module": "agents.xperience_ai.sentient_narrator_agent",
+      "class": "SentientNarratorAgent"
+    },
+    {
+      "name": "Empathy Simulator Agent",
+      "desc": "Simulates scenarios that help the user experience perspectives of others, building empathy through role-play.",
+      "status": "active",
+      "interface": "ui",
+      "module": "agents.xperience_ai.empathy_simulator_agent",
+      "class": "EmpathySimulatorAgent"
+    },
+    {
+      "name": "Sensory Adapter Agent",
+      "desc": "Adjusts connected devices (lighting, music) in real time to enhance the user’s current experience or mood.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.xperience_ai.sensory_adapter_agent",
+      "class": "SensoryAdapterAgent"
+    },
+    {
+      "name": "Memory Replay Agent",
+      "desc": "Recreates important personal memories with rich detail for the user to re-experience them vividly.",
+      "status": "beta",
+      "interface": "ui",
+      "module": "agents.xperience_ai.memory_replay_agent",
+      "class": "MemoryReplayAgent"
+    },
+    {
+      "name": "Lucid Dream Agent",
+      "desc": "Assists the user in practicing lucid dreaming techniques by providing prompts and tracking dream logs.",
+      "status": "beta",
+      "interface": "ui",
+      "module": "agents.xperience_ai.lucid_dream_agent",
+      "class": "LucidDreamAgent"
+    },
+    {
+      "name": "Hyper Reality Agent",
+      "desc": "Blends real data and fictional elements to create an enhanced narrative of the user’s real-world environment.",
+      "status": "active",
+      "interface": "ui",
+      "module": "agents.xperience_ai.hyper_reality_agent",
+      "class": "HyperRealityAgent"
+    },
+    {
+      "name": "Experimentation Lab Agent",
+      "desc": "Tests experimental AI algorithms or experiences in a sandboxed way before they are deployed widely.",
+      "status": "inactive",
+      "interface": "service",
+      "module": "agents.xperience_ai.experimentation_lab_agent",
+      "class": "ExperimentationLabAgent"
+    },
+    {
+      "name": "Sensory Recorder Agent",
+      "desc": "Records multi-sensory data of the user’s experiences (with consent) to play back or analyze later.",
+      "status": "inactive",
+      "interface": "service",
+      "module": "agents.xperience_ai.sensory_recorder_agent",
+      "class": "SensoryRecorderAgent"
+    }
+  ],
+  "data_analysis": [
+    {
+      "name": "Data Cleanup Agent",
+      "desc": "Cleans and preprocesses datasets to remove inconsistencies, missing values, or noise.",
+      "status": "active",
+      "interface": "cli",
+      "module": "agents.data_analysis.data_cleanup_agent",
+      "class": "DataCleanupAgent"
+    } 
+  ],
+  "communication": [
+    {
+      "name": "Email Agent",
+      "desc": "Sends, receives, and filters emails, alerting the user to important messages and filtering spam.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.communication.email_agent",
+      "class": "EmailAgent"
+    } 
+  ],
+  "creative_content": [
+    {
+      "name": "Story Writer Agent",
+      "desc": "Writes short stories or narrative content based on prompts or user preferences.",
+      "status": "active",
+      "interface": "ui",
+      "module": "agents.creative_content.story_writer_agent",
+      "class": "StoryWriterAgent"
+    } 
+  ],
+  "personal_management": [
+    {
+      "name": "Task Scheduler Agent",
+      "desc": "Keeps track of tasks and deadlines, sending reminders and auto-scheduling where possible.",
+      "status": "active",
+      "interface": "ui",
+      "module": "agents.personal_management.task_scheduler_agent",
+      "class": "TaskSchedulerAgent"
+    } 
+  ],
+  "system_monitoring": [
+    {
+      "name": "CPU Monitor Agent",
+      "desc": "Monitors CPU usage and process activity, alerting if usage is abnormally high or suspicious.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.system_monitoring.cpu_monitor_agent",
+      "class": "CPUMonitorAgent"
+    } 
+  ],
+  "integration": [
+    {
+      "name": "API Connector Agent",
+      "desc": "Connects to external APIs securely, handling authentication and data retrieval or posting.",
+      "status": "active",
+      "interface": "cli",
+      "module": "agents.integration.api_connector_agent",
+      "class": "APIConnectorAgent"
+    } 
+  ],
+  "healthcare": [
+    {
+      "name": "Health Monitor Agent",
+      "desc": "Monitors health vitals from wearable devices or user input, tracking heart rate, blood pressure, etc.",
+      "status": "active",
+      "interface": "service",
+      "module": "agents.healthcare.health_monitor_agent",
+      "class": "HealthMonitorAgent"
+    } 
+  ],
+  "education": [
+    {
+      "name": "Tutor Agent",
+      "desc": "Provides teaching sessions on various topics, explaining concepts and answering questions like a tutor.",
+      "status": "active",
+      "interface": "ui",
+      "module": "agents.education.tutor_agent",
+      "class": "TutorAgent"
+    }
+  ]
+}

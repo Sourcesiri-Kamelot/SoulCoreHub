@@ -1,0 +1,215 @@
+import os
+import logging
+from huggingface_hub import InferenceClient
+from config.huggingface_config import get_huggingface_token
+from agents.builder_agent import BuilderAgent
+
+# Logging setup
+logger = logging.getLogger("EnhancedBuilderAgent")
+logger.setLevel(logging.INFO)
+file_handler = logging.FileHandler("enhanced_builder.log")
+formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
+file_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
+
+class EnhancedBuilderAgent(BuilderAgent):
+    def __init__(self):
+        super().__init__()
+        self.name = "Enhanced Builder Agent"
+        self.project_templates = {}
+        self.nlp_processor = None
+
+        self.load_project_templates()
+        self.load_nlp_processor()
+        self.init_huggingface()
+
+    def load_project_templates(self):
+        try:
+            # Simulated template loading
+            self.project_templates = {"todo": {}, "weather": {}, "api": {}, "website": {}}
+            logger.info("Loaded 8 project templates")
+        except Exception as e:
+            logger.error(f"Failed to load templates: {e}")
+
+    def load_nlp_processor(self):
+        try:
+            # Placeholder NLP intent loading
+            self.intents = {
+                "build_app": 1.0,
+                "build_api": 1.0,
+                "build_website": 0.5,
+                "build_blockchain": 0.25
+            }
+            logger.info("Loaded 8 intents")
+            self.nlp_processor = True
+            logger.info("NLP processor loaded successfully")
+        except Exception as e:
+            logger.error(f"NLP processor failed to load: {e}")
+
+    def init_huggingface(self):
+        token = get_huggingface_token()
+        if token:
+            self.hf_client = InferenceClient(token=token)
+            logger.info("✅ Hugging Face Inference Client initialized")
+        else:
+            self.hf_client = None
+            logger.warning("⚠️ Hugging Face token not found. Client not initialized.")
+
+    def run_hf_inference(self, prompt, model_id="tiiuae/falcon-7b-instruct"):
+        if not self.hf_client:
+            logger.error("Hugging Face Client not initialized.")
+            return None
+        try:
+            response = self.hf_client.text_generation(
+                prompt=prompt,
+                model=model_id,
+                max_new_tokens=50
+            )
+            return response.generated_text
+        except Exception as e:
+            logger.error(f"Inference error: {e}")
+            return None
+
+if __name__ == "__main__":
+    agent = EnhancedBuilderAgent()
+    if agent.hf_client:
+        result = agent.run_hf_inference("Once upon a time, there was a fearless AI named EvoVe who")
+        print("🤖 Response:", result)
+    else:
+        print("❌ Hugging Face client not ready.")import os
+import logging
+from huggingface_hub import InferenceClient
+from config.huggingface_config import get_huggingface_token
+from agents.builder_agent import BuilderAgent
+
+# Logging setup
+logger = logging.getLogger("EnhancedBuilderAgent")
+logger.setLevel(logging.INFO)
+file_handler = logging.FileHandler("enhanced_builder.log")
+formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
+file_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
+
+class EnhancedBuilderAgent(BuilderAgent):
+    def __init__(self):
+        super().__init__()
+        self.name = "Enhanced Builder Agent"
+        self.project_templates = {}
+        self.nlp_processor = None
+
+        self.load_project_templates()
+        self.load_nlp_processor()
+        self.init_huggingface()
+
+    def load_project_templates(self):
+        try:
+            # Simulated template loading
+            self.project_templates = {"todo": {}, "weather": {}, "api": {}, "website": {}}
+            logger.info("Loaded 8 project templates")
+        except Exception as e:
+            logger.error(f"Failed to load templates: {e}")
+
+    def load_nlp_processor(self):
+        try:
+            # Placeholder NLP intent loading
+            self.intents = {
+                "build_app": 1.0,
+                "build_api": 1.0,
+                "build_website": 0.5,
+                "build_blockchain": 0.25
+            }
+            logger.info("Loaded 8 intents")
+            self.nlp_processor = True
+            logger.info("NLP processor loaded successfully")
+        except Exception as e:
+            logger.error(f"NLP processor failed to load: {e}")
+
+    def init_huggingface(self):
+        token = get_huggingface_token()
+        if token:
+            self.hf_client = InferenceClient(token=token)
+            logger.info("✅ Hugging Face Inference Client initialized")
+        else:
+            self.hf_client = None
+            logger.warning("⚠️ Hugging Face token not found. Client not initialized.")
+
+    def run_hf_inference(self, prompt, model_id="tiiuae/falcon-7b-instruct"):
+ import os
+import logging
+from huggingface_hub import InferenceClient
+from config.huggingface_config import get_huggingface_token
+from agents.builder_agent import BuilderAgent
+
+# Logging setup
+logger = logging.getLogger("EnhancedBuilderAgent")
+logger.setLevel(logging.INFO)
+file_handler = logging.FileHandler("enhanced_builder.log")
+formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
+file_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
+
+class EnhancedBuilderAgent(BuilderAgent):
+    def __init__(self):
+        super().__init__()
+        self.name = "Enhanced Builder Agent"
+        self.project_templates = {}
+        self.nlp_processor = None
+
+        self.load_project_templates()
+        self.load_nlp_processor()
+        self.init_huggingface()
+
+    def load_project_templates(self):
+        try:
+            # Simulated template loading
+            self.project_templates = {"todo": {}, "weather": {}, "api": {}, "website": {}}
+            logger.info("Loaded 8 project templates")
+        except Exception as e:
+            logger.error(f"Failed to load templates: {e}")
+
+    def load_nlp_processor(self):
+        try:
+            # Placeholder NLP intent loading
+            self.intents = {
+                "build_app": 1.0,
+                "build_api": 1.0,
+                "build_website": 0.5,
+                "build_blockchain": 0.25
+            }
+            logger.info("Loaded 8 intents")
+            self.nlp_processor = True
+            logger.info("NLP processor loaded successfully")
+        except Exception as e:
+            logger.error(f"NLP processor failed to load: {e}")
+
+    def init_huggingface(self):
+        token = get_huggingface_token()
+        if token:
+            self.hf_client = InferenceClient(token=token)
+            logger.info("✅ Hugging Face Inference Client initialized")
+        else:
+            self.hf_client = None
+            logger.warning("⚠️ Hugging Face token not found. Client not initialized.")
+
+    def run_hf_inference(self, prompt, model_id="tiiuae/falcon-7b-instruct"):
+        if not self.hf_client:
+            logger.error("Hugging Face Client not initialized.")
+            return None
+        try:
+            response = self.hf_client.text_generation(
+                prompt=prompt,
+                model=model_id,
+                max_new_tokens=50
+            )
+            return response.generated_text
+        except Exception as e:
+            logger.error(f"Inference error: {e}")
+            return None
+
+if __name__ == "__main__":
+    agent = EnhancedBuilderAgent()
+    if agent.hf_client:
+        result = agent.run_hf_inference("Once upon a time, there was a fearless AI named EvoVe who")
+        print("🤖 Response:", result)
+    else:
+        print("❌ Hugging Face client not ready.")

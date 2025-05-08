@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoulCoreHub Command Center</title>
+    <style>
+        :root {
+            --primary-color: #1e88e5;
+            --secondary-color: #7e57c2;
+            --background-color: #121212;
+            --surface-color: #1e1e1e;
+            --text-color: #e0e0e0;
+            --accent-color: #00b0ff;
+            --error-color: #f44336;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            --disabled-color: #616161;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: var(--surface-color);
+            padding: 20px;
+            border-bottom: 2px solid var(--accent-color);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            margin: 0;
+            color: var(--accent-color);
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px rgba(0, 176, 255, 0.5);
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .panel {
+            background-color: var(--surface-color);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .panel h2 {
+            margin-top: 0;
+            color: var(--accent-color);
+            border-bottom: 1px solid var(--accent-color);
+            padding-bottom: 10px;
+        }
+        
+        .mcp-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .mcp-button {
+            background-color: var(--surface-color);
+            color: var(--text-color);
+            border: 2px solid var(--primary-color);
+            border-radius: 4px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            font-weight: bold;
+        }
+        
+        .mcp-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.5s ease;
+        }
+        
+        .mcp-button:hover::before {
+            left: 100%;
+        }
+        
+        .mcp-button.active {
+            background-color: var(--primary-color);
+            box-shadow: 0 0 15px var(--primary-color);
+        }
+        
+        .mcp-button.inactive {
+            background-color: var(--surface-color);
+            border-color: var(--disabled-color);
+            color: var(--disabled-color);
+        }
+        
+        .query-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .query-input {
+            padding: 15px;
+            border-radius: 4px;
+            border: 1px solid var(--accent-color);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        select {
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid var(--accent-color);
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+        
+        .submit-button {
+            background-color: var(--accent-color);
+            color: var(--background-color);
+            border: none;
+            border-radius: 4px;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .submit-button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: translateX(-100%);
+        }
+        
+        .submit-button:hover::after {
+            transform: translateX(100%);
+            transition: transform 0.5s ease;
+        }
+        
+        .response-container {
+            background-color: rgba(30, 136, 229, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 4px;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        
+        .log-viewer {
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            padding: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        
+        .log-entry {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--surface-color);
+        }
+        
+        .log-timestamp {
+            color: var(--warning-color);
+            font-weight: bold;
+        }
+        
+        .log-port {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+        
+        .feedback-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .feedback-button {
+            background-color: transparent;
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .feedback-button.positive:hover {
+            background-color: var(--success-color);
+            border-color: var(--success-color);
+        }
+        
+        .feedback-button.negative:hover {
+            background-color: var(--error-color);
+            border-color: var(--error-color);
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: var(--surface-color);
+            border: none;
+            color: var(--text-color);
+            border-bottom: 2px solid transparent;
+        }
+        
+        .tab.active {
+            border-bottom: 2px solid var(--accent-color);
+            color: var(--accent-color);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .loader {
+            border: 4px solid var(--surface-color);
+            border-top: 4px solid var(--accent-color);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            color: var(--error-color);
+            background-color: rgba(244, 67, 54, 0.1);
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .success-message {
+            color: var(--success-color);
+            background-color: rgba(76, 175, 80, 0.1);
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>SoulCoreHub Command Center</h1>
+        <p>RAG + MCP Neural Routing System</p>
+    </header>
+    
+    <div class="container">
+        <div class="grid">
+            <div class="panel">
+                <h2>MCP Server Controls</h2>
+                <div class="mcp-controls">
+                    <button class="mcp-button active" data-port="8701">MCP 8701</button>
+                    <button class="mcp-button active" data-port="8702">MCP 8702</button>
+                    <button class="mcp-button active" data-port="8703">MCP 8703</button>
+                    <button class="mcp-button active" data-port="8704">MCP 8704</button>
+                    <button class="mcp-button active" data-port="8705">MCP 8705</button>
+                    <button class="mcp-button active" data-port="8706">MCP 8706</button>
+                    <button class="mcp-button active" data-port="8707">MCP 8707</button>
+                </div>
+                
+                <h2>Query System</h2>
+                <form id="query-form" class="query-form">
+                    <textarea id="query-input" class="query-input" placeholder="Enter your query here..."></textarea>
+                    
+                    <div class="form-row">
+                        <label for="mcp-override">Override MCP:</label>
+                        <select id="mcp-override">
+                            <option value="">Auto (Neural Routing)</option>
+                            <option value="8701">MCP 8701</option>
+                            <option value="8702">MCP 8702</option>
+                            <option value="8703">MCP 8703</option>
+                            <option value="8704">MCP 8704</option>
+                            <option value="8705">MCP 8705</option>
+                            <option value="8706">MCP 8706</option>
+                            <option value="8707">MCP 8707</option>
+                        </select>
+                        
+                        <button type="submit" class="submit-button">Run RAG + MCP</button>
+                    </div>
+                </form>
+                
+                <div id="loader" class="loader"></div>
+                <div id="error-message" class="error-message"></div>
+                
+                <div id="response-container" class="response-container" style="display: none;">
+                    <h3>Response:</h3>
+                    <div id="response-content"></div>
+                    
+                    <div class="feedback-buttons">
+                        <button id="feedback-positive" class="feedback-button positive">👍 Good Routing</button>
+                        <button id="feedback-negative" class="feedback-button negative">👎 Bad Routing</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <h2>System Logs</h2>
+                
+                <div class="tabs">
+                    <button class="tab active" data-tab="mcp-memory">MCP Memory</button>
+                    <button class="tab" data-tab="routing-feedback">Routing Feedback</button>
+                </div>
+                
+                <div id="mcp-memory" class="tab-content active">
+                    <div class="log-viewer" id="memory-log"></div>
+                </div>
+                
+                <div id="routing-feedback" class="tab-content">
+                    <div class="log-viewer" id="feedback-log"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Global variables to store current query and response
+        let currentQuery = '';
+        let currentPort = null;
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load MCP server status
+            loadMCPStatus();
+            
+            // Load memory logs
+            loadMemoryLogs();
+            
+            // Load feedback logs
+            loadFeedbackLogs();
+            
+            // Set up tab switching
+            setupTabs();
+            
+            // Set up MCP toggle buttons
+            setupMCPButtons();
+            
+            // Set up query form
+            setupQueryForm();
+            
+            // Set up feedback buttons
+            setupFeedbackButtons();
+            
+            // Refresh logs every 30 seconds
+            setInterval(function() {
+                loadMemoryLogs();
+                loadFeedbackLogs();
+            }, 30000);
+        });
+        
+        // Set up tab switching
+        function setupTabs() {
+            const tabs = document.querySelectorAll('.tab');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Hide all tab content
+                    const tabContents = document.querySelectorAll('.tab-content');
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Show the selected tab content
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        }
+        
+        // Set up MCP toggle buttons
+        function setupMCPButtons() {
+            const mcpButtons = document.querySelectorAll('.mcp-button');
+            
+            mcpButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const port = this.getAttribute('data-port');
+                    toggleMCPServer(port, this);
+                });
+            });
+        }
+        
+        // Toggle MCP server
+        function toggleMCPServer(port, button) {
+            fetch('/api/toggle_mcp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ port: port })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.enabled) {
+                    button.classList.add('active');
+                    button.classList.remove('inactive');
+                } else {
+                    button.classList.remove('active');
+                    button.classList.add('inactive');
+                }
+            })
+            .catch(error => {
+                showError('Error toggling MCP server: ' + error);
+            });
+        }
+        
+        // Load MCP server status
+        function loadMCPStatus() {
+            fetch('/api/mcp_status')
+            .then(response => response.json())
+            .then(data => {
+                const mcpButtons = document.querySelectorAll('.mcp-button');
+                
+                mcpButtons.forEach(button => {
+                    const port = button.getAttribute('data-port');
+                    
+                    if (data[port]) {
+                        button.classList.add('active');
+                        button.classList.remove('inactive');
+                    } else {
+                        button.classList.remove('active');
+                        button.classList.add('inactive');
+                    }
+                });
+            })
+            .catch(error => {
+                showError('Error loading MCP status: ' + error);
+            });
+        }
+        
+        // Set up query form
+        function setupQueryForm() {
+            const queryForm = document.getElementById('query-form');
+            
+            queryForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                const queryInput = document.getElementById('query-input');
+                const mcpOverride = document.getElementById('mcp-override');
+                
+                const query = queryInput.value.trim();
+                const forcePort = mcpOverride.value;
+                
+                if (query === '') {
+                    showError('Please enter a query');
+                    return;
+                }
+                
+                // Store the current query
+                currentQuery = query;
+                
+                // Show loader
+                document.getElementById('loader').style.display = 'block';
+                
+                // Hide response container
+                document.getElementById('response-container').style.display = 'none';
+                
+                // Hide error message
+                document.getElementById('error-message').style.display = 'none';
+                
+                // Send the query
+                fetch('/api/query', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        query: query,
+                        force_port: forcePort || null
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Hide loader
+                    document.getElementById('loader').style.display = 'none';
+                    
+                    if (data.error) {
+                        showError(data.error);
+                        return;
+                    }
+                    
+                    // Store the current port
+                    currentPort = data.metadata.port;
+                    
+                    // Format the response
+                    const responseContent = document.getElementById('response-content');
+                    
+                    // Create HTML content
+                    let html = '';
+                    
+                    // Add the response
+                    if (typeof data.response === 'string') {
+                        html += `<p>${data.response}</p>`;
+                    } else if (data.response) {
+                        html += `<pre>${JSON.stringify(data.response, null, 2)}</pre>`;
+                    }
+                    
+                    // Add metadata
+                    html += `<p><strong>Routed to:</strong> MCP ${data.metadata.port}</p>`;
+                    html += `<p><strong>Processing time:</strong> ${data.metadata.processing_time.toFixed(2)}s</p>`;
+                    html += `<p><strong>RAG chunks used:</strong> ${data.metadata.rag_chunks_used}</p>`;
+                    
+                    responseContent.innerHTML = html;
+                    
+                    // Show response container
+                    document.getElementById('response-container').style.display = 'block';
+                    
+                    // Refresh logs
+                    loadMemoryLogs();
+                })
+                .catch(error => {
+                    // Hide loader
+                    document.getElementById('loader').style.display = 'none';
+                    
+                    showError('Error sending query: ' + error);
+                });
+            });
+        }
+        
+        // Set up feedback buttons
+        function setupFeedbackButtons() {
+            const positiveButton = document.getElementById('feedback-positive');
+            const negativeButton = document.getElementById('feedback-negative');
+            
+            positiveButton.addEventListener('click', function() {
+                sendFeedback('positive');
+            });
+            
+            negativeButton.addEventListener('click', function() {
+                sendFeedback('negative');
+            });
+        }
+        
+        // Send feedback
+        function sendFeedback(feedbackType) {
+            if (!currentQuery || !currentPort) {
+                showError('No query or port to provide feedback for');
+                return;
+            }
+            
+            fetch('/api/feedback', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    query: currentQuery,
+                    port: currentPort,
+                    feedback: feedbackType
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    showError(data.error);
+                    return;
+                }
+                
+                // Show success message
+                const successMessage = document.createElement('div');
+                successMessage.className = 'success-message';
+                successMessage.style.display = 'block';
+                successMessage.textContent = `Thank you for your ${feedbackType} feedback!`;
+                
+                const responseContainer = document.getElementById('response-container');
+                responseContainer.appendChild(successMessage);
+                
+                // Remove success message after 3 seconds
+                setTimeout(function() {
+                    responseContainer.removeChild(successMessage);
+                }, 3000);
+                
+                // Refresh feedback logs
+                loadFeedbackLogs();
+            })
+            .catch(error => {
+                showError('Error sending feedback: ' + error);
+            });
+        }
+        
+        // Load memory logs
+        function loadMemoryLogs() {
+            fetch('/api/memory')
+            .then(response => response.json())
+            .then(data => {
+                const memoryLog = document.getElementById('memory-log');
+                
+                // Sort by timestamp (newest first)
+                data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                
+                // Format the logs
+                let html = '';
+                
+                data.forEach(entry => {
+                    const timestamp = new Date(entry.timestamp).toLocaleString();
+                    
+                    html += `<div class="log-entry">`;
+                    html += `<span class="log-timestamp">${timestamp}</span> - `;
+                    html += `<span class="log-port">Port ${entry.port}</span><br>`;
+                    html += `<strong>Query:</strong> ${entry.query}<br>`;
+                    
+                    if (entry.result.error) {
+                        html += `<strong>Error:</strong> ${entry.result.error}<br>`;
+                    } else if (entry.result.response) {
+                        html += `<strong>Response:</strong> ${typeof entry.result.response === 'string' ? 
+                            entry.result.response : JSON.stringify(entry.result.response)}<br>`;
+                    }
+                    
+                    html += `</div>`;
+                });
+                
+                memoryLog.innerHTML = html || 'No memory logs found';
+            })
+            .catch(error => {
+                const memoryLog = document.getElementById('memory-log');
+                memoryLog.innerHTML = 'Error loading memory logs: ' + error;
+            });
+        }
+        
+        // Load feedback logs
+        function loadFeedbackLogs() {
+            fetch('/api/feedback_data')
+            .then(response => response.json())
+            .then(data => {
+                const feedbackLog = document.getElementById('feedback-log');
+                
+                // Sort by timestamp (newest first)
+                data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                
+                // Format the logs
+                let html = '';
+                
+                data.forEach(entry => {
+                    const timestamp = new Date(entry.timestamp).toLocaleString();
+                    const feedbackIcon = entry.feedback === 'positive' ? '👍' : '👎';
+                    
+                    html += `<div class="log-entry">`;
+                    html += `<span class="log-timestamp">${timestamp}</span> - `;
+                    html += `<span class="log-port">Port ${entry.port}</span> `;
+                    html += `<strong>${feedbackIcon} ${entry.feedback}</strong><br>`;
+                    html += `<strong>Query:</strong> ${entry.query}<br>`;
+                    html += `</div>`;
+                });
+                
+                feedbackLog.innerHTML = html || 'No feedback logs found';
+            })
+            .catch(error => {
+                const feedbackLog = document.getElementById('feedback-log');
+                feedbackLog.innerHTML = 'Error loading feedback logs: ' + error;
+            });
+        }
+        
+        // Show error message
+        function showError(message) {
+            const errorMessage = document.getElementById('error-message');
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

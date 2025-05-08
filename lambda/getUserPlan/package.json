@@ -1,0 +1,21 @@
+{
+  "name": "get-user-plan",
+  "version": "1.0.0",
+  "description": "Lambda function to retrieve user subscription plan from DynamoDB",
+  "main": "getUserPlan.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "sam deploy --guided"
+  },
+  "keywords": [
+    "aws",
+    "lambda",
+    "dynamodb",
+    "subscription"
+  ],
+  "author": "Helo Im AI Inc.",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1048.0"
+  }
+}

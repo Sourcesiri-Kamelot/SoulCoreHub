@@ -1,0 +1,43 @@
+from fireworks.flumina import FluminaModule, main as flumina_main
+import fireworks.flumina.route as route
+from pydantic import BaseModel
+
+{model_class_import_str}
+
+# Define your request and response schemata here
+class ModuleRequest(BaseModel):
+    some_value: str
+
+
+class ModuleResponse(BaseModel):
+    some_other_value: str
+
+
+class FluminaModule(FluminaModule):
+    def __init__(self):
+        super().__init__()
+        # Add your initializaiton logic here
+        #
+        # FIXME: specify the proper transformers/diffusers class for initialization
+        self.hf_model = {model_classname_str}.from_pretrained('./data')
+
+    def forward(
+        self,
+    ):
+        # Add your inference logic here
+        ...
+
+    @route.post("/infer")
+    def infer(self, input: ModuleRequest):
+        return ModuleResponse(some_other_value=input.some_value)
+
+
+if __name__ == "__flumina_main__":
+    f = FluminaModule()
+    flumina_main(f)
+
+if __name__ == "__main__":
+    f = FluminaModule()
+
+    # Add your offline testing logic here
+    ...

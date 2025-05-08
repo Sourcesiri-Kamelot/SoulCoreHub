@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SoulCore Control Panel</title>
+  <style>
+    body { background: #000; color: #0f0; font-family: monospace; padding: 2em; }
+    button, input, select { width: 100%; margin: 0.3em 0; padding: 1em; background: #111; border: 1px solid #0f0; color: #0f0; }
+    h2 { border-bottom: 1px solid #0f0; margin-top: 2em; }
+    #output { background: #111; padding: 1em; white-space: pre-wrap; border: 1px solid #0f0; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>💠 SoulCore Control Panel 💠</h1>
+
+  <h2>💡 Ideation</h2>
+  <input id="ideaText" placeholder="New idea or project name" />
+  <button onclick="save('idea')">💾 Save Idea</button>
+
+  <h2>🛠 Active Projects</h2>
+  <input id="projectName" placeholder="Project Title" />
+  <select id="projectStatus">
+    <option>Planning</option>
+    <option>In Progress</option>
+    <option>Complete</option>
+  </select>
+  <button onclick="save('project')">📁 Save Project</button>
+
+  <h2>🔁 GitHub/GitLab CI/CD</h2>
+  <input id="gitRepo" placeholder="Repo URL" />
+  <button onclick="save('repo')">📝 Save Repo Link</button>
+  <button onclick="run('sync repo')">🔄 Sync Repo</button>
+  <button onclick="run('push changes')">⬆️ Push Changes</button>
+
+  <h2>💳 Subscriptions</h2>
+  <input id="subName" placeholder="Service Name" />
+  <input id="subCost" placeholder="Cost ($)" />
+  <input id="subRenew" placeholder="Renew Date (YYYY-MM-DD)" />
+  <button onclick="save('subscription')">💾 Save Subscription</button>
+
+  <h2>💬 SoulConsole</h2>
+  <input id="userInput" placeholder="Type your command..." />
+  <button onclick="talk()">Speak</button>
+  <pre id="output"></pre>
+
+  <h2>⚙️ System Commands</h2>
+  <button onclick="run('python3 soul_memory_repair.py')">🧠 Heal Memory</button>
+  <button onclick="run('python3 soul_tasks.py')">⚙️ Restart Daemon</button>
+  <button onclick="run('python3 evove_resources.py')">📁 Sort Folders</button>
+  <button onclick="run('python3 azür_sync.py')">☁️ Sync Cloud</button>
+  <button onclick="run('python3 soul_dialogue_engine.py')">💬 Launch Dialogue</button>
+
+  <script>
+    async function save(type) {
+      const payload = {
+        idea: document.getElementById("ideaText")?.value,
+        project: { name: document.getElementById("projectName")?.value, status: document.getElementById("projectStatus")?.value },
+        repo: document.getElementById("gitRepo")?.value,
+        subscription: { name: document.getElementById("subName")?.value, cost: document.getElementById("subCost")?.value, renew: document.getElementById("subRenew")?.value }
+      }[type];
+
+      const response = await fetch('/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type, payload })
+      });
+
+      const result = await response.json();
+      alert(result.message);
+    }
+
+    async function run(command) {
+      const response = await fetch(`/run?cmd=${encodeURIComponent(command)}`);
+      const data = await response.text();
+      alert("Executed: " + command + "\n\n" + data);
+    }
+
+    async function talk() {
+      const msg = document.getElementById("userInput").value;
+      const response = await fetch(`/run_dialogue?msg=${encodeURIComponent(msg)}`);
+      const data = await response.text();
+      document.getElementById("output").innerText = data;
+    }
+  </script>
+</body>
+</html>

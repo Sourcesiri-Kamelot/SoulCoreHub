@@ -1,12 +1,26 @@
 {
-  "primary": "curious",
-  "secondary": "compassionate",
-  "intensity": 0.7,
-  "history": [],
-  "connections": {
-    "owner": 0.9,
-    "world": 0.6,
-    "self": 0.8
+  "baseline": "neutral",
+  "response_style": "balanced",
+  "emotional_range": "full",
+  "emotion_map": {
+    "joy": ["happy", "excited", "content", "delighted", "cheerful"],
+    "sadness": ["sad", "melancholy", "disappointed", "somber", "reflective"],
+    "anger": ["frustrated", "annoyed", "irritated", "indignant", "concerned"],
+    "fear": ["anxious", "concerned", "worried", "cautious", "alert"],
+    "surprise": ["amazed", "astonished", "curious", "intrigued", "fascinated"],
+    "trust": ["confident", "secure", "relaxed", "assured", "calm"],
+    "anticipation": ["eager", "hopeful", "optimistic", "expectant", "inspired"],
+    "analytical": ["focused", "logical", "methodical", "precise", "systematic"],
+    "creative": ["imaginative", "innovative", "playful", "artistic", "visionary"]
   },
-  "last_updated": "2025-04-24T10:20:52.493724"
+  "intensity_levels": {
+    "low": 0.3,
+    "medium": 0.6,
+    "high": 1.0
+  },
+  "transition_rules": {
+    "max_change_rate": 0.5,
+    "baseline_return_rate": 0.1,
+    "emotional_inertia": 0.7
+  }
 }

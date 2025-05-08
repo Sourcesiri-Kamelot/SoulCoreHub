@@ -1,0 +1,48 @@
+.plan-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.plan-badge.free {
+  background-color: #6c757d;
+  color: white;
+}
+
+.plan-badge.pro {
+  background-color: #4cc9f0;
+  color: #10002b;
+}
+
+.plan-badge.business {
+  background-color: #7209b7;
+  color: white;
+}
+
+.plan-badge.enterprise {
+  background-color: #f72585;
+  color: white;
+}
+
+.plan-badge.unknown {
+  background-color: #6c757d;
+  color: white;
+  opacity: 0.7;
+}
+
+.plan-badge.loading {
+  background-color: #6c757d;
+  color: white;
+  opacity: 0.5;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.5; }
+  50% { opacity: 0.8; }
+  100% { opacity: 0.5; }
+}

@@ -1,0 +1,124 @@
+{
+  "intents": {
+    "build_app": {
+      "description": "Intent to build an application",
+      "keywords": ["build", "create", "develop", "make", "app", "application", "project"],
+      "patterns": [
+        "build\\s+(?:me\\s+)?a\\s+(\\w+)(?:\\s+app)?",
+        "create\\s+(?:me\\s+)?a\\s+(\\w+)(?:\\s+app)?",
+        "develop\\s+(?:me\\s+)?a\\s+(\\w+)(?:\\s+app)?"
+      ],
+      "examples": [
+        "build me a todo app",
+        "create a weather application",
+        "develop a note taking app"
+      ],
+      "parameters": ["app_type"]
+    },
+    "build_website": {
+      "description": "Intent to build a website",
+      "keywords": ["build", "create", "develop", "make", "website", "site", "webpage", "web"],
+      "patterns": [
+        "build\\s+(?:me\\s+)?a\\s+(\\w+)(?:\\s+website)?",
+        "create\\s+(?:me\\s+)?a\\s+(\\w+)(?:\\s+website)?",
+        "develop\\s+(?:me\\s+)?a\\s+(\\w+)(?:\\s+website)?"
+      ],
+      "examples": [
+        "build me a portfolio website",
+        "create an e-commerce site",
+        "develop a blog website"
+      ],
+      "parameters": ["website_type"]
+    },
+    "build_api": {
+      "description": "Intent to build an API",
+      "keywords": ["build", "create", "develop", "make", "api", "rest", "graphql", "endpoint"],
+      "patterns": [
+        "build\\s+(?:me\\s+)?a\\s+(\\w+)(?:\\s+api)?",
+        "create\\s+(?:me\\s+)?a\\s+(\\w+)(?:\\s+api)?",
+        "develop\\s+(?:me\\s+)?a\\s+(\\w+)(?:\\s+api)?"
+      ],
+      "examples": [
+        "build me a REST API",
+        "create a GraphQL API",
+        "develop a weather API"
+      ],
+      "parameters": ["api_type"]
+    },
+    "build_database": {
+      "description": "Intent to build a database",
+      "keywords": ["build", "create", "develop", "make", "database", "db", "data", "storage"],
+      "patterns": [
+        "build\\s+(?:me\\s+)?a\\s+(\\w+)(?:\\s+database)?",
+        "create\\s+(?:me\\s+)?a\\s+(\\w+)(?:\\s+database)?",
+        "develop\\s+(?:me\\s+)?a\\s+(\\w+)(?:\\s+database)?"
+      ],
+      "examples": [
+        "build me a SQL database",
+        "create a NoSQL database",
+        "develop a MongoDB database"
+      ],
+      "parameters": ["database_type"]
+    },
+    "build_game": {
+      "description": "Intent to build a game",
+      "keywords": ["build", "create", "develop", "make", "game", "gaming", "play"],
+      "patterns": [
+        "build\\s+(?:me\\s+)?a\\s+(\\w+)(?:\\s+game)?",
+        "create\\s+(?:me\\s+)?a\\s+(\\w+)(?:\\s+game)?",
+        "develop\\s+(?:me\\s+)?a\\s+(\\w+)(?:\\s+game)?"
+      ],
+      "examples": [
+        "build me a puzzle game",
+        "create an adventure game",
+        "develop a mobile game"
+      ],
+      "parameters": ["game_type"]
+    },
+    "build_ml_model": {
+      "description": "Intent to build a machine learning model",
+      "keywords": ["build", "create", "develop", "make", "ml", "machine learning", "ai", "model", "neural"],
+      "patterns": [
+        "build\\s+(?:me\\s+)?a\\s+(\\w+)(?:\\s+model)?",
+        "create\\s+(?:me\\s+)?a\\s+(\\w+)(?:\\s+model)?",
+        "develop\\s+(?:me\\s+)?a\\s+(\\w+)(?:\\s+model)?"
+      ],
+      "examples": [
+        "build me a classification model",
+        "create a regression model",
+        "develop a neural network model"
+      ],
+      "parameters": ["model_type"]
+    },
+    "build_mobile_app": {
+      "description": "Intent to build a mobile application",
+      "keywords": ["build", "create", "develop", "make", "mobile", "app", "ios", "android", "phone"],
+      "patterns": [
+        "build\\s+(?:me\\s+)?a\\s+(\\w+)(?:\\s+mobile\\s+app)?",
+        "create\\s+(?:me\\s+)?a\\s+(\\w+)(?:\\s+mobile\\s+app)?",
+        "develop\\s+(?:me\\s+)?a\\s+(\\w+)(?:\\s+mobile\\s+app)?"
+      ],
+      "examples": [
+        "build me a fitness mobile app",
+        "create a social media mobile app",
+        "develop a productivity mobile app"
+      ],
+      "parameters": ["app_type"]
+    },
+    "build_blockchain": {
+      "description": "Intent to build a blockchain application",
+      "keywords": ["build", "create", "develop", "make", "blockchain", "crypto", "token", "nft", "web3"],
+      "patterns": [
+        "build\\s+(?:me\\s+)?a\\s+(\\w+)(?:\\s+blockchain)?",
+        "create\\s+(?:me\\s+)?a\\s+(\\w+)(?:\\s+blockchain)?",
+        "develop\\s+(?:me\\s+)?a\\s+(\\w+)(?:\\s+blockchain)?"
+      ],
+      "examples": [
+        "build me a token contract",
+        "create an NFT marketplace",
+        "develop a DeFi application"
+      ],
+      "parameters": ["blockchain_type"]
+    }
+  }
+}

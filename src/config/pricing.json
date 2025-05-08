@@ -1,0 +1,127 @@
+{
+  "plans": {
+    "free": {
+      "name": "Free",
+      "price": 0,
+      "features": [
+        "Basic access to SoulCoreHub",
+        "Limited agent interactions",
+        "Standard response time",
+        "Community support"
+      ],
+      "limits": {
+        "messagesPerDay": 10,
+        "deepActionsPerDay": 1,
+        "storageLimit": "10MB"
+      }
+    },
+    "pro": {
+      "name": "Pro",
+      "price": 9.99,
+      "features": [
+        "Full access to Anima and GPTSoul",
+        "Priority response time",
+        "Image uploads",
+        "Private workspace storage",
+        "Email support"
+      ],
+      "limits": {
+        "messagesPerDay": 100,
+        "deepActionsPerDay": 10,
+        "storageLimit": "100MB"
+      }
+    },
+    "business": {
+      "name": "Business",
+      "price": 29.99,
+      "features": [
+        "Access to all agents except EvoVe",
+        "Custom branding",
+        "Team collaboration",
+        "Advanced analytics",
+        "Priority support"
+      ],
+      "limits": {
+        "messagesPerDay": 500,
+        "deepActionsPerDay": 25,
+        "storageLimit": "500MB"
+      }
+    },
+    "enterprise": {
+      "name": "Enterprise",
+      "price": 49.99,
+      "features": [
+        "Full access to all agents including EvoVe",
+        "Unlimited messages",
+        "Custom agent training",
+        "API access",
+        "Dedicated support",
+        "Custom integrations"
+      ],
+      "limits": {
+        "messagesPerDay": "Unlimited",
+        "deepActionsPerDay": 50,
+        "storageLimit": "1GB"
+      }
+    },
+    "trader": {
+      "name": "Trader",
+      "price": 19.99,
+      "features": [
+        "Access to Market Whisperer AI",
+        "Real-time trading signals",
+        "Market analysis",
+        "Risk assessment tools",
+        "Trading strategy recommendations",
+        "Daily market insights"
+      ],
+      "limits": {
+        "tradingSignalsPerDay": 10,
+        "marketAnalysesPerDay": 5,
+        "watchlistStocks": 20
+      }
+    },
+    "trader-pro": {
+      "name": "Trader Pro",
+      "price": 39.99,
+      "features": [
+        "All Trader features",
+        "Advanced technical analysis",
+        "Custom trading strategies",
+        "Portfolio optimization",
+        "Risk management tools",
+        "Priority market alerts",
+        "Historical backtesting"
+      ],
+      "limits": {
+        "tradingSignalsPerDay": 50,
+        "marketAnalysesPerDay": 20,
+        "watchlistStocks": 100
+      }
+    }
+  },
+  "featureMatrix": {
+    "uploadImages": ["pro", "business", "enterprise"],
+    "customBranding": ["business", "enterprise"],
+    "teamCollaboration": ["business", "enterprise"],
+    "apiAccess": ["enterprise"],
+    "customAgentTraining": ["enterprise"],
+    "advancedAnalytics": ["business", "enterprise"],
+    "societyMode": ["enterprise"],
+    "marketWhisperer": ["trader", "trader-pro"],
+    "tradingSignals": ["trader", "trader-pro"],
+    "technicalAnalysis": ["trader-pro"],
+    "portfolioOptimization": ["trader-pro"],
+    "riskManagement": ["trader", "trader-pro"],
+    "marketAlerts": ["trader", "trader-pro"],
+    "backtesting": ["trader-pro"]
+  },
+  "stripePlanIds": {
+    "free": "price_free",
+    "pro": "price_pro_monthly",
+    "business": "price_business_monthly",
+    "enterprise": "price_enterprise_monthly",
+    "trader": "price_trader_monthly",
+    "trader-pro": "price_trader_pro_monthly"
+  }
+}

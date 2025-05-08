@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# ╔═══════════════════════════════════════════╗
+# ║    🔥 SOULCOREHUB — BOOTSTRAP BUILDER     ║
+# ║     Autonomous Build Mode Initialization  ║
+# ╚═══════════════════════════════════════════╝
+
+echo "[🚀] Activating SoulCore Autonomous Builder Mode..."
+
+# 1. Launch MCP Server
+python3 ~/SoulCoreHub/mcp/mcp_main.py &
+echo "[🧠] MCP Server launched."
+
+# 2. Register Tools (MCP auto-registers via tool_registry)
+python3 -c "from mcp.tool_registry import get_registry; get_registry().load_tools_from_directory('tools')"
+echo "[🔧] Tools registered."
+
+# 3. Start Agents
+python3 ~/SoulCoreHub/anima_autonomous.py &
+echo "[✨] Anima active."
+python3 ~/SoulCoreHub/gptsoul_soulconfig.py &
+echo "[🧬] GPTSoul online."
+python3 ~/SoulCoreHub/evove_autonomous.py &
+echo "[🌀] EvoVe spinning up."
+python3 ~/SoulCoreHub/azur_cloud_core.py &
+echo "[🌩️] Azür channeling Azure."
+
+# 4. Launch GUI / Web Dashboard
+node ~/SoulCoreHub/server.js &
+echo "[🖥️] GUI dashboard deployed."
+
+# 5. Start Builder CLI Mode
+python3 ~/SoulCoreHub/anima_builder_cli.py -i
+
+echo "[✅] Bootstrap Builder Mode initialized. Agents standing by."
+
+echo "[📡] Run 'soulcore.sh help' for full CLI command list."
+
+# Optional: Add fallback heartbeat or healthcheck loops here
+

@@ -1,22 +1,39 @@
 #!/bin/bash
-# maintain_permissions.sh - Script to maintain executable permissions for SoulCoreHub
+# maintain_permissions.sh
+# Ensures all necessary files have executable permissions
 
-echo "Maintaining executable permissions for SoulCoreHub..."
+echo "=========================================="
+echo "🔒 SoulCoreHub Permission Maintenance"
+echo "=========================================="
 
-# Make all Python scripts in main directory executable
-find /Users/helo.im.ai/SoulCoreHub -maxdepth 1 -name "*.py" -exec chmod +x {} \;
+# Core Python scripts
+echo "📄 Setting permissions for core Python scripts..."
+find . -name "*.py" -type f -exec chmod +x {} \; 2>/dev/null
+echo "✅ Core Python scripts permissions set"
 
-# Make all shell scripts in scripts directory executable
-find /Users/helo.im.ai/SoulCoreHub/scripts -type f -name "*.sh" -exec chmod +x {} \;
+# Shell scripts
+echo "📄 Setting permissions for shell scripts..."
+find . -name "*.sh" -type f -exec chmod +x {} \; 2>/dev/null
+echo "✅ Shell scripts permissions set"
 
-# Make all Python scripts in key directories executable
-find /Users/helo.im.ai/SoulCoreHub/agents -type f -name "*.py" -exec chmod +x {} \;
-find /Users/helo.im.ai/SoulCoreHub/config_tools -type f -name "*.py" -exec chmod +x {} \;
-find /Users/helo.im.ai/SoulCoreHub/dev_tools -type f -name "*.py" -exec chmod +x {} \;
-find /Users/helo.im.ai/SoulCoreHub/aws_tools -type f -name "*.py" -exec chmod +x {} \;
+# Server files
+echo "📄 Setting permissions for server files..."
+chmod +x server.js 2>/dev/null
+echo "✅ Server files permissions set"
 
-# Make server.js executable
-chmod +x /Users/helo.im.ai/SoulCoreHub/server.js
+# Specific critical files
+echo "📄 Setting permissions for critical files..."
+chmod +x anima_autonomous.py 2>/dev/null
+chmod +x builder_mode.py 2>/dev/null
+chmod +x anima_builder_cli.py 2>/dev/null
+chmod +x pre_activation.sh 2>/dev/null
+chmod +x maintain_permissions.sh 2>/dev/null
+echo "✅ Critical files permissions set"
 
-echo "All permissions have been set to executable."
-echo "You can now safely run a full SoulCoreHub activation."
+# Secure sensitive files
+echo "🔒 Securing sensitive files..."
+chmod 700 .env 2>/dev/null
+echo "✅ Sensitive files secured"
+
+echo "✅ All permissions have been set!"
+echo "=========================================="

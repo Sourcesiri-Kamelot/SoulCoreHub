@@ -1,0 +1,2 @@
+# Additional requirements for skill scheduling
+apscheduler>=3.9.1

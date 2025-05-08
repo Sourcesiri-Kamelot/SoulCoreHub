@@ -1,0 +1,2 @@
+# Add your Python package dependencies here
+torch

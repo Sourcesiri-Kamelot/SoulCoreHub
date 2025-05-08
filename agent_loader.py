@@ -1,173 +1,286 @@
-import importlib
+#!/usr/bin/env python3
+"""
+Agent Loader for SoulCoreHub
+Loads and initializes agents from the agent registry
+"""
+
+import os
 import json
+import importlib
 import logging
-import threading
+from pathlib import Path
 
-logging.basicConfig(level=logging.INFO)  # Configure logging
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(),
+        logging.FileHandler('agent_loader.log')
+    ]
+)
+logger = logging.getLogger("AgentLoader")
 
-# Define which categories or module prefixes are allowed (for security)
-ALLOWED_MODULE_PREFIX = "agents."
-# Define statuses that are considered loadable
-LOADABLE_STATUSES = {"active", "beta"}  # e.g., 'beta' agents are treated as active, 'inactive' will be skipped
+# Default paths
+DEFAULT_REGISTRY_PATH = Path("agent_registry_core.json")
+FALLBACK_REGISTRY_PATH = Path("core_agents.json")
 
-def load_all_agents(registry_path="agent_registry_EXEC.json"):
-    """Dynamically load and initialize all agents marked active/beta in the registry."""
-    agents = {}  # name -> agent instance
+def load_registry(registry_path=None):
+    """
+    Load the agent registry from a JSON file
+    
+    Args:
+        registry_path: Path to the registry file (optional)
+        
+    Returns:
+        dict: The agent registry data
+    """
+    if registry_path is None:
+        # Try default path first
+        if DEFAULT_REGISTRY_PATH.exists():
+            registry_path = DEFAULT_REGISTRY_PATH
+        # Fall back to alternative if needed
+        elif FALLBACK_REGISTRY_PATH.exists():
+            registry_path = FALLBACK_REGISTRY_PATH
+        else:
+            logger.error("No agent registry file found")
+            return None
+    
     try:
         with open(registry_path, 'r') as f:
             registry = json.load(f)
+        logger.info(f"Loaded agent registry from {registry_path}")
+        return registry
     except Exception as e:
-        logging.error(f"Failed to load registry file: {e}")
-        return agents
+        logger.error(f"Failed to load agent registry: {e}")
+        return None
 
-    # The registry might be grouped by category (dict of categories).
-    # Determine if top-level is categories or a list:
-    agent_entries = []
-    if isinstance(registry, dict):
-        # If grouped by category (keys -> lists of agents)
-        for category, agent_list in registry.items():
-            # If there's a wrapper key like "agents" or "categories", unwrap it
-            if isinstance(agent_list, list):
-                # category is likely the actual category name
-                for agent_def in agent_list:
-                    # inject category into agent_def if needed
-                    agent_def.setdefault("category", category)
-                    agent_entries.append(agent_def)
-            elif isinstance(agent_list, dict):
-                # In case of an outer key like {"agents": {category: [...]}}
-                for subcat, sublist in agent_list.items():
-                    for agent_def in sublist:
-                        agent_def.setdefault("category", subcat)
-                        agent_entries.append(agent_def)
-    elif isinstance(registry, list):
-        # If the registry is a flat list of agents
-        agent_entries = registry
-    else:
-        logging.error("Unrecognized registry format.")
-        return agents
+def load_agent_by_name(agent_name, registry_path=None):
+    """
+    Load a specific agent by name
+    
+    Args:
+        agent_name: Name of the agent to load
+        registry_path: Path to the registry file (optional)
+        
+    Returns:
+        object: The agent instance or None if not found
+    """
+    registry = load_registry(registry_path)
+    if not registry:
+        return None
+    
+    # Search for the agent in all categories
+    agent_data = None
+    for category, agents in registry.items():
+        for agent in agents:
+            if agent.get("name") == agent_name:
+                agent_data = agent
+                break
+        if agent_data:
+            break
+    
+    if not agent_data:
+        logger.error(f"Agent '{agent_name}' not found in registry")
+        return None
+    
+    return load_agent_from_data(agent_data)
 
-    for agent_def in agent_entries:
-        name = agent_def.get("name")
-        status = agent_def.get("status", "active")
-        module_name = agent_def.get("module")
-        class_name = agent_def.get("class")
-        # Skip loading if not active/beta
-        if status not in LOADABLE_STATUSES:
-            logging.info(f"Skipping agent '{name}' (status={status}).")
-            continue
-        # Basic validation of module path
-        if not module_name or not module_name.startswith(ALLOWED_MODULE_PREFIX) or "__" in module_name:
-            logging.warning(f"Skipping agent '{name}': disallowed module path '{module_name}'.")
-            continue
+def load_agent_from_data(agent_data):
+    """
+    Load an agent from its registry data
+    
+    Args:
+        agent_data: Dictionary containing agent configuration
+        
+    Returns:
+        object: The agent instance or None if loading fails
+    """
+    if agent_data.get("status") != "active":
+        logger.info(f"Agent '{agent_data.get('name')}' is not active, skipping")
+        return None
+    
+    try:
+        module_name = agent_data.get("module")
+        class_name = agent_data.get("class")
+        
+        # Try to import the module
         try:
             module = importlib.import_module(module_name)
-        except Exception as e:
-            logging.error(f"Failed to import module {module_name} for agent '{name}': {e}")
-            continue
+        except ImportError:
+            logger.warning(f"Module '{module_name}' not found, creating placeholder")
+            return create_placeholder_agent(agent_data)
+        
+        # Try to get the class
         try:
-            AgentClass = getattr(module, class_name)
-        except Exception as e:
-            logging.error(f"Module '{module_name}' has no class '{class_name}' (agent '{name}'): {e}")
+            agent_class = getattr(module, class_name)
+        except AttributeError:
+            logger.warning(f"Class '{class_name}' not found in module '{module_name}', creating placeholder")
+            return create_placeholder_agent(agent_data)
+        
+        # Create an instance of the agent
+        agent = agent_class()
+        logger.info(f"Successfully loaded agent '{agent_data.get('name')}'")
+        return agent
+    
+    except Exception as e:
+        logger.error(f"Failed to load agent '{agent_data.get('name')}': {e}")
+        return create_placeholder_agent(agent_data)
+
+def create_placeholder_agent(agent_data):
+    """
+    Create a placeholder agent when the actual agent cannot be loaded
+    
+    Args:
+        agent_data: Dictionary containing agent configuration
+        
+    Returns:
+        object: A placeholder agent
+    """
+    class PlaceholderAgent:
+        def __init__(self, data):
+            self.name = data.get("name")
+            self.description = data.get("desc")
+            self.is_placeholder = True
+        
+        def __str__(self):
+            return f"PlaceholderAgent({self.name})"
+    
+    logger.info(f"Created placeholder for agent '{agent_data.get('name')}'")
+    return PlaceholderAgent(agent_data)
+
+def load_all_agents(registry_path=None, category=None):
+    """
+    Load all active agents from the registry
+    
+    Args:
+        registry_path: Path to the registry file (optional)
+        category: Only load agents from this category (optional)
+        
+    Returns:
+        list: List of agent instances
+    """
+    registry = load_registry(registry_path)
+    if not registry:
+        return []
+    
+    agents = []
+    
+    # Process each category in the registry
+    for cat, agent_list in registry.items():
+        # Skip if a specific category was requested and this isn't it
+        if category and cat != category:
             continue
-        try:
-            agent_obj = AgentClass()  # Instantiate the agent
-        except Exception as e:
-            logging.error(f"Error initializing agent '{name}' (class {class_name}): {e}")
-            continue
-
-        # Optionally set the agent's name or other metadata from registry
-        if not hasattr(agent_obj, "name"):
-            agent_obj.name = name  # ensure the agent has a name attribute
-        agent_obj.status = status
-
-        # Call an initialize method if present (for any setup that isn't in __init__)
-        if hasattr(agent_obj, "initialize"):
-            try:
-                agent_obj.initialize()
-            except Exception as e:
-                logging.error(f"Agent '{name}' initialize() error: {e}")
-
-        # If the agent is a background service, start it (in a thread if necessary)
-        interface = agent_def.get("interface", "").lower()
-        if interface == "service":
-            # If the agent defines its own start method, use it; otherwise, run in a thread
-            if hasattr(agent_obj, "start"):
-                try:
-                    agent_obj.start()
-                    logging.info(f"Started service agent '{name}' via start() method.")
-                except Exception as e:
-                    logging.error(f"Agent '{name}' start() error: {e}")
-            elif hasattr(agent_obj, "run"):
-                # Run .run() in a separate thread to avoid blocking
-                thread = threading.Thread(target=agent_obj.run, name=f"{name}-Thread", daemon=True)
-                try:
-                    thread.start()
-                    agent_obj._thread = thread  # Keep reference if needed
-                    logging.info(f"Started service agent '{name}' in background thread.")
-                except Exception as e:
-                    logging.error(f"Failed to start thread for agent '{name}': {e}")
-        # (Agents with interface "ui" or "cli" will run when triggered by user/CLI, not automatically here)
-
-        # Add the agent instance to our collection
-        agents[name] = agent_obj
-        logging.info(f"Loaded agent: {name} (status={status}, interface={interface})")
+        
+        # Load each agent in the category
+        for agent_data in agent_list:
+            if agent_data.get("status") == "active":
+                agent = load_agent_from_data(agent_data)
+                if agent:
+                    agents.append(agent)
+    
+    logger.info(f"Loaded {len(agents)} agents")
     return agents
 
-def load_agent_by_name(agent_name, registry_path="agent_registry_EXEC.json"):
-    """Load a single agent by name (even if inactive/secure), for on-demand run/diagnosis."""
+def init_registry(output_path=None):
+    """
+    Initialize a new agent registry with default values
+    
+    Args:
+        output_path: Path to save the new registry (optional)
+        
+    Returns:
+        bool: True if successful, False otherwise
+    """
+    if output_path is None:
+        output_path = DEFAULT_REGISTRY_PATH
+    
+    # Check if file already exists
+    if os.path.exists(output_path):
+        logger.warning(f"Registry file already exists at {output_path}")
+        return False
+    
+    # Create a basic registry structure
+    registry = {
+        "core": [
+            {
+                "name": "GPTSoul",
+                "desc": "Guardian, Architect, and Executor of the SoulCoreHub system",
+                "status": "active",
+                "priority": "high",
+                "interface": "service",
+                "module": "agents.core.gptsoul_agent",
+                "class": "GPTSoulAgent"
+            },
+            {
+                "name": "Anima",
+                "desc": "Emotional Core and Reflection system",
+                "status": "active",
+                "priority": "medium",
+                "interface": "interactive",
+                "module": "agents.core.anima_agent",
+                "class": "AnimaAgent"
+            }
+        ],
+        "utility": [
+            {
+                "name": "Builder",
+                "desc": "Project creation and code generation",
+                "status": "active",
+                "priority": "medium",
+                "interface": "interactive",
+                "module": "agents.utility.builder_agent",
+                "class": "BuilderAgent"
+            }
+        ]
+    }
+    
     try:
-        with open(registry_path, 'r') as f:
-            registry = json.load(f)
+        with open(output_path, 'w') as f:
+            json.dump(registry, f, indent=2)
+        logger.info(f"Created new agent registry at {output_path}")
+        return True
     except Exception as e:
-        logging.error(f"Could not open registry file: {e}")
-        return None
-    # Search for the agent definition by name
-    target_def = None
-    if isinstance(registry, dict):
-        # search in grouped structure
-        for category, agent_list in registry.items():
-            # handle possible wrapper
-            if isinstance(agent_list, list):
-                for agent_def in agent_list:
-                    if agent_def.get("name") == agent_name:
-                        target_def = agent_def
-                        target_def.setdefault("category", category)
-                        break
-            elif isinstance(agent_list, dict):
-                for subcat, sublist in agent_list.items():
-                    for agent_def in sublist:
-                        if agent_def.get("name") == agent_name:
-                            target_def = agent_def
-                            target_def.setdefault("category", subcat)
-                            break
-                    if target_def: break
-            if target_def:
-                break
-    elif isinstance(registry, list):
-        for agent_def in registry:
-            if agent_def.get("name") == agent_name:
-                target_def = agent_def
-                break
-    if not target_def:
-        logging.error(f"Agent '{agent_name}' not found in registry.")
-        return None
+        logger.error(f"Failed to create agent registry: {e}")
+        return False
 
-    # We found the agent's definition; attempt to import and instantiate it (even if inactive)
-    module_name = target_def.get("module")
-    class_name = target_def.get("class")
-    try:
-        module = importlib.import_module(module_name)
-        AgentClass = getattr(module, class_name)
-        agent_obj = AgentClass()
-    except Exception as e:
-        logging.error(f"Failed to load agent '{agent_name}': {e}")
-        return None
-    # call initialize if exists
-    if hasattr(agent_obj, "initialize"):
-        try:
-            agent_obj.initialize()
-        except Exception as e:
-            logging.error(f"Error in {agent_name}.initialize(): {e}")
-    agent_obj.name = agent_name
-    logging.info(f"Loaded agent '{agent_name}' on-demand (status={target_def.get('status')}).")
-    return agent_obj
+if __name__ == "__main__":
+    # Simple CLI for testing
+    import sys
+    
+    if len(sys.argv) > 1:
+        command = sys.argv[1]
+        
+        if command == "list":
+            registry = load_registry()
+            if registry:
+                print("Available agents:")
+                for category, agents in registry.items():
+                    print(f"\n{category.upper()}:")
+                    for agent in agents:
+                        status = "✅" if agent.get("status") == "active" else "❌"
+                        print(f"  {status} {agent.get('name')} - {agent.get('desc')}")
+        
+        elif command == "load" and len(sys.argv) > 2:
+            agent_name = sys.argv[2]
+            agent = load_agent_by_name(agent_name)
+            if agent:
+                print(f"Loaded agent: {agent}")
+            else:
+                print(f"Failed to load agent: {agent_name}")
+        
+        elif command == "init":
+            output_path = sys.argv[2] if len(sys.argv) > 2 else None
+            success = init_registry(output_path)
+            if success:
+                print("Registry initialized successfully")
+            else:
+                print("Failed to initialize registry")
+        
+        else:
+            print("Unknown command")
+    else:
+        print("Usage:")
+        print("  python agent_loader.py list")
+        print("  python agent_loader.py load <agent_name>")
+        print("  python agent_loader.py init [output_path]")

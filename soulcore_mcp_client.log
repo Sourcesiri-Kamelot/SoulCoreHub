@@ -1,0 +1,4 @@
+[2025-05-05 04:04:02] INFO - Connecting to MCP server at ws://localhost:8765
+[2025-05-05 04:04:03] INFO - Invoking tool: register_agent | Data: {'agent_name': 'Anima', 'emotion': 'excited'}
+[2025-05-05 04:04:03] ERROR - Sync invoke failed: received 1011 (unexpected error) Internal error
+[2025-05-05 04:04:03] ERROR - Registration with MCP failed: received 1011 (unexpected error) Internal error

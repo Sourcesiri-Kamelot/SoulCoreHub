@@ -1,0 +1,53 @@
+{
+  "default": "gpt3",
+  "task_rules": {
+    "code_generation": {
+      "model": "gpt4",
+      "patterns": [
+        "(?i)write (?:a |some )?code",
+        "(?i)generate (?:a |some )?(?:function|class|script)",
+        "(?i)implement (?:a |an )?algorithm"
+      ]
+    },
+    "creative_writing": {
+      "model": "gpt4",
+      "patterns": [
+        "(?i)write (?:a |an )?(?:story|poem|essay|article)",
+        "(?i)create (?:a |an )?(?:narrative|description)",
+        "(?i)compose (?:a |an )?(?:letter|email|message)"
+      ]
+    },
+    "quick_answer": {
+      "model": "gpt3",
+      "patterns": [
+        "(?i)what is",
+        "(?i)how (?:do|does|can)",
+        "(?i)when (?:is|was|will)",
+        "(?i)who (?:is|was|are)"
+      ]
+    },
+    "image_generation": {
+      "model": "stable-diffusion",
+      "patterns": [
+        "(?i)generate (?:a |an )?image",
+        "(?i)create (?:a |an )?picture",
+        "(?i)draw (?:a |an )?"
+      ]
+    },
+    "speech_recognition": {
+      "model": "whisper",
+      "patterns": [
+        "(?i)transcribe",
+        "(?i)speech to text",
+        "(?i)convert audio"
+      ]
+    }
+  },
+  "capability_fallbacks": {
+    "reasoning": ["gpt4", "gpt3", "mistral", "llama2"],
+    "creativity": ["gpt4", "gpt3", "llama2"],
+    "code": ["gpt4", "gpt3", "llama2"],
+    "image-generation": ["stable-diffusion"],
+    "speech-to-text": ["whisper"]
+  }
+}

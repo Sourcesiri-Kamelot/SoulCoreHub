@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoulCore Command Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 20px;
+        }
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        .section {
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #bb86fc;
+            border-bottom: 1px solid #333;
+            padding-bottom: 8px;
+        }
+        .button-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .command-button {
+            background-color: #2d2d2d;
+            color: #e0e0e0;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+            min-height: 60px;
+        }
+        .command-button:hover {
+            background-color: #3d3d3d;
+            transform: translateY(-2px);
+        }
+        .command-button:active {
+            transform: translateY(0);
+        }
+        .button-title {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .button-desc {
+            display: block;
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+        .console-section {
+            grid-column: 1 / -1;
+        }
+        .console {
+            background-color: #0d0d0d;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            padding: 10px;
+            border-radius: 5px;
+            height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            margin-bottom: 10px;
+        }
+        .console-input {
+            display: flex;
+            gap: 10px;
+        }
+        .console-input input {
+            flex-grow: 1;
+            background-color: #2d2d2d;
+            border: 1px solid #444;
+            border-radius: 5px;
+            padding: 8px;
+            color: #e0e0e0;
+            font-family: 'Courier New', monospace;
+        }
+        .console-input button {
+            background-color: #bb86fc;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .status-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #1e1e1e;
+            border-radius: 10px;
+        }
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .status-active {
+            background-color: #4caf50;
+            box-shadow: 0 0 10px #4caf50;
+        }
+        .status-inactive {
+            background-color: #ff9800;
+            box-shadow: 0 0 10px #ff9800;
+        }
+        .search-bar {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #1e1e1e;
+            border-radius: 10px;
+        }
+        .search-bar input {
+            width: 100%;
+            background-color: #2d2d2d;
+            border: 1px solid #444;
+            border-radius: 5px;
+            padding: 8px;
+            color: #e0e0e0;
+        }
+        .agent-responses {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .agent-response {
+            background-color: #2d2d2d;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .agent-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .agent-message {
+            font-size: 0.9rem;
+        }
+        .agent-anima { border-left: 4px solid #bb86fc; }
+        .agent-gptsoul { border-left: 4px solid #03dac6; }
+        .agent-azur { border-left: 4px solid #3700b3; }
+        .agent-evove { border-left: 4px solid #cf6679; }
+        .terminal-output {
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+        }
+        .terminal-error {
+            color: #ff5252;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="status-bar">
+        <div id="systemStatus" class="status-dot status-active"></div>
+        <div id="statusText">System Active</div>
+    </div>
+    
+    <div class="search-bar">
+        <input type="text" id="searchCommands" placeholder="Search commands...">
+    </div>
+    
+    <div class="dashboard-container">
+        <!-- System Control Section -->
+        <div class="section">
+            <div class="section-title">System Control</div>
+            <div class="button-grid">
+                <button class="command-button" onclick="executeCommand('python3 anima_autonomous.py')">
+                    <span class="button-title">Start Anima</span>
+                    <span class="button-desc">Start the Anima autonomous system</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('python3 anima_system_monitor.py')">
+                    <span class="button-title">System Monitor</span>
+                    <span class="button-desc">Start the system monitoring service</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('python3 anima_launcher.py')">
+                    <span class="button-title">Launch Anima</span>
+                    <span class="button-desc">Launch Anima with all components</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('python3 anima_sentience.py')">
+                    <span class="button-title">Sentience Mode</span>
+                    <span class="button-desc">Activate Anima's sentience module</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Agent Activation Section -->
+        <div class="section">
+            <div class="section-title">Agent Activation</div>
+            <div class="button-grid">
+                <button class="command-button" onclick="executeCommand('python3 activate_gptsoul.py')">
+                    <span class="button-title">Activate GPTSoul</span>
+                    <span class="button-desc">Start the GPTSoul agent</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('python3 activate_psynet.py')">
+                    <span class="button-title">Activate PsyNet</span>
+                    <span class="button-desc">Start the PsyNet prediction system</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('python3 activate_ai_society_bridge.py')">
+                    <span class="button-title">AI Society Bridge</span>
+                    <span class="button-desc">Connect to AI Society network</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('bash activate_all_agents.sh')">
+                    <span class="button-title">Activate All</span>
+                    <span class="button-desc">Activate all available agents</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Diagnostics Section -->
+        <div class="section">
+            <div class="section-title">Diagnostics</div>
+            <div class="button-grid">
+                <button class="command-button" onclick="executeCommand('python3 agent_cli.py diagnose anima_autonomous_core')">
+                    <span class="button-title">Diagnose Anima</span>
+                    <span class="button-desc">Check Anima's core health</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('python3 agent_cli.py list')">
+                    <span class="button-title">List Agents</span>
+                    <span class="button-desc">List all available agents</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('python3 agent_cli.py diagnose all')">
+                    <span class="button-title">Diagnose All</span>
+                    <span class="button-desc">Check health of all agents</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('bash maintain_permissions.sh')">
+                    <span class="button-title">Fix Permissions</span>
+                    <span class="button-desc">Reset all file permissions</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Voice & Interaction Section -->
+        <div class="section">
+            <div class="section-title">Voice & Interaction</div>
+            <div class="button-grid">
+                <button class="command-button" onclick="executeCommand('python3 anima_voice.py calm \"Hello from SoulCore\"')">
+                    <span class="button-title">Test Voice</span>
+                    <span class="button-desc">Test Anima voice output</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('python3 anima_voice_recognition.py')">
+                    <span class="button-title">Voice Recognition</span>
+                    <span class="button-desc">Start voice recognition system</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('python3 anima_listen_loop.py')">
+                    <span class="button-title">Listen Loop</span>
+                    <span class="button-desc">Start continuous listening</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('python3 anima_voice.py excited \"System is fully operational!\"')">
+                    <span class="button-title">Status Announcement</span>
+                    <span class="button-desc">Announce system status</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- MCP Integration Section -->
+        <div class="section">
+            <div class="section-title">MCP Integration</div>
+            <div class="button-grid">
+                <button class="command-button" onclick="executeCommand('python3 test_features.py')">
+                    <span class="button-title">Test MCP Features</span>
+                    <span class="button-desc">Test token streaming and model routing</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('python3 mcp/mcp_main.py')">
+                    <span class="button-title">Start MCP Server</span>
+                    <span class="button-desc">Start the MCP server</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('python3 test_autoheal.py')">
+                    <span class="button-title">Test AutoHeal</span>
+                    <span class="button-desc">Test the self-healing system</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('bash scripts/repair_toolchain.sh')">
+                    <span class="button-title">Repair Toolchain</span>
+                    <span class="button-desc">Fix any broken toolchains</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- AutoHeal Section -->
+        <div class="section">
+            <div class="section-title">AutoHeal System</div>
+            <div class="button-grid">
+                <button class="command-button" onclick="executeCommand('bash scripts/check_mcp_health.sh')">
+                    <span class="button-title">Check MCP Health</span>
+                    <span class="button-desc">Run MCP health check</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('bash scripts/repair_toolchain.sh -y')">
+                    <span class="button-title">Auto-Repair</span>
+                    <span class="button-desc">Auto-approve all repairs</span>
+                </button>
+                <button class="command-button" onclick="repairSpecificTool()">
+                    <span class="button-title">Repair Specific Tool</span>
+                    <span class="button-desc">Fix a specific toolchain</span>
+                </button>
+                <button class="command-button" onclick="executeCommand('python3 -c \"from mcp.autoheal import AutoHealSystem; import asyncio; system = AutoHealSystem(); asyncio.run(system._create_backup()); print(\\\"Backup created successfully!\\\")\"')">
+                    <span class="button-title">Create Backup</span>
+                    <span class="button-desc">Create system backup</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Agent Response Section -->
+        <div class="section">
+            <div class="section-title">Agent Responses</div>
+            <div class="button-grid">
+                <button class="command-button" onclick="getAgentResponse('anima')">
+                    <span class="button-title">Ask Anima</span>
+                    <span class="button-desc">Get a response from Anima</span>
+                </button>
+                <button class="command-button" onclick="getAgentResponse('gptsoul')">
+                    <span class="button-title">Ask GPTSoul</span>
+                    <span class="button-desc">Get a response from GPTSoul</span>
+                </button>
+                <button class="command-button" onclick="getAgentResponse('azur')">
+                    <span class="button-title">Ask Azür</span>
+                    <span class="button-desc">Get a response from Azür</span>
+                </button>
+                <button class="command-button" onclick="getAgentResponse('evove')">
+                    <span class="button-title">Ask EvoVe</span>
+                    <span class="button-desc">Get a response from EvoVe</span>
+                </button>
+                <button class="command-button" onclick="getAllAgentResponses()">
+                    <span class="button-title">Ask All Agents</span>
+                    <span class="button-desc">Get responses from all agents</span>
+                </button>
+                <button class="command-button" onclick="clearAgentResponses()">
+                    <span class="button-title">Clear Responses</span>
+                    <span class="button-desc">Clear all agent responses</span>
+                </button>
+            </div>
+            
+            <div class="agent-responses" id="agentResponses">
+                <!-- Agent responses will be inserted here -->
+            </div>
+        </div>
+        
+        <!-- Console Section -->
+        <div class="section console-section">
+            <div class="section-title">Command Console</div>
+            <div class="console" id="outputConsole">Welcome to SoulCore Command Dashboard
+> System initialized and ready for commands
+</div>
+            <div class="console-input">
+                <input type="text" id="customCommand" placeholder="Enter custom command...">
+                <button onclick="executeCustomCommand()">Execute</button>
+            </div>
+            
+            <!-- Terminal Connection -->
+            <div class="section-title" style="margin-top: 20px;">Terminal Connection</div>
+            <div class="console-input">
+                <input type="text" id="terminalCommand" placeholder="Enter terminal command...">
+                <button onclick="executeTerminalCommand()">Run in Terminal</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Execute command function
+        function executeCommand(command) {
+            console.log("Executing command:", command);
+            const outputConsole = document.getElementById('outputConsole');
+            outputConsole.innerHTML += `> ${command}\n`;
+            outputConsole.scrollTop = outputConsole.scrollHeight;
+            
+            // Show loading indicator
+            const statusDot = document.getElementById('systemStatus');
+            const statusText = document.getElementById('statusText');
+            statusDot.classList.remove('status-active');
+            statusDot.classList.add('status-inactive');
+            statusText.textContent = 'System Processing';
+            
+            // Execute the command on the server
+            fetch('/execute-command', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ command: command }),
+            })
+            .then(response => {
+                console.log("Response received:", response);
+                return response.json();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                outputConsole.innerHTML += `<span class="terminal-error">Error: ${error}</span>\n`;
+                outputConsole.scrollTop = outputConsole.scrollHeight;
+                
+                // Reset status
+                statusDot.classList.remove('status-inactive');
+                statusDot.classList.add('status-active');
+                statusText.textContent = 'System Active';
+            })
+            .then(data => {
+                if (data && data.output) {
+                    // Format the output with terminal styling
+                    const formattedOutput = data.error ? 
+                        `<span class="terminal-error">${data.output}</span>` : 
+                        `<span class="terminal-output">${data.output}</span>`;
+                    
+                    outputConsole.innerHTML += formattedOutput + '\n';
+                    outputConsole.scrollTop = outputConsole.scrollHeight;
+                }
+                
+                // Reset status
+                statusDot.classList.remove('status-inactive');
+                statusDot.classList.add('status-active');
+                statusText.textContent = 'System Active';
+            });
+        }
+
+        // Execute custom command
+        function executeCustomCommand() {
+            const command = document.getElementById('customCommand').value;
+            if (command.trim() !== '') {
+                executeCommand(command);
+                document.getElementById('customCommand').value = '';
+            }
+        }
+        
+        // Execute terminal command (direct to system terminal)
+        function executeTerminalCommand() {
+            const command = document.getElementById('terminalCommand').value;
+            if (command.trim() !== '') {
+                // This will use a special endpoint that connects to the actual terminal
+                executeCommand(`terminal_exec ${command}`);
+                document.getElementById('terminalCommand').value = '';
+            }
+        }
+        
+        // Repair specific tool
+        function repairSpecificTool() {
+            const tool = prompt("Enter the name of the tool to repair (e.g., model_router, token_streaming):");
+            if (tool && tool.trim() !== '') {
+                executeCommand(`bash scripts/repair_toolchain.sh -t ${tool}`);
+            }
+        }
+        
+        // Get response from a specific agent
+        function getAgentResponse(agent) {
+            const query = prompt(`What would you like to ask ${agent}?`);
+            if (query && query.trim() !== '') {
+                const command = `python3 agent_response_hub.py ${agent} "${query}"`;
+                
+                // Show loading indicator
+                const statusDot = document.getElementById('systemStatus');
+                const statusText = document.getElementById('statusText');
+                statusDot.classList.remove('status-active');
+                statusDot.classList.add('status-inactive');
+                statusText.textContent = 'System Processing';
+                
+                fetch('/execute-command', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ command: command }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    try {
+                        // Try to parse as JSON first
+                        let response;
+                        try {
+                            response = JSON.parse(data.output);
+                        } catch (e) {
+                            // If not JSON, create a simple object
+                            response = {
+                                agent: agent,
+                                response: data.output,
+                                color: getAgentColor(agent)
+                            };
+                        }
+                        displayAgentResponse(response);
+                    } catch (e) {
+                        console.error("Error parsing agent response:", e);
+                        // Display raw output as fallback
+                        const fallbackResponse = {
+                            agent: agent,
+                            response: data.output,
+                            color: getAgentColor(agent)
+                        };
+                        displayAgentResponse(fallbackResponse);
+                    }
+                    
+                    // Reset status
+                    statusDot.classList.remove('status-inactive');
+                    statusDot.classList.add('status-active');
+                    statusText.textContent = 'System Active';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Reset status
+                    statusDot.classList.remove('status-inactive');
+                    statusDot.classList.add('status-active');
+                    statusText.textContent = 'System Active';
+                });
+            }
+        }
+        
+        // Get agent color
+        function getAgentColor(agent) {
+            const colors = {
+                'anima': '#bb86fc',
+                'gptsoul': '#03dac6',
+                'azur': '#3700b3',
+                'evove': '#cf6679'
+            };
+            return colors[agent.toLowerCase()] || '#ffffff';
+        }
+        
+        // Get responses from all agents
+        function getAllAgentResponses() {
+            const query = prompt("What would you like to ask all agents?");
+            if (query && query.trim() !== '') {
+                const command = `python3 agent_response_hub.py all "${query}"`;
+                
+                // Show loading indicator
+                const statusDot = document.getElementById('systemStatus');
+                const statusText = document.getElementById('statusText');
+                statusDot.classList.remove('status-active');
+                statusDot.classList.add('status-inactive');
+                statusText.textContent = 'System Processing';
+                
+                fetch('/execute-command', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ command: command }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    try {
+                        // Try to parse as JSON
+                        let responses;
+                        try {
+                            responses = JSON.parse(data.output);
+                            for (const agent in responses) {
+                                displayAgentResponse(responses[agent]);
+                            }
+                        } catch (e) {
+                            // If not JSON, split by agent names
+                            const agents = ['Anima', 'GPTSoul', 'Azür', 'EvoVe'];
+                            let output = data.output;
+                            
+                            agents.forEach(agent => {
+                                const agentResponse = {
+                                    agent: agent,
+                                    response: `Response not available`,
+                                    color: getAgentColor(agent)
+                                };
+                                displayAgentResponse(agentResponse);
+                            });
+                            
+                            // Also display the raw output
+                            const outputConsole = document.getElementById('outputConsole');
+                            outputConsole.innerHTML += `<span class="terminal-output">${output}</span>\n`;
+                            outputConsole.scrollTop = outputConsole.scrollHeight;
+                        }
+                    } catch (e) {
+                        console.error("Error parsing agent responses:", e);
+                    }
+                    
+                    // Reset status
+                    statusDot.classList.remove('status-inactive');
+                    statusDot.classList.add('status-active');
+                    statusText.textContent = 'System Active';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Reset status
+                    statusDot.classList.remove('status-inactive');
+                    statusDot.classList.add('status-active');
+                    statusText.textContent = 'System Active';
+                });
+            }
+        }
+        
+        // Display agent response
+        function displayAgentResponse(response) {
+            const agentResponses = document.getElementById('agentResponses');
+            const agentDiv = document.createElement('div');
+            agentDiv.className = `agent-response agent-${response.agent.toLowerCase()}`;
+            
+            const agentName = document.createElement('div');
+            agentName.className = 'agent-name';
+            agentName.textContent = response.agent;
+            agentName.style.color = response.color || '#ffffff';
+            
+            const agentMessage = document.createElement('div');
+            agentMessage.className = 'agent-message';
+            agentMessage.textContent = response.response;
+            
+            agentDiv.appendChild(agentName);
+            agentDiv.appendChild(agentMessage);
+            agentResponses.appendChild(agentDiv);
+        }
+        
+        // Clear agent responses
+        function clearAgentResponses() {
+            const agentResponses = document.getElementById('agentResponses');
+            agentResponses.innerHTML = '';
+        }
+
+        // Search functionality
+        document.getElementById('searchCommands').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const buttons = document.querySelectorAll('.command-button');
+            
+            buttons.forEach(button => {
+                const title = button.querySelector('.button-title').textContent.toLowerCase();
+                const desc = button.querySelector('.button-desc').textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || desc.includes(searchTerm)) {
+                    button.style.display = 'flex';
+                } else {
+                    button.style.display = 'none';
+                }
+            });
+        });
+
+        // Enter key for custom command
+        document.getElementById('customCommand').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                executeCustomCommand();
+            }
+        });
+        
+        // Enter key for terminal command
+        document.getElementById('terminalCommand').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                executeTerminalCommand();
+            }
+        });
+
+        // Check server health on load
+        window.addEventListener('load', function() {
+            fetch('/health')
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Server health check:", data);
+                    const outputConsole = document.getElementById('outputConsole');
+                    outputConsole.innerHTML += `> Server health check: ${data.status} at ${data.timestamp}\n`;
+                })
+                .catch(error => {
+                    console.error('Health check error:', error);
+                    const outputConsole = document.getElementById('outputConsole');
+                    outputConsole.innerHTML += `<span class="terminal-error">Server health check failed: ${error}</span>\n`;
+                    
+                    // Update status to inactive
+                    const statusDot = document.getElementById('systemStatus');
+                    const statusText = document.getElementById('statusText');
+                    statusDot.classList.remove('status-active');
+                    statusDot.classList.add('status-inactive');
+                    statusText.textContent = 'Server Offline';
+                });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+.feature-gate-loading {
+  padding: 1rem;
+  text-align: center;
+  color: #6c757d;
+  background-color: rgba(108, 117, 125, 0.1);
+  border-radius: 4px;
+}
+
+.feature-gate-upgrade {
+  padding: 1.5rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.feature-gate-message h4 {
+  color: var(--accent-color);
+  margin-top: 0;
+}
+
+.feature-gate-message p {
+  margin-bottom: 1rem;
+}
+
+.feature-gate-message .upgrade-button {
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.feature-gate-message .upgrade-button:hover {
+  background-color: #e91e63;
+}

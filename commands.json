@@ -1,0 +1,4 @@
+{
+"builder": "python3 builder_mode.py",
+"builder_mode": "python3 builder_mode.py"
+}

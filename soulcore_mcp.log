@@ -229,3 +229,102 @@
 2025-05-01 08:28:24,331 [INFO] server listening on 127.0.0.1:8765
 2025-05-01 08:28:24,331 [INFO] server listening on [::1]:8765
 2025-05-01 08:28:24,331 [INFO] MCP Divine Server started on localhost:8765
+2025-05-05 04:58:10,554 [INFO] Ensured directory exists: /Users/helo.im.ai/SoulCoreHub/data
+2025-05-05 04:58:10,555 [INFO] Ensured directory exists: /Users/helo.im.ai/SoulCoreHub/logs
+2025-05-05 04:58:10,555 [INFO] Ensured directory exists: /Users/helo.im.ai/SoulCoreHub/models
+2025-05-05 04:58:10,555 [INFO] Ensured directory exists: /Users/helo.im.ai/SoulCoreHub/gallery
+2025-05-05 04:58:10,555 [INFO] Ensured directory exists: /Users/helo.im.ai/SoulCoreHub/voices
+2025-05-05 04:58:10,555 [INFO] Ensured directory exists: /Users/helo.im.ai/SoulCoreHub/data/github_cache
+2025-05-05 04:58:10,555 [INFO] Ensured directory exists: /Users/helo.im.ai/SoulCoreHub/data/programming_cache
+2025-05-05 04:58:10,555 [INFO] Ensured directory exists: /Users/helo.im.ai/SoulCoreHub/data/internet_cache
+2025-05-05 04:58:10,555 [INFO] Loaded 46 tools from manifest
+2025-05-05 04:58:10,555 [INFO] Loaded emotional memory with 5 entries
+2025-05-05 04:58:10,555 [INFO] Loaded 8 trusted paths
+2025-05-05 04:58:10,555 [INFO] Anima File Operations initialized
+2025-05-05 04:58:10,556 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,556 [INFO] Registered tool: read_file
+2025-05-05 04:58:10,556 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,556 [INFO] Registered tool: write_file
+2025-05-05 04:58:10,556 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,556 [INFO] Registered tool: list_directory
+2025-05-05 04:58:10,557 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,557 [INFO] Registered tool: search_file
+2025-05-05 04:58:10,557 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,557 [INFO] Registered tool: execute_command
+2025-05-05 04:58:10,557 [INFO] File operations tools registered
+2025-05-05 04:58:10,557 [INFO] Programming knowledge provider initialized
+2025-05-05 04:58:10,557 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,557 [INFO] Registered tool: programming_get_language_info
+2025-05-05 04:58:10,557 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,557 [INFO] Registered tool: programming_get_all_languages
+2025-05-05 04:58:10,557 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,557 [INFO] Registered tool: programming_get_language_syntax
+2025-05-05 04:58:10,558 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,558 [INFO] Registered tool: programming_search_documentation
+2025-05-05 04:58:10,558 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,558 [INFO] Registered tool: programming_get_code_snippet
+2025-05-05 04:58:10,558 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,558 [INFO] Registered tool: programming_detect_language
+2025-05-05 04:58:10,558 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,558 [INFO] Registered tool: programming_get_best_practices
+2025-05-05 04:58:10,558 [INFO] Programming knowledge tools registered
+2025-05-05 04:58:10,558 [INFO] GitHub connector initialized
+2025-05-05 04:58:10,558 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,558 [INFO] Registered tool: github_search_code
+2025-05-05 04:58:10,559 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,559 [INFO] Registered tool: github_search_repositories
+2025-05-05 04:58:10,559 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,559 [INFO] Registered tool: github_get_file_content
+2025-05-05 04:58:10,559 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,559 [INFO] Registered tool: github_get_repository_structure
+2025-05-05 04:58:10,559 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,559 [INFO] Registered tool: github_find_code_examples
+2025-05-05 04:58:10,559 [INFO] GitHub tools registered
+2025-05-05 04:58:10,559 [INFO] Internet access module initialized
+2025-05-05 04:58:10,559 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,559 [INFO] Registered tool: internet_search_web
+2025-05-05 04:58:10,560 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,560 [INFO] Registered tool: internet_get_webpage_content
+2025-05-05 04:58:10,560 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,560 [INFO] Registered tool: internet_get_news
+2025-05-05 04:58:10,560 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,560 [INFO] Registered tool: internet_get_weather
+2025-05-05 04:58:10,560 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,560 [INFO] Registered tool: internet_detect_api_endpoint
+2025-05-05 04:58:10,560 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,560 [INFO] Registered tool: internet_call_api
+2025-05-05 04:58:10,561 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,561 [INFO] Registered tool: internet_summarize_webpage
+2025-05-05 04:58:10,561 [INFO] Internet access tools registered
+2025-05-05 04:58:10,561 [INFO] Loaded Azure configuration from /Users/helo.im.ai/SoulCoreHub/mcp/azure_config.json
+2025-05-05 04:58:10,561 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,561 [INFO] Registered tool: azure_create_task
+2025-05-05 04:58:10,561 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,561 [INFO] Registered tool: azure_upload_blob
+2025-05-05 04:58:10,561 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,561 [INFO] Registered tool: azure_analyze_text
+2025-05-05 04:58:10,561 [INFO] Registered Azure tools with MCP server
+2025-05-05 04:58:10,561 [INFO] Azure tools registered
+2025-05-05 04:58:10,561 [INFO] Loaded AWS configuration from /Users/helo.im.ai/SoulCoreHub/mcp/aws_config.json
+2025-05-05 04:58:10,562 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,562 [INFO] Registered tool: aws_upload_to_s3
+2025-05-05 04:58:10,562 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,562 [INFO] Registered tool: aws_invoke_lambda
+2025-05-05 04:58:10,562 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,562 [INFO] Registered tool: aws_store_in_dynamodb
+2025-05-05 04:58:10,562 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,562 [INFO] Registered tool: aws_query_dynamodb
+2025-05-05 04:58:10,562 [INFO] Registered AWS tools with MCP server
+2025-05-05 04:58:10,562 [INFO] AWS tools registered
+2025-05-05 04:58:10,562 [INFO] Loaded Bubble.io configuration from /Users/helo.im.ai/SoulCoreHub/mcp/bubble_config.json
+2025-05-05 04:58:10,562 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,563 [INFO] Registered tool: bubble_create_thing
+2025-05-05 04:58:10,563 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,563 [INFO] Registered tool: bubble_get_thing
+2025-05-05 04:58:10,563 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,563 [INFO] Registered tool: bubble_search_things
+2025-05-05 04:58:10,563 [INFO] Saved 46 tools to manifest
+2025-05-05 04:58:10,563 [INFO] Registered tool: bubble_update_thing
+2025-05-05 04:58:10,563 [INFO] Registered Bubble.io tools with MCP server
+2025-05-05 04:58:10,563 [INFO] Bubble tools registered
+2025-05-05 04:58:14,076 [ERROR] Error starting MCP server: [Errno 48] error while attempting to bind on address ('127.0.0.1', 8765): address already in use

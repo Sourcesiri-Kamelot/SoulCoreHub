@@ -1,0 +1,2 @@
+[console_scripts]
+airtrain = airtrain.cli.main:main

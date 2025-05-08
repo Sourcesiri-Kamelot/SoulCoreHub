@@ -1,0 +1,262 @@
+/* App.css */
+:root {
+  --primary-color: #3a0ca3;
+  --secondary-color: #4cc9f0;
+  --accent-color: #f72585;
+  --background-color: #10002b;
+  --text-color: #f8f9fa;
+  --card-bg: rgba(255, 255, 255, 0.05);
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-header {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  background: linear-gradient(to right, #f72585, #4cc9f0);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.app-header nav ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.app-header nav li {
+  margin-left: 1.5rem;
+}
+
+.app-header nav a {
+  color: var(--text-color);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.app-header nav a:hover {
+  color: var(--accent-color);
+}
+
+.app-main {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.admin-section {
+  background-color: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.admin-section h2 {
+  margin-top: 0;
+  color: var(--secondary-color);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.app-footer {
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 1rem 2rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+/* Design Uploader Styles */
+.design-uploader {
+  padding: 1.5rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+.design-uploader h2 {
+  margin-top: 0;
+  color: var(--secondary-color);
+}
+
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.upload-form input[type="file"] {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 0.8rem;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--text-color);
+}
+
+.upload-form button {
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.upload-form button:hover:not(:disabled) {
+  background-color: #e91e63;
+}
+
+.upload-form button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.upload-form button.uploading {
+  background-color: #6c757d;
+  position: relative;
+}
+
+.upload-form button.uploading::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 20%;
+  background-color: rgba(255, 255, 255, 0.3);
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% { left: 0; width: 0; }
+  50% { width: 30%; }
+  100% { left: 100%; width: 0; }
+}
+
+.error-message {
+  color: #ff4d6d;
+  background-color: rgba(255, 77, 109, 0.1);
+  padding: 0.8rem;
+  border-radius: 4px;
+  margin-top: 1rem;
+}
+
+.success-message {
+  color: #4cc9f0;
+  background-color: rgba(76, 201, 240, 0.1);
+  padding: 0.8rem;
+  border-radius: 4px;
+  margin-top: 1rem;
+}
+
+.enterprise-features {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.enterprise-features h3 {
+  color: var(--secondary-color);
+  margin-top: 0;
+}
+
+.enterprise-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.enterprise-buttons button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.enterprise-buttons button:hover {
+  background-color: #2a0a78;
+}
+
+/* Upgrade Prompt Styles */
+.upgrade-prompt {
+  text-align: center;
+  padding: 2rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+.upgrade-prompt h3 {
+  color: var(--accent-color);
+  margin-top: 0;
+}
+
+.upgrade-button {
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  margin-top: 1rem;
+  transition: background-color 0.2s;
+}
+
+.upgrade-button:hover {
+  background-color: #e91e63;
+}
+
+/* Loading State */
+.design-uploader.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(76, 201, 240, 0.3);
+  border-radius: 50%;
+  border-top-color: var(--secondary-color);
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

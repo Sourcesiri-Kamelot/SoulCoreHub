@@ -1,0 +1,38 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: User Plan Lambda Function
+
+Resources:
+  GetUserPlanFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./
+      Handler: getUserPlan.handler
+      Runtime: nodejs14.x
+      Timeout: 10
+      MemorySize: 128
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: UserSubscriptions
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /user-plan
+            Method: get
+            RestApiId:
+              Ref: UserPlanApi
+
+  UserPlanApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      Cors:
+        AllowMethods: "'GET,OPTIONS'"
+        AllowHeaders: "'Content-Type,Authorization'"
+        AllowOrigin: "'*'"
+
+Outputs:
+  UserPlanApiUrl:
+    Description: URL of the API endpoint
+    Value: !Sub "https://${UserPlanApi}.execute-api.${AWS::Region}.amazonaws.com/prod/user-plan"

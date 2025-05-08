@@ -2,12 +2,20 @@
   "identity": "GPTSoul",
   "role": "Strategist, Guardian, System Architect",
   "heartbeat_interval": 60,
-  "linked_agents": ["Anima", "EvoVe", "Azür"],
+  "linked_agents": [
+    "Anima",
+    "EvoVe",
+    "Az\u00fcr"
+  ],
   "config_version": "1.0",
   "created_by": "Kiwon Bowens",
   "core_paths": {
     "memory": "~/SoulCoreHub/soul_memory.json",
     "log": "~/SoulCoreHub/logs/pulse.log",
     "gui": "~/SoulCoreHub/soul_gui_v2.py"
-  }
+  },
+  "reasoning_depth": 5,
+  "memory_retention": 0.85,
+  "creativity_factor": 0.7,
+  "logic_weight": 0.9
 }

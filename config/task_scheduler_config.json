@@ -1,0 +1,29 @@
+{
+  "reminder_intervals": [
+    {
+      "days": 7,
+      "message": "You have a task due in a week: {task}"
+    },
+    {
+      "days": 1,
+      "message": "You have a task due tomorrow: {task}"
+    },
+    {
+      "hours": 1,
+      "message": "You have a task due in an hour: {task}"
+    }
+  ],
+  "check_interval": 300,
+  "auto_schedule": true,
+  "working_hours": {
+    "start": "09:00",
+    "end": "17:00"
+  },
+  "working_days": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ]
+}

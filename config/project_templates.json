@@ -1,0 +1,148 @@
+{
+  "todo_app": {
+    "name": "Todo App",
+    "description": "A simple todo application",
+    "type": "web",
+    "files": [
+      {"name": "index.html", "description": "Main HTML file"},
+      {"name": "styles.css", "description": "CSS styles"},
+      {"name": "app.js", "description": "Application logic"}
+    ],
+    "features": [
+      "Add new tasks",
+      "Mark tasks as complete",
+      "Delete tasks",
+      "Store tasks in local storage"
+    ]
+  },
+  "weather_app": {
+    "name": "Weather App",
+    "description": "An application to check weather forecasts",
+    "type": "web",
+    "files": [
+      {"name": "index.html", "description": "Main HTML file"},
+      {"name": "styles.css", "description": "CSS styles"},
+      {"name": "app.js", "description": "Application logic"},
+      {"name": "api.js", "description": "Weather API integration"}
+    ],
+    "features": [
+      "Search for locations",
+      "Display current weather",
+      "Show forecast for next days",
+      "Save favorite locations"
+    ]
+  },
+  "rest_api": {
+    "name": "REST API",
+    "description": "A RESTful API server",
+    "type": "backend",
+    "files": [
+      {"name": "server.js", "description": "Main server file"},
+      {"name": "routes.js", "description": "API routes"},
+      {"name": "controllers.js", "description": "Request handlers"},
+      {"name": "models.js", "description": "Data models"}
+    ],
+    "features": [
+      "CRUD operations",
+      "Authentication",
+      "Input validation",
+      "Error handling"
+    ]
+  },
+  "blog_website": {
+    "name": "Blog Website",
+    "description": "A simple blog website",
+    "type": "web",
+    "files": [
+      {"name": "index.html", "description": "Home page"},
+      {"name": "post.html", "description": "Single post page"},
+      {"name": "styles.css", "description": "CSS styles"},
+      {"name": "main.js", "description": "Main JavaScript file"}
+    ],
+    "features": [
+      "List blog posts",
+      "View single post",
+      "Responsive design",
+      "Search functionality"
+    ]
+  },
+  "e_commerce_site": {
+    "name": "E-Commerce Site",
+    "description": "An online shopping website",
+    "type": "web",
+    "files": [
+      {"name": "index.html", "description": "Home page"},
+      {"name": "product.html", "description": "Product page"},
+      {"name": "cart.html", "description": "Shopping cart"},
+      {"name": "checkout.html", "description": "Checkout page"},
+      {"name": "styles.css", "description": "CSS styles"},
+      {"name": "main.js", "description": "Main JavaScript file"},
+      {"name": "cart.js", "description": "Shopping cart logic"}
+    ],
+    "features": [
+      "Product listings",
+      "Product search",
+      "Shopping cart",
+      "Checkout process",
+      "User accounts"
+    ]
+  },
+  "chat_app": {
+    "name": "Chat Application",
+    "description": "A real-time chat application",
+    "type": "web",
+    "files": [
+      {"name": "index.html", "description": "Main HTML file"},
+      {"name": "styles.css", "description": "CSS styles"},
+      {"name": "app.js", "description": "Application logic"},
+      {"name": "socket.js", "description": "WebSocket handling"},
+      {"name": "server.js", "description": "Backend server"}
+    ],
+    "features": [
+      "Real-time messaging",
+      "User authentication",
+      "Message history",
+      "Online status indicators",
+      "Multiple chat rooms"
+    ]
+  },
+  "portfolio_website": {
+    "name": "Portfolio Website",
+    "description": "A personal portfolio website",
+    "type": "web",
+    "files": [
+      {"name": "index.html", "description": "Home page"},
+      {"name": "projects.html", "description": "Projects page"},
+      {"name": "about.html", "description": "About page"},
+      {"name": "contact.html", "description": "Contact page"},
+      {"name": "styles.css", "description": "CSS styles"},
+      {"name": "main.js", "description": "Main JavaScript file"}
+    ],
+    "features": [
+      "Project showcase",
+      "About me section",
+      "Skills display",
+      "Contact form",
+      "Responsive design"
+    ]
+  },
+  "dashboard_app": {
+    "name": "Dashboard Application",
+    "description": "An analytics dashboard",
+    "type": "web",
+    "files": [
+      {"name": "index.html", "description": "Main HTML file"},
+      {"name": "styles.css", "description": "CSS styles"},
+      {"name": "app.js", "description": "Application logic"},
+      {"name": "charts.js", "description": "Data visualization"},
+      {"name": "api.js", "description": "API integration"}
+    ],
+    "features": [
+      "Data visualization",
+      "Real-time updates",
+      "Customizable widgets",
+      "Data filtering",
+      "Export functionality"
+    ]
+  }
+}

@@ -1,114 +1,74 @@
-# Setting Up Custom Domains for SoulCoreHub
+# SoulCoreHub Domain Setup
 
-This guide explains how to set up custom domains for your SoulCoreHub deployment.
+## Domain Information
+- Primary Domain: soulcorehub.com
+- Secondary Domain: soulcorehub.io
+- Registration Service: AWS Route 53
+- Registration Date: May 8, 2025
 
-## Domain Strategy
+## DNS Configuration
 
-For SoulCoreHub, we recommend the following domain strategy:
+### soulcorehub.com
+- Hosted Zone ID: Z04784531EU732LD17K6N
+- Name Servers:
+  - ns-143.awsdns-17.com
+  - ns-1763.awsdns-28.co.uk
+  - ns-1489.awsdns-58.org
+  - ns-686.awsdns-21.net
 
-1. **Main Application**: `soulcore.heloim-ai.tech`
-   - This will host the SoulCore dashboard and API endpoints
+### soulcorehub.io
+- Hosted Zone ID: Z04879123TJDNS1CJINTJ
+- Name Servers:
+  - ns-215.awsdns-26.com
+  - ns-1203.awsdns-22.org
+  - ns-1554.awsdns-02.co.uk
+  - ns-691.awsdns-22.net
 
-2. **Integration with Main Site**: `helo-im.ai`
-   - Add a section to your main site that links to the SoulCore application
+## DNS Records
 
-## Prerequisites
+### A Records
+- soulcorehub.com → 76.76.21.21
+- soulcorehub.io → 76.76.21.21
 
-1. Domain ownership (helo-im.ai and heloim-ai.tech)
-2. Access to DNS settings for your domains
-3. AWS account with permissions to create ACM certificates
+### CNAME Records
+- www.soulcorehub.com → soulcorehub.com
+- www.soulcorehub.io → soulcorehub.io
 
-## Step 1: Create an SSL Certificate
+### MX Records
+- soulcorehub.com:
+  - 10 mx1.forwardemail.net
+  - 20 mx2.forwardemail.net
+- soulcorehub.io:
+  - 10 mx1.forwardemail.net
+  - 20 mx2.forwardemail.net
 
-1. **Go to AWS Certificate Manager (ACM)**:
-   - Open the [AWS Certificate Manager console](https://console.aws.amazon.com/acm/home)
-   - Make sure you're in the `us-east-1` region (required for API Gateway custom domains)
+## Email Forwarding
+Email forwarding is configured through ForwardEmail.net:
+- admin@soulcorehub.com → kiwonbowens@helo-im.ai
+- info@soulcorehub.com → kiwonbowens@helo-im.ai
+- support@soulcorehub.com → kiwonbowens@helo-im.ai
+- admin@soulcorehub.io → kiwonbowens@helo-im.ai
+- info@soulcorehub.io → kiwonbowens@helo-im.ai
+- support@soulcorehub.io → kiwonbowens@helo-im.ai
 
-2. **Request a certificate**:
-   - Click "Request a certificate"
-   - Select "Request a public certificate"
-   - Enter your domain name: `soulcore.heloim-ai.tech`
-   - Click "Next"
+## SSL Certificates
+SSL certificates are managed through Vercel for both domains:
+- soulcorehub.com (and www subdomain)
+- soulcorehub.io (and www subdomain)
 
-3. **Validate the certificate**:
-   - Choose "DNS validation" (recommended)
-   - Click "Create record in Route 53" if your domain is managed by Route 53
-   - Otherwise, add the CNAME record to your DNS provider manually
-   - Wait for validation to complete (can take up to 30 minutes)
+## Web Hosting
+The SoulCoreHub web interface is hosted on Vercel and configured to serve from both domains.
 
-## Step 2: Deploy with Custom Domain
-
-1. **Run the deployment script**:
-   ```bash
-   ./sam_deploy.sh
+## Domain Management
+To make changes to the domain configuration:
+1. Use AWS Route 53 console: https://console.aws.amazon.com/route53/
+2. Or use AWS CLI with the following format:
+   ```
+   aws route53 change-resource-record-sets --hosted-zone-id ZONE_ID --change-batch file://changes.json
    ```
 
-2. **When prompted, choose to set up a custom domain**:
-   - Enter your domain name: `soulcore.heloim-ai.tech`
-   - The script will look for your certificate and use it for deployment
-
-3. **After deployment, get the API Gateway domain name**:
-   - Go to the [API Gateway console](https://console.aws.amazon.com/apigateway/home)
-   - Click on "Custom domain names"
-   - Find your domain and note the "API Gateway domain name"
-
-## Step 3: Configure DNS
-
-1. **Add a CNAME record to your DNS settings**:
-   - Go to your DNS provider's management console
-   - Add a CNAME record:
-     - Name: `soulcore` (or subdomain of your choice)
-     - Value: The API Gateway domain name (e.g., `d-abcdef123.execute-api.us-east-1.amazonaws.com`)
-     - TTL: 300 seconds (or as recommended by your provider)
-
-2. **Wait for DNS propagation**:
-   - DNS changes can take up to 48 hours to propagate
-   - You can check propagation using tools like [dnschecker.org](https://dnschecker.org)
-
-## Step 4: Integrate with Your Main Site
-
-1. **Add the SoulCoreHub section to your main site**:
-   - Use the integration snippet created by the `update_frontend.py` script
-   - The snippet is saved as `website_integration_snippet.html`
-   - Add this snippet to your main site's HTML where you want the section to appear
-
-2. **Customize the styling**:
-   - Modify the CSS in the snippet to match your main site's design
-   - Update the colors, fonts, and layout as needed
-
-## Step 5: Test the Integration
-
-1. **Test the custom domain**:
-   - Open `https://soulcore.heloim-ai.tech` in your browser
-   - Verify that the SoulCore dashboard loads correctly
-
-2. **Test the main site integration**:
-   - Open your main site
-   - Navigate to the section with the SoulCore integration
-   - Click the links to ensure they work correctly
-
 ## Troubleshooting
-
-If you encounter issues with your custom domain:
-
-1. **Check certificate status**:
-   - Ensure your certificate is "Issued" in ACM
-   - If it's "Pending validation," complete the validation process
-
-2. **Verify DNS settings**:
-   - Confirm your CNAME record is correctly set up
-   - Use `dig` or `nslookup` to check DNS resolution
-
-3. **Check API Gateway configuration**:
-   - Ensure the custom domain is properly mapped to your API
-   - Verify the base path mappings are correct
-
-4. **Clear browser cache**:
-   - Sometimes browsers cache DNS resolutions
-   - Try in a private/incognito window or clear your browser cache
-
-## Additional Resources
-
-- [AWS API Gateway Custom Domain Names](https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-custom-domains.html)
-- [AWS Certificate Manager User Guide](https://docs.aws.amazon.com/acm/latest/userguide/acm-overview.html)
-- [DNS Propagation Checker](https://dnschecker.org)
+If DNS issues occur:
+1. Check propagation status: https://www.whatsmydns.net/
+2. Verify Route 53 nameserver configuration
+3. Ensure Vercel project is properly linked to both domains
