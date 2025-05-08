@@ -1,1 +1,27 @@
 .env
+*.log
+__pycache__/
+*.py[cod]
+*$py.class
+.DS_Store
+node_modules/
+*.bak
+
+# AWS SAM
+.aws-sam/
+samconfig.toml
+
+# AWS credentials
+aws/*_accessKeys.csv
+
+# Build artifacts
+build/
+dist/
+
+# Local development
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.temp

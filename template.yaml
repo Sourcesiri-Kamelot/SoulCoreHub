@@ -1,0 +1,264 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  SoulCoreHub Serverless Application
+  Deploys the SoulCore AI agents as serverless functions
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 512
+    Runtime: python3.9
+    Architectures:
+      - x86_64
+    Environment:
+      Variables:
+        LOG_LEVEL: INFO
+        MEMORY_BUCKET: !Ref MemoryBucket
+
+Parameters:
+  DomainName:
+    Type: String
+    Default: soulcore.heloim-ai.tech
+    Description: Domain name for the API Gateway custom domain
+
+  CertificateArn:
+    Type: String
+    Default: ""
+    Description: ARN of the ACM certificate for the custom domain (leave empty to skip custom domain setup)
+
+Resources:
+  # API Gateway for all Lambda functions
+  SoulCoreApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      Cors:
+        AllowMethods: "'GET,POST,OPTIONS'"
+        AllowHeaders: "'Content-Type,Authorization'"
+        AllowOrigin: "'*'"
+      Auth:
+        ApiKeyRequired: false  # Set to true to require API keys
+        UsagePlan:
+          CreateUsagePlan: PER_API
+          Description: Usage plan for SoulCoreHub API
+          Quota:
+            Limit: 5000
+            Period: MONTH
+          Throttle:
+            BurstLimit: 200
+            RateLimit: 100
+
+  # S3 Bucket for memory storage
+  MemoryBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "soulcore-memory-${AWS::AccountId}"
+      VersioningConfiguration:
+        Status: Enabled
+
+  # DynamoDB Table for emotional state and routing
+  EmotionalStateTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: SoulCoreEmotionalState
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: agent_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: agent_id
+          KeyType: HASH
+
+  # AnimaLambda - Flask microservice wrapper
+  AnimaLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/anima/
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      MemorySize: 1024
+      Timeout: 60
+      Policies:
+        - S3ReadPolicy:
+            BucketName: !Ref MemoryBucket
+        - DynamoDBCrudPolicy:
+            TableName: !Ref EmotionalStateTable
+      Events:
+        AnimaApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref SoulCoreApi
+            Path: /anima
+            Method: post
+
+  # GPTSoulLambda - single-agent inference + memory responder
+  GPTSoulLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/gptsoul/
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      MemorySize: 1024
+      Timeout: 60
+      Policies:
+        - S3ReadPolicy:
+            BucketName: !Ref MemoryBucket
+        - DynamoDBCrudPolicy:
+            TableName: !Ref EmotionalStateTable
+      Events:
+        GPTSoulApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref SoulCoreApi
+            Path: /gptsoul
+            Method: post
+
+  # NeuralRouterLambda - routes user input to correct MCP server or agent
+  NeuralRouterLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/neural_router/
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      MemorySize: 512
+      Timeout: 30
+      Policies:
+        - S3ReadPolicy:
+            BucketName: !Ref MemoryBucket
+        - DynamoDBCrudPolicy:
+            TableName: !Ref EmotionalStateTable
+      Events:
+        NeuralRouterApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref SoulCoreApi
+            Path: /route
+            Method: post
+
+  # MemorySyncLambda - updates + saves memory state to S3
+  MemorySyncLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/memory_sync/
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      MemorySize: 512
+      Timeout: 30
+      Policies:
+        - S3CrudPolicy:
+            BucketName: !Ref MemoryBucket
+      Events:
+        MemorySyncApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref SoulCoreApi
+            Path: /memory
+            Method: post
+
+  # ResurrectionLambda - runs agent recovery logic and logs results
+  ResurrectionLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/resurrection/
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      MemorySize: 512
+      Timeout: 30
+      Policies:
+        - S3ReadPolicy:
+            BucketName: !Ref MemoryBucket
+        - DynamoDBCrudPolicy:
+            TableName: !Ref EmotionalStateTable
+      Events:
+        ResurrectionApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref SoulCoreApi
+            Path: /resurrect
+            Method: post
+
+  # SoulCoreDashboardLambda - serves public GUI
+  SoulCoreDashboardLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/dashboard/
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      MemorySize: 512
+      Timeout: 30
+      Events:
+        DashboardApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref SoulCoreApi
+            Path: /
+            Method: get
+        DashboardAssetsApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref SoulCoreApi
+            Path: /{proxy+}
+            Method: get
+
+  # Custom Domain for API Gateway (conditional)
+  ApiGatewayCustomDomain:
+    Type: AWS::ApiGateway::DomainName
+    Condition: HasCertificate
+    Properties:
+      DomainName: !Ref DomainName
+      CertificateArn: !Ref CertificateArn
+      EndpointConfiguration:
+        Types:
+          - EDGE
+      SecurityPolicy: TLS_1_2
+
+  # API Mapping for Custom Domain
+  ApiGatewayMapping:
+    Type: AWS::ApiGateway::BasePathMapping
+    Condition: HasCertificate
+    Properties:
+      DomainName: !Ref ApiGatewayCustomDomain
+      RestApiId: !Ref SoulCoreApi
+      Stage: prod
+
+Conditions:
+  HasCertificate: !Not [!Equals [!Ref CertificateArn, ""]]
+
+Outputs:
+  SoulCoreApi:
+    Description: "API Gateway endpoint URL for Prod stage for SoulCore functions"
+    Value: !Sub "https://${SoulCoreApi}.execute-api.${AWS::Region}.amazonaws.com/prod/"
+  
+  CustomDomainUrl:
+    Condition: HasCertificate
+    Description: "Custom domain URL for the API"
+    Value: !Sub "https://${DomainName}/"
+  
+  AnimaLambda:
+    Description: "Anima Lambda Function ARN"
+    Value: !GetAtt AnimaLambda.Arn
+  
+  GPTSoulLambda:
+    Description: "GPTSoul Lambda Function ARN"
+    Value: !GetAtt GPTSoulLambda.Arn
+  
+  NeuralRouterLambda:
+    Description: "Neural Router Lambda Function ARN"
+    Value: !GetAtt NeuralRouterLambda.Arn
+  
+  MemorySyncLambda:
+    Description: "Memory Sync Lambda Function ARN"
+    Value: !GetAtt MemorySyncLambda.Arn
+  
+  ResurrectionLambda:
+    Description: "Resurrection Lambda Function ARN"
+    Value: !GetAtt ResurrectionLambda.Arn
+  
+  SoulCoreDashboardLambda:
+    Description: "SoulCore Dashboard Lambda Function ARN"
+    Value: !GetAtt SoulCoreDashboardLambda.Arn
+  
+  MemoryBucket:
+    Description: "S3 Bucket for SoulCore memory storage"
+    Value: !Ref MemoryBucket

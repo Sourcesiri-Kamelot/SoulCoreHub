@@ -1,0 +1,68 @@
+name: SoulCoreHub CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install aws-sam-cli
+          pip install -r requirements.txt
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      
+      - name: Build SAM application
+        run: sam build
+      
+      - name: Deploy to AWS
+        run: |
+          sam deploy \
+            --stack-name soulcore-hub \
+            --s3-bucket ${{ secrets.DEPLOYMENT_BUCKET }} \
+            --no-confirm-changeset \
+            --no-fail-on-empty-changeset
+      
+      - name: Update frontend with API endpoint
+        run: |
+          # Get the API Gateway URL
+          API_URL=$(aws cloudformation describe-stacks --stack-name soulcore-hub --query "Stacks[0].Outputs[?OutputKey=='SoulCoreApi'].OutputValue" --output text)
+          echo "API_ENDPOINT=$API_URL" >> .env
+          python update_frontend.py
+      
+      - name: Run tests
+        run: |
+          # Add your test commands here
+          echo "Running tests..."
+          # pytest tests/
+      
+      - name: Notify on success
+        if: success()
+        run: |
+          echo "Deployment successful!"
+          # Add notification logic here (e.g., Slack, email)
+      
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "Deployment failed!"
+          # Add notification logic here (e.g., Slack, email)
