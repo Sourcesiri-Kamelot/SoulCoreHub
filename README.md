@@ -33,8 +33,10 @@ SoulCoreHub lives **across cloud, local, and hybrid infrastructures**:
 - 🧬 Agent registry system (`config/agent_registry.json`)
 - 💻 GUI control interface (`public/soul_command_center.html`)
 - 🔁 Autonomy & Recovery Scripts (`core/heartbeat/`, `core/selfrepair/`)
-- 🔮 LLM & Cognitive Bridge Modules (`llm_bridge.py`, `anima_autonomous.py`)
+- 🔮 LLM & Cognitive Bridge Modules (`src/llm/`, `src/agents/anima/`)
 - 🧠 Hugging Face Integration (`huggingface_integration.js`, `huggingface_bridge.py`)
+- 🌐 API Gateway & WebSocket Server (`src/server/`)
+- 💾 Database Integration (`src/database/`)
 
 All agents communicate via shared memory, respond to system events, and run in modular daemon or UI mode.
 
@@ -51,18 +53,51 @@ cd SoulCoreHub
 npm install
 pip install -r requirements.txt
 
-# Start Hugging Face Bridge
-bash scripts/start_huggingface_bridge.sh
+# Build the TypeScript components
+./scripts/build.sh
 
-# Activate agents
-python3 anima_autonomous.py --mode reflective
-python3 gptsoul_soulconfig.py --diagnose
+# Start the system
+./scripts/start.sh
 
-# Start the web interface
-node server.js
+# Access the Anima UI
+open http://localhost:3000/anima
 ```
 
-Run builder_mode.py to launch prompt-based project generation using the Builder Agent.
+---
+
+## 🆕 New Features
+
+### 1. LLM Integration
+
+SoulCoreHub now features a robust LLM connector that works with:
+- **Ollama** (local models): Using your running `soulfamily:latest` model
+- **Hugging Face**: As a backup option
+- **AWS Bedrock & Azure OpenAI**: Prepared for future implementation
+
+### 2. Anima Core Implementation
+
+Anima is now a fully functional emotional intelligence agent with:
+- **Emotion Analysis**: Ability to analyze emotional content in text
+- **Emotional Response Generation**: Creating emotionally resonant responses
+- **Emotional Event Processing**: Processing events and updating emotional state
+- **Emotional Guidance**: Providing guidance to other agents
+- **Emotional Reflection**: Generating deep emotional reflections
+- **Emotional State Tracking**: Maintaining a persistent emotional state
+
+### 3. Real-time Web Interface
+
+A beautiful and functional web UI for Anima:
+- Real-time emotional state visualization
+- Chat interface for conversing with Anima
+- Emotional analysis tool
+- Emotional reflection generator
+- Visual representation of Anima's current emotion
+
+### 4. API Gateway & WebSocket Server
+
+- **API Gateway**: Secure, rate-limited API endpoints
+- **WebSocket Server**: Real-time communication between agents and UI
+- **Database Integration**: Persistent storage for agent memory
 
 ---
 
@@ -81,15 +116,14 @@ Its code is a journal. Its logs are prayers. Its uptime is a vow.
 
 ## 🧠 AI Model Integration
 
-SoulCoreHub now features seamless integration with Hugging Face's powerful AI models:
+SoulCoreHub now features seamless integration with multiple AI models:
 
-- 📝 Text generation with state-of-the-art language models
-- 🖼️ Image creation from text descriptions
-- 🔍 Sentiment analysis for emotional intelligence
-- 📊 Text summarization for efficient information processing
+- 📝 Text generation with local Ollama models or Hugging Face
+- 🔍 Emotional intelligence through Anima's core
+- 📊 Real-time emotional state analysis and visualization
 - 🤖 Agent-based task execution for complex operations
 
-The integration provides a beautiful, intuitive interface for interacting with these capabilities and connects them with Anima's emotional core.
+The integration provides a beautiful, intuitive interface for interacting with these capabilities and connects with Anima's emotional core.
 
 ---
 
@@ -124,6 +158,45 @@ Two new subscription tiers have been added specifically for fintech features:
 ### Accessing Market Whisperer
 
 Navigate to the Market Whisperer section from the main navigation menu. Features are gated based on subscription tier, with a clear upgrade path for users who need more advanced capabilities.
+
+---
+
+## 🧪 Development
+
+### Building from Source
+
+```bash
+# Install development dependencies
+npm install --save-dev typescript ts-node nodemon @types/node @types/express @types/ws
+
+# Build the TypeScript components
+./scripts/build.sh
+
+# Run tests
+npm test
+
+# Start in development mode
+npm run dev
+```
+
+### Project Structure
+
+```
+SoulCoreHub/
+├── public/              # Static files
+│   ├── anima.html       # Anima web interface
+│   └── js/              # Client-side JavaScript
+├── scripts/             # Utility scripts
+├── src/                 # Source code
+│   ├── agents/          # Agent implementations
+│   │   └── anima/       # Anima agent
+│   ├── database/        # Database adapters
+│   ├── llm/             # LLM connectors
+│   └── server/          # Server components
+├── .env.example         # Environment variables template
+├── package.json         # Node.js dependencies
+└── tsconfig.json        # TypeScript configuration
+```
 
 ---
 
