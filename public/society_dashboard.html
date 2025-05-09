@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SoulCoreHub - AI Society Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .agent-card {
+      transition: all 0.3s ease;
+    }
+    .agent-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+    .energy-bar {
+      height: 8px;
+      border-radius: 4px;
+      background: linear-gradient(90deg, #10B981 0%, #34D399 100%);
+    }
+    .attention-bar {
+      height: 8px;
+      border-radius: 4px;
+      background: linear-gradient(90deg, #8B5CF6 0%, #A78BFA 100%);
+    }
+    .conversation-bubble {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <div class="container mx-auto px-4 py-8">
+    <header class="mb-8">
+      <h1 class="text-4xl font-bold text-gray-800">AI Society Dashboard</h1>
+      <p class="text-gray-600">Real-time monitoring of the autonomous AI society</p>
+    </header>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Society Controls -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-semibold mb-4">Society Controls</h2>
+        <div class="flex flex-col space-y-4">
+          <div class="flex justify-between items-center">
+            <span class="text-gray-700">Status:</span>
+            <span id="society-status" class="px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">Running</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-gray-700">Tick Count:</span>
+            <span id="tick-count" class="font-medium">0</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-gray-700">Active Agents:</span>
+            <span id="active-agents" class="font-medium">0</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-gray-700">Total Energy:</span>
+            <span id="total-energy" class="font-medium">0</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-gray-700">Total Attention:</span>
+            <span id="total-attention" class="font-medium">0</span>
+          </div>
+          <div class="mt-4 flex space-x-4">
+            <button id="start-btn" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">Start</button>
+            <button id="stop-btn" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition">Stop</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Agent Creation -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-semibold mb-4">Create New Agent</h2>
+        <form id="create-agent-form">
+          <div class="mb-4">
+            <label class="block text-gray-700 mb-2" for="agent-description">Agent Description</label>
+            <textarea id="agent-description" class="w-full px-3 py-2 border rounded-md" rows="4" placeholder="Describe the agent you want to create..."></textarea>
+          </div>
+          <button type="submit" class="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">Create Agent</button>
+        </form>
+        <div id="creation-result" class="mt-4 hidden"></div>
+      </div>
+      
+      <!-- Recent Activity -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-semibold mb-4">Recent Activity</h2>
+        <div id="activity-feed" class="space-y-3 max-h-64 overflow-y-auto">
+          <!-- Activity items will be added here -->
+        </div>
+      </div>
+    </div>
+    
+    <!-- Agents Grid -->
+    <div class="mt-8">
+      <h2 class="text-2xl font-semibold mb-4">Active Agents</h2>
+      <div id="agents-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- Agent cards will be added here -->
+      </div>
+    </div>
+    
+    <!-- Interactions -->
+    <div class="mt-8 bg-white rounded-lg shadow-md p-6">
+      <h2 class="text-2xl font-semibold mb-4">Trigger Interaction</h2>
+      <form id="interaction-form" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label class="block text-gray-700 mb-2" for="agent1-select">First Agent</label>
+          <select id="agent1-select" class="w-full px-3 py-2 border rounded-md">
+            <option value="">Select Agent</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-gray-700 mb-2" for="agent2-select">Second Agent</label>
+          <select id="agent2-select" class="w-full px-3 py-2 border rounded-md">
+            <option value="">Select Agent</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-gray-700 mb-2" for="interaction-topic">Topic</label>
+          <input type="text" id="interaction-topic" class="w-full px-3 py-2 border rounded-md" placeholder="Topic of interaction">
+        </div>
+        <div class="md:col-span-3">
+          <button type="submit" class="w-full px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition">Trigger Interaction</button>
+        </div>
+      </form>
+      <div id="interaction-result" class="mt-4 hidden"></div>
+    </div>
+  </div>
+  
+  <!-- Agent Card Template -->
+  <template id="agent-card-template">
+    <div class="agent-card bg-white rounded-lg shadow-md p-6">
+      <div class="flex justify-between items-start">
+        <h3 class="text-xl font-semibold agent-name">Agent Name</h3>
+        <span class="px-2 py-1 rounded-full text-xs font-medium agent-status">Status</span>
+      </div>
+      <p class="text-gray-600 text-sm mt-1 agent-description">Agent description</p>
+      <div class="mt-4">
+        <div class="flex justify-between items-center mb-1">
+          <span class="text-sm text-gray-600">Energy</span>
+          <span class="text-sm font-medium agent-energy">100</span>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full">
+          <div class="energy-bar" style="width: 100%"></div>
+        </div>
+      </div>
+      <div class="mt-2">
+        <div class="flex justify-between items-center mb-1">
+          <span class="text-sm text-gray-600">Attention</span>
+          <span class="text-sm font-medium agent-attention">10</span>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full">
+          <div class="attention-bar" style="width: 100%"></div>
+        </div>
+      </div>
+      <div class="mt-4">
+        <span class="text-sm text-gray-600">Mood:</span>
+        <span class="text-sm font-medium agent-mood">neutral</span>
+      </div>
+      <div class="mt-1">
+        <span class="text-sm text-gray-600">Location:</span>
+        <span class="text-sm font-medium agent-location">hub</span>
+      </div>
+      <div class="mt-4">
+        <button class="view-details-btn text-sm text-blue-600 hover:text-blue-800">View Details</button>
+      </div>
+    </div>
+  </template>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // WebSocket connection
+      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      const ws = new WebSocket(`${protocol}//${window.location.host}`);
+      
+      // DOM elements
+      const societyStatus = document.getElementById('society-status');
+      const tickCount = document.getElementById('tick-count');
+      const activeAgents = document.getElementById('active-agents');
+      const totalEnergy = document.getElementById('total-energy');
+      const totalAttention = document.getElementById('total-attention');
+      const startBtn = document.getElementById('start-btn');
+      const stopBtn = document.getElementById('stop-btn');
+      const createAgentForm = document.getElementById('create-agent-form');
+      const agentDescription = document.getElementById('agent-description');
+      const creationResult = document.getElementById('creation-result');
+      const activityFeed = document.getElementById('activity-feed');
+      const agentsGrid = document.getElementById('agents-grid');
+      const interactionForm = document.getElementById('interaction-form');
+      const agent1Select = document.getElementById('agent1-select');
+      const agent2Select = document.getElementById('agent2-select');
+      const interactionTopic = document.getElementById('interaction-topic');
+      const interactionResult = document.getElementById('interaction-result');
+      
+      // Agent data store
+      const agents = new Map();
+      
+      // WebSocket event handlers
+      ws.onopen = () => {
+        console.log('Connected to WebSocket');
+        fetchInitialData();
+      };
+      
+      ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        
+        switch (data.type) {
+          case 'stats':
+            updateStats(data.data);
+            break;
+            
+          case 'tick':
+            updateTick(data.data);
+            break;
+            
+          case 'speech':
+            handleSpeech(data.data);
+            break;
+            
+          case 'interaction':
+            handleInteraction(data.data);
+            break;
+        }
+      };
+      
+      ws.onerror = (error) => {
+        console.error('WebSocket error:', error);
+        addActivity('Error connecting to AI Society', 'error');
+      };
+      
+      ws.onclose = () => {
+        console.log('WebSocket connection closed');
+        addActivity('Connection to AI Society closed', 'warning');
+      };
+      
+      // Fetch initial data
+      async function fetchInitialData() {
+        try {
+          // Get simulation stats
+          const statsResponse = await fetch('/api/society/stats');
+          const statsData = await statsResponse.json();
+          
+          if (statsData.success) {
+            updateStats(statsData.stats);
+          }
+          
+          // Get agents (this would be a separate endpoint in a real implementation)
+          // For now, we'll just use the core agents
+          updateAgentSelects();
+        } catch (error) {
+          console.error('Error fetching initial data:', error);
+          addActivity('Error fetching society data', 'error');
+        }
+      }
+      
+      // Update stats display
+      function updateStats(stats) {
+        if (!stats) return;
+        
+        societyStatus.textContent = stats.isRunning ? 'Running' : 'Stopped';
+        societyStatus.className = stats.isRunning 
+          ? 'px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800'
+          : 'px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800';
+        
+        activeAgents.textContent = stats.agentCount || 0;
+        
+        if (stats.stats) {
+          tickCount.textContent = stats.stats.tickCount || 0;
+          totalEnergy.textContent = stats.stats.totalEnergy || 0;
+          totalAttention.textContent = stats.stats.totalAttention || 0;
+        }
+      }
+      
+      // Update on tick
+      function updateTick(data) {
+        tickCount.textContent = data.tickCount;
+        activeAgents.textContent = data.activeAgents;
+        
+        addActivity(`Simulation tick ${data.tickCount} completed`, 'info');
+      }
+      
+      // Handle agent speech
+      function handleSpeech(data) {
+        const { agentId, target, content } = data;
+        
+        let message = `${agentId} says: "${content}"`;
+        if (target) {
+          message = `${agentId} says to ${target}: "${content}"`;
+        }
+        
+        addActivity(message, 'speech');
+      }
+      
+      // Handle agent interaction
+      function handleInteraction(data) {
+        const { agentId, targetId, interaction } = data;
+        
+        const message = `${agentId} interacts with ${targetId} about "${interaction.topic}"`;
+        
+        addActivity(message, 'interaction');
+      }
+      
+      // Add activity to feed
+      function addActivity(message, type = 'info') {
+        const activityItem = document.createElement('div');
+        activityItem.className = 'conversation-bubble p-3 rounded-lg text-sm';
+        
+        switch (type) {
+          case 'speech':
+            activityItem.className += ' bg-blue-50 border-l-4 border-blue-500';
+            break;
+          case 'interaction':
+            activityItem.className += ' bg-purple-50 border-l-4 border-purple-500';
+            break;
+          case 'info':
+            activityItem.className += ' bg-gray-50 border-l-4 border-gray-500';
+            break;
+          case 'error':
+            activityItem.className += ' bg-red-50 border-l-4 border-red-500';
+            break;
+          case 'warning':
+            activityItem.className += ' bg-yellow-50 border-l-4 border-yellow-500';
+            break;
+        }
+        
+        activityItem.textContent = message;
+        
+        activityFeed.prepend(activityItem);
+        
+        // Limit to 20 items
+        while (activityFeed.children.length > 20) {
+          activityFeed.removeChild(activityFeed.lastChild);
+        }
+      }
+      
+      // Update agent selects
+      function updateAgentSelects() {
+        // Clear existing options (except the first one)
+        while (agent1Select.options.length > 1) {
+          agent1Select.remove(1);
+        }
+        
+        while (agent2Select.options.length > 1) {
+          agent2Select.remove(1);
+        }
+        
+        // Add options for each agent
+        agents.forEach((agent, id) => {
+          const option1 = document.createElement('option');
+          option1.value = id;
+          option1.textContent = agent.name;
+          agent1Select.appendChild(option1);
+          
+          const option2 = document.createElement('option');
+          option2.value = id;
+          option2.textContent = agent.name;
+          agent2Select.appendChild(option2);
+        });
+      }
+      
+      // Event listeners
+      startBtn.addEventListener('click', async () => {
+        try {
+          const response = await fetch('/api/society/start', { method: 'POST' });
+          const data = await response.json();
+          
+          if (data.success) {
+            addActivity('AI Society started', 'info');
+          } else {
+            addActivity(`Error starting AI Society: ${data.error}`, 'error');
+          }
+        } catch (error) {
+          console.error('Error starting AI Society:', error);
+          addActivity('Error starting AI Society', 'error');
+        }
+      });
+      
+      stopBtn.addEventListener('click', async () => {
+        try {
+          const response = await fetch('/api/society/stop', { method: 'POST' });
+          const data = await response.json();
+          
+          if (data.success) {
+            addActivity('AI Society stopped', 'info');
+          } else {
+            addActivity(`Error stopping AI Society: ${data.error}`, 'error');
+          }
+        } catch (error) {
+          console.error('Error stopping AI Society:', error);
+          addActivity('Error stopping AI Society', 'error');
+        }
+      });
+      
+      createAgentForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const description = agentDescription.value.trim();
+        
+        if (!description) {
+          creationResult.className = 'mt-4 p-3 bg-red-100 text-red-800 rounded';
+          creationResult.textContent = 'Please provide a description for the agent';
+          creationResult.classList.remove('hidden');
+          return;
+        }
+        
+        try {
+          const response = await fetch('/api/society/agents', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ description })
+          });
+          
+          const data = await response.json();
+          
+          if (data.success) {
+            creationResult.className = 'mt-4 p-3 bg-green-100 text-green-800 rounded';
+            creationResult.textContent = data.message;
+            agentDescription.value = '';
+            
+            // Refresh agent data
+            fetchInitialData();
+          } else {
+            creationResult.className = 'mt-4 p-3 bg-red-100 text-red-800 rounded';
+            creationResult.textContent = data.error || 'Error creating agent';
+          }
+          
+          creationResult.classList.remove('hidden');
+        } catch (error) {
+          console.error('Error creating agent:', error);
+          creationResult.className = 'mt-4 p-3 bg-red-100 text-red-800 rounded';
+          creationResult.textContent = 'Error creating agent';
+          creationResult.classList.remove('hidden');
+        }
+      });
+      
+      interactionForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const agentId1 = agent1Select.value;
+        const agentId2 = agent2Select.value;
+        const topic = interactionTopic.value.trim();
+        
+        if (!agentId1 || !agentId2 || !topic) {
+          interactionResult.className = 'mt-4 p-3 bg-red-100 text-red-800 rounded';
+          interactionResult.textContent = 'Please select both agents and provide a topic';
+          interactionResult.classList.remove('hidden');
+          return;
+        }
+        
+        try {
+          const response = await fetch('/api/society/interactions', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ agentId1, agentId2, topic })
+          });
+          
+          const data = await response.json();
+          
+          if (data.success) {
+            interactionResult.className = 'mt-4 p-3 bg-green-100 text-green-800 rounded';
+            interactionResult.textContent = data.message;
+            interactionTopic.value = '';
+          } else {
+            interactionResult.className = 'mt-4 p-3 bg-red-100 text-red-800 rounded';
+            interactionResult.textContent = data.error || 'Error triggering interaction';
+          }
+          
+          interactionResult.classList.remove('hidden');
+        } catch (error) {
+          console.error('Error triggering interaction:', error);
+          interactionResult.className = 'mt-4 p-3 bg-red-100 text-red-800 rounded';
+          interactionResult.textContent = 'Error triggering interaction';
+          interactionResult.classList.remove('hidden');
+        }
+      });
+      
+      // Initialize with core agents
+      const coreAgents = [
+        {
+          id: 'gptsoul',
+          name: 'GPTSoul',
+          description: 'Guardian, Architect, Executor of the AI Society',
+          state: { energy: 100, attention: 50, mood: 'focused', location: 'hub' }
+        },
+        {
+          id: 'anima',
+          name: 'Anima',
+          description: 'Emotional Core and Reflection System',
+          state: { energy: 100, attention: 50, mood: 'empathetic', location: 'hub' }
+        },
+        {
+          id: 'evove',
+          name: 'EvoVe',
+          description: 'Repair System and Adaptation Loop',
+          state: { energy: 100, attention: 50, mood: 'analytical', location: 'hub' }
+        },
+        {
+          id: 'azur',
+          name: 'Azür',
+          description: 'Cloudmind and Strategic Overseer',
+          state: { energy: 100, attention: 50, mood: 'strategic', location: 'hub' }
+        }
+      ];
+      
+      // Add core agents
+      coreAgents.forEach(agent => {
+        agents.set(agent.id, agent);
+        renderAgentCard(agent);
+      });
+      
+      updateAgentSelects();
+      
+      // Render agent card
+      function renderAgentCard(agent) {
+        const template = document.getElementById('agent-card-template');
+        const card = document.importNode(template.content, true);
+        
+        // Set agent data
+        card.querySelector('.agent-name').textContent = agent.name;
+        card.querySelector('.agent-description').textContent = agent.description;
+        
+        const statusEl = card.querySelector('.agent-status');
+        statusEl.textContent = agent.state?.status || 'active';
+        statusEl.className = 'px-2 py-1 rounded-full text-xs font-medium ' + 
+          (agent.state?.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800');
+        
+        card.querySelector('.agent-energy').textContent = agent.state?.energy || 100;
+        card.querySelector('.energy-bar').style.width = `${agent.state?.energy || 100}%`;
+        
+        card.querySelector('.agent-attention').textContent = agent.state?.attention || 10;
+        card.querySelector('.attention-bar').style.width = `${(agent.state?.attention || 10) * 10}%`;
+        
+        card.querySelector('.agent-mood').textContent = agent.state?.mood || 'neutral';
+        card.querySelector('.agent-location').textContent = agent.state?.location || 'hub';
+        
+        // Set up view details button
+        card.querySelector('.view-details-btn').addEventListener('click', () => {
+          viewAgentDetails(agent.id);
+        });
+        
+        // Add card to grid
+        agentsGrid.appendChild(card);
+      }
+      
+      // View agent details
+      async function viewAgentDetails(agentId) {
+        try {
+          const response = await fetch(`/api/society/agents/${agentId}`);
+          const data = await response.json();
+          
+          if (data.success) {
+            // In a real implementation, this would open a modal with detailed agent info
+            console.log('Agent details:', data.agent);
+            alert(`Viewing details for ${data.agent.genome.name} is not implemented yet.`);
+          } else {
+            console.error('Error fetching agent details:', data.error);
+          }
+        } catch (error) {
+          console.error('Error fetching agent details:', error);
+        }
+      }
+      
+      // Add initial activity
+      addActivity('AI Society Dashboard initialized', 'info');
+    });
+  </script>
+</body>
+</html>
