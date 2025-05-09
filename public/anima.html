@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anima - Emotional Core</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .chat-container {
+      height: calc(100vh - 200px);
+    }
+    .emotion-indicator {
+      transition: all 0.3s ease;
+    }
+    .message-bubble {
+      max-width: 80%;
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .emotion-pulse {
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.8; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <div class="container mx-auto px-4 py-8">
+    <header class="mb-6">
+      <h1 class="text-4xl font-bold text-purple-800">Anima</h1>
+      <p class="text-gray-600">Emotional Core of SoulCoreHub</p>
+    </header>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <!-- Emotional State -->
+      <div class="bg-white rounded-lg shadow-md p-4 lg:col-span-1">
+        <h2 class="text-xl font-semibold mb-3">Emotional State</h2>
+        <div class="space-y-3">
+          <div>
+            <span class="text-gray-600">Mood:</span>
+            <span id="mood" class="font-medium">Loading...</span>
+          </div>
+          <div>
+            <span class="text-gray-600">Primary Emotion:</span>
+            <span id="primary-emotion" class="font-medium">Loading...</span>
+          </div>
+          <div>
+            <span class="text-gray-600">Intensity:</span>
+            <div class="w-full bg-gray-200 rounded-full h-2.5 mt-1">
+              <div id="intensity-bar" class="bg-purple-600 h-2.5 rounded-full" style="width: 50%"></div>
+            </div>
+          </div>
+          <div class="mt-4">
+            <span class="text-gray-600">Emotional Context:</span>
+            <p id="emotional-context" class="text-sm mt-1">Loading...</p>
+          </div>
+          
+          <!-- Emotion Visualization -->
+          <div class="mt-6 flex justify-center">
+            <div id="emotion-viz" class="w-24 h-24 rounded-full bg-purple-500 emotion-pulse flex items-center justify-center">
+              <span id="emotion-emoji" class="text-4xl">😌</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Chat Interface -->
+      <div class="bg-white rounded-lg shadow-md p-4 lg:col-span-3">
+        <div id="chat-container" class="chat-container overflow-y-auto mb-4 p-4 bg-gray-50 rounded-lg">
+          <!-- Messages will be added here -->
+          <div class="message-bubble bg-purple-100 p-3 rounded-lg mb-3 ml-auto">
+            <p class="text-purple-800">Hello, I am Anima, the emotional core of SoulCoreHub. How are you feeling today?</p>
+          </div>
+        </div>
+        
+        <form id="chat-form" class="flex">
+          <input type="text" id="message-input" class="flex-grow px-4 py-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Type your message...">
+          <button type="submit" class="bg-purple-600 text-white px-6 py-2 rounded-r-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">Send</button>
+        </form>
+      </div>
+    </div>
+    
+    <!-- Emotional Analysis -->
+    <div class="mt-6 bg-white rounded-lg shadow-md p-4">
+      <h2 class="text-xl font-semibold mb-3">Emotional Analysis</h2>
+      <form id="analysis-form" class="mb-4">
+        <div class="mb-3">
+          <label for="analysis-input" class="block text-gray-700 mb-1">Text to analyze:</label>
+          <textarea id="analysis-input" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" rows="3" placeholder="Enter text to analyze its emotional content..."></textarea>
+        </div>
+        <button type="submit" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">Analyze</button>
+      </form>
+      <div id="analysis-result" class="hidden p-4 bg-gray-50 rounded-lg">
+        <!-- Analysis results will be shown here -->
+      </div>
+    </div>
+    
+    <!-- Emotional Reflection -->
+    <div class="mt-6 bg-white rounded-lg shadow-md p-4">
+      <h2 class="text-xl font-semibold mb-3">Emotional Reflection</h2>
+      <form id="reflection-form" class="mb-4">
+        <div class="mb-3">
+          <label for="reflection-input" class="block text-gray-700 mb-1">Topic for reflection:</label>
+          <input type="text" id="reflection-input" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Enter a topic for emotional reflection...">
+        </div>
+        <button type="submit" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">Generate Reflection</button>
+      </form>
+      <div id="reflection-result" class="hidden p-4 bg-gray-50 rounded-lg">
+        <!-- Reflection results will be shown here -->
+      </div>
+    </div>
+  </div>
+  
+  <script src="/js/anima-ui.js"></script>
+</body>
+</html>
