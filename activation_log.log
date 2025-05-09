@@ -1,6 +1,0 @@
-2025-04-21 11:10:33,974 [INFO] Loading Builder Agent...
-2025-04-21 11:10:33,974 [ERROR] Agent 'Builder Agent' not found in registry.
-2025-04-21 11:10:33,974 [ERROR] Failed to load Builder Agent
-2025-04-21 11:12:24,307 [INFO] Loading Builder Agent...
-2025-04-21 11:12:24,314 [ERROR] Failed to load agent 'Builder Agent': 'BuilderAgent' object has no attribute 'logger'
-2025-04-21 11:12:24,314 [ERROR] Failed to load Builder Agent
