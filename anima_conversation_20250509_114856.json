@@ -1,0 +1,12 @@
+[
+  {
+    "user": "help",
+    "anima": "\n            Available commands:\n            - help: Show this help message\n            - exit/quit/bye: Exit the Anima interface\n            - clear: Clear the screen\n            - mission: Display Anima's mission\n            - values: Display Anima's core values\n            \n            You can also ask me any question and I'll respond!\n            ",
+    "emotion": "helpful"
+  },
+  {
+    "user": "hello",
+    "anima": "Hello! I'm Anima. How can I assist you today?",
+    "emotion": "friendly"
+  }
+]
