@@ -1,27 +1,61 @@
-// 🔥 SoulCoreHub Backend (server.js)
+/**
+ * SoulCoreHub Main Server
+ * 
+ * This is the main entry point for the SoulCoreHub application.
+ * It sets up the Express server, WebSocket support, and integrates all components.
+ */
 
 const express = require('express');
+const http = require('http');
+const path = require('path');
+const dotenv = require('dotenv');
+const WebSocket = require('ws');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const { exec } = require('child_process');
-const path = require('path');
 const open = require('open');
 
 // Import Hugging Face integration
 const { huggingFaceService } = require('./huggingface_integration');
 
-const app = express();
-const port = 3000;
+// Load environment variables
+dotenv.config();
 
-// Middleware
+// Import middleware and routes
+const { securityHeaders, rateLimiter, requestId, requestLogger, sanitizeParams } = require('./security/security_middleware');
+const { authMiddleware } = require('./auth/auth_middleware');
+const authRoutes = require('./auth/auth_routes');
+const paymentRoutes = require('./payments/stripe_routes');
+const websocketHandler = require('./api/websocket_handler');
+const stripeHandler = require('./payments/stripe_handler');
+
+// Initialize Express app
+const app = express();
+const port = process.env.PORT || 3000;
+
+// Create HTTP server
+const server = http.createServer(app);
+
+// Apply middleware
+app.use(securityHeaders());
+app.use(rateLimiter());
+app.use(requestId());
+app.use(requestLogger());
+app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(express.static('public'));
+app.use(sanitizeParams());
 
 // Serve static files from the React app if it exists
 if (fs.existsSync(path.join(__dirname, 'anima-interface/build'))) {
   app.use(express.static(path.join(__dirname, 'anima-interface/build')));
 }
+
+// Initialize WebSocket server
+const wss = websocketHandler.initWebSocketServer(server);
+
+// Initialize Stripe
+stripeHandler.initStripe();
 
 // File Path
 const dataFilePath = 'data.json';
@@ -96,6 +130,13 @@ function saveResonanceData(payload) {
   });
 }
 
+// Set up routes
+app.use('/auth', authRoutes);
+app.use('/payments', paymentRoutes);
+
+// Apply authentication middleware to protected routes
+app.use('/api/protected', authMiddleware);
+
 // 🧩 ROUTE: Save prediction or resonance data
 app.post('/save', (req, res) => {
   const { type, payload } = req.body;
@@ -149,7 +190,20 @@ app.get('/status', (req, res) => {
 
 // API routes for standard status
 app.get('/api/status', (req, res) => {
-  res.json({ status: 'online', timestamp: new Date().toISOString() });
+  res.json({ 
+    status: 'online', 
+    message: 'SoulCoreHub is operational',
+    version: '1.0.0',
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Protected API routes
+app.get('/api/protected/user/profile', (req, res) => {
+  res.json({
+    success: true,
+    user: req.user
+  });
 });
 
 // Hugging Face API proxy routes
@@ -278,16 +332,35 @@ app.get('/api/mcp/status/bridge', (req, res) => {
   });
 });
 
+// Define public routes
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 // Catch-all handler for SPA
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'soul_command_center.html'));
 });
 
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error('Server error:', err);
+  
+  res.status(500).json({
+    success: false,
+    error: 'Server error',
+    message: 'An unexpected error occurred'
+  });
+});
+
 // 🔁 INIT
 loadData();
-app.listen(port, () => {
-  console.log(`🚀 SoulCoreHub server running at http://localhost:${port}`);
-  console.log(`🧠 Hugging Face integration active with token: hf_rzos...`);
+
+// Start the server
+server.listen(port, () => {
+  console.log(`🚀 SoulCoreHub server listening at http://localhost:${port}`);
+  console.log(`🔌 WebSocket server available at ws://localhost:${port}`);
+  console.log(`🧠 Hugging Face integration active`);
   
   // Create necessary directories
   const generatedImagesDir = path.join(__dirname, 'public', 'generated_images');
