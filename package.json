@@ -33,12 +33,17 @@
     "helmet": "^7.0.0",
     "jsonwebtoken": "^9.0.2",
     "open": "^8.4.0",
+    "openai": "^4.98.0",
     "stripe": "^13.10.0",
     "uuid": "^9.0.1",
     "ws": "^8.14.2"
   },
   "devDependencies": {
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.15.17",
+    "@types/ws": "^8.18.1",
     "eslint": "^8.50.0",
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "typescript": "^5.8.3"
   }
 }
