@@ -1,0 +1,43 @@
+Name: MyWorkflowForUIUXUpdate
+SchemaVersion: "1.0"
+
+Environments:
+  production:
+    Connections:
+      - Name: my-aws-account
+        Role: my-cloudfront-s3-deployment-role
+      - Name: my-aws-account
+        Role: my-cloudfront-invalidation-role
+
+Actions:
+  Build:
+    Identifier: aws/build@v1
+    Inputs:
+      Sources:
+        - WorkflowSource
+    Configuration:
+      Steps:
+        - Run: npm run build
+
+  Deploy:
+    Identifier: codecatalyst-labs/deploy-to-cloudfront-s3@v1.0
+    Environment:
+      Name: production
+    Inputs:
+      Sources:
+        - WorkflowSource
+    Configuration:
+      StackName: my-cloudfront-s3-stack
+      BucketName: my-s3-bucket
+      ExistingBucket: true
+      Path: dist
+      Wait: true
+
+  InvalidateCloudFrontCache:
+    Identifier: codecatalyst-labs/invalidate-cloudfront-cache@v1
+    Environment:
+      Name: production
+    Configuration:
+      DistributionId: ABCD1234EFGH
+      ObjectPaths: '/index.html, /styles.css'
+      Wait: true
