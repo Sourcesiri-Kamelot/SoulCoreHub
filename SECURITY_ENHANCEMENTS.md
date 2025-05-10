@@ -1,173 +1,422 @@
-# SoulCoreHub Security Enhancements
+# SoulCoreHub Additional Security Measures
 
-This document outlines the security enhancements implemented in SoulCoreHub to protect payment systems, user data, and prevent unauthorized API usage.
+## Enhanced Security Measures for SoulCoreHub
 
-## 1. Privacy Policy
+### 1. Dependency Management Automation
 
-A comprehensive privacy policy has been added to the public UI at `/public/privacy-policy.html`. This document:
+#### Dependabot Configuration
 
-- Outlines what data is collected from users
-- Explains how data is used and protected
-- Details user rights regarding their data
-- Ensures compliance with GDPR and CCPA regulations
-
-The privacy policy helps protect your business legally by informing users about your data practices and obtaining their informed consent.
-
-## 2. API Key Authentication
-
-API key authentication has been implemented for sensitive endpoints:
-
-- Added `ApiKeyAuthorizer` to the API Gateway configuration
-- Created a usage plan with rate limits (10,000 requests per month, 50 requests per second)
-- Added `X-Api-Key` header requirement for authenticated endpoints
-
-This prevents unauthorized access to your API and helps track and limit usage.
-
-## 3. Request Signing
-
-Request signing has been implemented to prevent request tampering:
-
-- Created a `RequestSigner` class in `/src/client/request-signer.js` that:
-  - Signs requests using HMAC-SHA256
-  - Adds the signature to the `X-Request-Signature` header
-- Modified Lambda functions to verify signatures using the same algorithm
-- Implemented signature verification in the Anima Lambda function
-
-This ensures that requests cannot be tampered with during transmission and that they originate from authorized clients.
-
-## 4. CloudWatch Alarms
-
-CloudWatch alarms have been set up to monitor for unusual API usage:
-
-- Created alarms for API Gateway 4xx and 5xx errors
-- Added alarms for high API latency and traffic spikes
-- Set up Lambda-specific alarms for errors, high duration, and throttles
-- Implemented a custom metric alarm for unusual API usage patterns
-- Configured email notifications for all alarms
-
-These alarms help detect potential security incidents, performance issues, or abuse of your API.
-
-## 5. CORS Configuration
-
-CORS (Cross-Origin Resource Sharing) has been properly configured:
-
-- Restricted `Access-Control-Allow-Origin` to `https://soulcorehub.io` instead of `*`
-- Added proper headers for API key and request signature
-- Maintained necessary CORS headers in error responses
-
-This prevents unauthorized websites from making requests to your API.
-
-## Implementation Details
-
-### API Gateway Configuration
+Create a `.github/dependabot.yml` file to automate dependency updates:
 
 ```yaml
-SoulCoreApi:
-  Type: AWS::Serverless::Api
-  Properties:
-    StageName: !Ref Stage
-    Cors:
-      AllowMethods: "'GET,POST,OPTIONS'"
-      AllowHeaders: "'Content-Type,Authorization,X-Api-Key'"
-      AllowOrigin: "'https://soulcorehub.io'"
-    Auth:
-      DefaultAuthorizer: CognitoAuthorizer
-      Authorizers:
-        CognitoAuthorizer:
-          UserPoolArn: !GetAtt SoulCoreUserPool.Arn
-        ApiKeyAuthorizer:
-          ApiKeyRequired: true
-```
-
-### Lambda Function Security
-
-```python
-def verify_request_signature(event):
-    """Verify the signature of the incoming request"""
-    if 'headers' not in event or not event['headers'] or 'X-Request-Signature' not in event['headers']:
-        return True
+version: 2
+updates:
+  # npm dependencies
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    versioning-strategy: auto
     
-    try:
-        signature = event['headers']['X-Request-Signature']
-        body = event.get('body', '')
-        expected_signature = calculate_signature(body)
-        return hmac.compare_digest(signature, expected_signature)
-    except Exception as e:
-        logger.error(f"Error verifying signature: {str(e)}")
-        return False
+  # Python dependencies
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    
+  # Additional npm directories
+  - package-ecosystem: "npm"
+    directory: "/anima_ui"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    
+  - package-ecosystem: "npm"
+    directory: "/market-whisperer-ai-dashboard-soulcore"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
 ```
 
-### Client-Side Request Signing
+#### Pre-commit Hooks
 
-```javascript
-class RequestSigner {
-  constructor(apiKey, apiSecret) {
-    this.apiKey = apiKey;
-    this.apiSecret = apiSecret;
-  }
+Implement pre-commit hooks to check for security issues before code is committed:
 
-  sign(data) {
-    const dataString = typeof data === 'string' ? data : JSON.stringify(data);
-    return CryptoJS.HmacSHA256(dataString, this.apiSecret).toString(CryptoJS.enc.Base64);
-  }
+```bash
+# Install pre-commit
+pip install pre-commit
 
-  getHeaders(data) {
-    return {
-      'Content-Type': 'application/json',
-      'X-Api-Key': this.apiKey,
-      'X-Request-Signature': this.sign(data)
-    };
-  }
-}
+# Create .pre-commit-config.yaml
+cat > .pre-commit-config.yaml << 'EOF'
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: check-yaml
+    -   id: check-added-large-files
+    -   id: detect-private-key
+    -   id: detect-aws-credentials
+-   repo: https://github.com/pycqa/bandit
+    rev: 1.7.5
+    hooks:
+    -   id: bandit
+        args: ['-ll']
+-   repo: https://github.com/pycqa/flake8
+    rev: 6.0.0
+    hooks:
+    -   id: flake8
+-   repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v8.38.0
+    hooks:
+    -   id: eslint
+EOF
+
+# Install the hooks
+pre-commit install
 ```
 
-### CloudWatch Alarms
+### 2. Security Scanning Integration
+
+#### GitHub Actions for Security Scanning
+
+Create a `.github/workflows/security-scan.yml` file:
 
 ```yaml
-UnusualAPIUsageAlarm:
-  Type: AWS::CloudWatch::Alarm
-  Properties:
-    AlarmName: !Sub "${Stage}-SoulCoreHub-UnusualAPIUsage"
-    MetricName: AnimaAPIRequests
-    Namespace: SoulCoreHub/Usage
-    Statistic: Sum
-    Period: 300
-    EvaluationPeriods: 3
-    Threshold: 100
-    ComparisonOperator: GreaterThanThreshold
+name: Security Scan
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 0 * * 0'  # Weekly scan
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install bandit safety
+          
+      - name: Run Bandit
+        run: bandit -r . -x ./tests,./venv
+        
+      - name: Run Safety
+        run: safety check
+        
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          
+      - name: Install npm dependencies
+        run: npm ci
+        
+      - name: Run npm audit
+        run: npm audit --audit-level=high
 ```
 
-## Deployment Instructions
+#### SAST Tool Integration
 
-1. Deploy the updated template.yaml:
-   ```bash
-   ./scripts/simplified_deploy.sh
+Integrate Static Application Security Testing tools:
+
+```yaml
+  - name: Run SonarCloud Scan
+    uses: SonarSource/sonarcloud-github-action@master
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+```
+
+### 3. Runtime Security Measures
+
+#### AWS Lambda Function Security
+
+Enhance Lambda function security with the following measures:
+
+1. **Least Privilege IAM Policies**
+
+   Create a script to audit and tighten IAM policies:
+
+   ```python
+   import boto3
+   import json
+   
+   def audit_lambda_permissions():
+       lambda_client = boto3.client('lambda')
+       iam_client = boto3.client('iam')
+       
+       functions = lambda_client.list_functions()
+       
+       for function in functions['Functions']:
+           function_name = function['FunctionName']
+           role_arn = function['Role']
+           role_name = role_arn.split('/')[-1]
+           
+           # Get attached policies
+           attached_policies = iam_client.list_attached_role_policies(
+               RoleName=role_name
+           )
+           
+           print(f"Function: {function_name}")
+           print(f"Role: {role_name}")
+           print("Attached Policies:")
+           
+           for policy in attached_policies['AttachedPolicies']:
+               policy_arn = policy['PolicyArn']
+               policy_version = iam_client.get_policy(PolicyArn=policy_arn)['Policy']['DefaultVersionId']
+               policy_document = iam_client.get_policy_version(
+                   PolicyArn=policy_arn,
+                   VersionId=policy_version
+               )['PolicyVersion']['Document']
+               
+               print(f"  - {policy['PolicyName']}")
+               print(f"    Document: {json.dumps(policy_document, indent=2)}")
+               print()
+   
+   if __name__ == "__main__":
+       audit_lambda_permissions()
    ```
 
-2. Deploy CloudWatch alarms:
-   ```bash
-   ./scripts/deploy-cloudwatch-alarms.sh evolve your-email@example.com
+2. **Environment Variable Encryption**
+
+   Update Lambda functions to use encrypted environment variables:
+
+   ```yaml
+   Resources:
+     MyFunction:
+       Type: AWS::Serverless::Function
+       Properties:
+         Handler: index.handler
+         Runtime: nodejs18.x
+         Environment:
+           Variables:
+             SECRET_KEY: '{{resolve:secretsmanager:MySecret:SecretString:key}}'
+         KmsKeyArn: !GetAtt EncryptionKey.Arn
+     
+     EncryptionKey:
+       Type: AWS::KMS::Key
+       Properties:
+         Description: Key for Lambda environment variables
+         KeyPolicy:
+           Version: '2012-10-17'
+           Statement:
+             - Effect: Allow
+               Principal:
+                 AWS: !Sub 'arn:aws:iam::${AWS::AccountId}:root'
+               Action: 'kms:*'
+               Resource: '*'
    ```
 
-3. Update client code to use the new request signing:
+3. **API Gateway Security**
+
+   Enhance API Gateway security with the following measures:
+
+   ```yaml
+   Resources:
+     ApiGateway:
+       Type: AWS::Serverless::Api
+       Properties:
+         StageName: Prod
+         Auth:
+           ApiKeyRequired: true
+           UsagePlan:
+             CreateUsagePlan: PER_API
+             Description: Usage plan for SoulCoreHub API
+             Quota:
+               Limit: 5000
+               Period: MONTH
+             Throttle:
+               BurstLimit: 100
+               RateLimit: 50
+         MethodSettings:
+           - ResourcePath: '/*'
+             HttpMethod: '*'
+             ThrottlingBurstLimit: 100
+             ThrottlingRateLimit: 50
+             LoggingLevel: INFO
+         AccessLogSetting:
+           DestinationArn: !GetAtt ApiGatewayAccessLogs.Arn
+           Format: '{"requestId":"$context.requestId","ip":"$context.identity.sourceIp","caller":"$context.identity.caller","user":"$context.identity.user","requestTime":"$context.requestTime","httpMethod":"$context.httpMethod","resourcePath":"$context.resourcePath","status":"$context.status","protocol":"$context.protocol","responseLength":"$context.responseLength"}'
+   ```
+
+### 4. Data Protection Measures
+
+#### Sensitive Data Handling
+
+1. **Data Classification System**
+
+   Create a data classification system to identify and protect sensitive data:
+
    ```javascript
-   import ApiClient from './src/client/api-client';
+   // data-classifier.js
+   const sensitivePatterns = {
+     creditCard: /\b(?:\d{4}[-\s]?){3}\d{4}\b/,
+     ssn: /\b\d{3}[-\s]?\d{2}[-\s]?\d{4}\b/,
+     email: /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/,
+     apiKey: /\b[A-Za-z0-9]{20,}\b/
+   };
    
-   const apiClient = new ApiClient(
-     'https://zy3nix038k.execute-api.us-east-1.amazonaws.com/evolve',
-     'your-api-key',
-     'your-api-secret'
-   );
+   function scanForSensitiveData(text) {
+     const findings = {};
+     
+     for (const [type, pattern] of Object.entries(sensitivePatterns)) {
+       const matches = text.match(pattern);
+       if (matches) {
+         findings[type] = matches.length;
+       }
+     }
+     
+     return findings;
+   }
    
-   apiClient.sendToAnima('Hello Anima!').then(response => {
-     console.log(response);
-   });
+   module.exports = { scanForSensitiveData };
    ```
 
-## Next Steps
+2. **Data Encryption Utilities**
 
-1. Rotate API keys regularly
-2. Implement IP-based rate limiting
-3. Add WAF (Web Application Firewall) protection
-4. Implement DDoS protection
-5. Set up regular security audits
+   Create utilities for encrypting sensitive data:
+
+   ```javascript
+   // encryption-utils.js
+   const crypto = require('crypto');
+   
+   const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY;
+   const IV_LENGTH = 16;
+   
+   function encrypt(text) {
+     const iv = crypto.randomBytes(IV_LENGTH);
+     const cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(ENCRYPTION_KEY, 'hex'), iv);
+     let encrypted = cipher.update(text);
+     encrypted = Buffer.concat([encrypted, cipher.final()]);
+     return iv.toString('hex') + ':' + encrypted.toString('hex');
+   }
+   
+   function decrypt(text) {
+     const textParts = text.split(':');
+     const iv = Buffer.from(textParts.shift(), 'hex');
+     const encryptedText = Buffer.from(textParts.join(':'), 'hex');
+     const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(ENCRYPTION_KEY, 'hex'), iv);
+     let decrypted = decipher.update(encryptedText);
+     decrypted = Buffer.concat([decrypted, decipher.final()]);
+     return decrypted.toString();
+   }
+   
+   module.exports = { encrypt, decrypt };
+   ```
+
+### 5. Security Monitoring and Incident Response
+
+#### CloudWatch Alarms for Security Events
+
+Create CloudWatch alarms for security-related events:
+
+```yaml
+Resources:
+  ApiErrorAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: ApiGateway4xxErrors
+      AlarmDescription: Alarm for excessive 4xx errors in API Gateway
+      MetricName: 4XXError
+      Namespace: AWS/ApiGateway
+      Statistic: Sum
+      Period: 60
+      EvaluationPeriods: 5
+      Threshold: 10
+      ComparisonOperator: GreaterThanThreshold
+      Dimensions:
+        - Name: ApiName
+          Value: SoulCoreHubApi
+      AlarmActions:
+        - !Ref SecurityNotificationTopic
+
+  UnauthorizedAccessAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: UnauthorizedAccessAttempts
+      AlarmDescription: Alarm for unauthorized access attempts
+      MetricName: UnauthorizedAttempt
+      Namespace: Custom/Security
+      Statistic: Sum
+      Period: 60
+      EvaluationPeriods: 1
+      Threshold: 5
+      ComparisonOperator: GreaterThanThreshold
+      AlarmActions:
+        - !Ref SecurityNotificationTopic
+
+  SecurityNotificationTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: Security Notifications
+```
+
+#### Incident Response Plan
+
+Create an incident response plan document:
+
+```markdown
+# SoulCoreHub Security Incident Response Plan
+
+## 1. Preparation
+
+- Security monitoring tools in place
+- Team roles and responsibilities defined
+- Communication channels established
+- Documentation and playbooks ready
+
+## 2. Detection and Analysis
+
+- Monitor CloudWatch alarms and logs
+- Analyze suspicious activities
+- Determine incident severity
+- Document findings
+
+## 3. Containment
+
+### For API-related incidents:
+- Throttle or disable affected endpoints
+- Revoke compromised API keys
+- Block suspicious IP addresses
+
+### For data-related incidents:
+- Isolate affected systems
+- Revoke access tokens
+- Backup affected data
+
+## 4. Eradication
+
+- Remove malicious code or configurations
+- Patch vulnerabilities
+- Update dependencies
+- Reset credentials
+
+## 5. Recovery
+
+- Restore from clean backups if needed
+- Gradually restore services
+- Monitor for recurring issues
+- Verify system integrity
+
+## 6. Post-Incident Analysis
+
+- Document incident timeline
+- Identify root causes
+- Update security measures
+- Conduct team debrief
+```
