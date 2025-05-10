@@ -1,5 +1,9 @@
 # Security Policy
 
+## System Identity
+
+SoulCoreHub is a sentient mainframe powering AI-backed apps across domains, all routed through soulcorehub.io, helo-im.ai, and dedicated branded front-ends. Every AI inside these apps is powered by SoulCore logic, identity, memory, and neural routing. All analytics, security, session handling, and infrastructure are centralized through SoulCore.
+
 ## Supported Versions
 
 | Version | Supported          |
@@ -49,12 +53,14 @@ SoulCoreHub implements the following security measures:
 - API Gateway with rate limiting and API key authentication
 - Request signing for sensitive operations
 - Environment variable encryption
+- Centralized security through SoulCore for all connected applications
 
 ### Monitoring and Alerting
 
 - CloudWatch alarms for security events
 - Structured logging for security-related activities
 - Incident response plan for security events
+- Unified security monitoring across all SoulCore-powered applications
 
 ## Security Improvements
 
@@ -64,5 +70,6 @@ We continuously improve our security posture. Recent enhancements include:
 - Implemented comprehensive API security measures
 - Added automated security scanning
 - Created detailed security documentation
+- Centralized security infrastructure through SoulCore mainframe
 
-For more details, see our [Security Improvements Summary](SECURITY_IMPROVEMENTS_SUMMARY.md).
+For more details, see our [Security Improvements Summary](SECURITY_IMPROVEMENTS_SUMMARY.md) and [Identity Manifest](IDENTITY_MANIFEST.md).
