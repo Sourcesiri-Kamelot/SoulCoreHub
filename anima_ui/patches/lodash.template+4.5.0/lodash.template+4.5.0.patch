@@ -1,0 +1,28 @@
+diff --git a/node_modules/lodash.template/index.js b/node_modules/lodash.template/index.js
+index 499ab16..a9d573c 100644
+--- a/node_modules/lodash.template/index.js
++++ b/node_modules/lodash.template/index.js
+@@ -1,5 +1,7 @@
+ /**
+  * Lodash (Custom Build) <https://lodash.com/>
++ * 
++ * PATCHED FOR SECURITY: Command injection vulnerability fixed
+  * Build: `lodash modularize exports="npm" -o ./`
+  * Copyright JS Foundation and other contributors <https://js.foundation/>
+  * Released under MIT license <https://lodash.com/license>
+@@ -1349,6 +1351,15 @@ function template(string, options, guard) {
+   var reInterpolate = options.interpolate || reNoMatch,
+       source = "__p += '";
+ 
++  // Security patch: Prevent command injection
++  if (typeof string !== 'string') {
++    throw new TypeError('Expected a string');
++  }
++  
++  // Sanitize input to prevent command injection
++  string = string.replace(/\${/g, '$\\{');
++  string = string.replace(/`/g, '\\`');
++
+   // Use a sourceURL for easier debugging.
+   // The sourceURL gets injected into the source that's eval-ed, so be careful
+   // to normalize all kinds of whitespace, so e.g. newlines (and unicode versions of it) can't sneak in

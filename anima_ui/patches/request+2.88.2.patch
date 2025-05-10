@@ -1,0 +1,105 @@
+diff --git a/node_modules/request/lib/redirect.js b/node_modules/request/lib/redirect.js
+index 3e48972..5c0c37d 100644
+--- a/node_modules/request/lib/redirect.js
++++ b/node_modules/request/lib/redirect.js
+@@ -1,5 +1,7 @@
+ 'use strict'
+ 
++// PATCHED FOR SECURITY: Fixed SSRF vulnerability
++
+ var url = require('url')
+ var isUrl = /^https?:/
+ 
+@@ -14,6 +16,25 @@ function Redirect (request) {
+   this.redirects = []
+   this.redirectsFollowed = 0
+   this.removeRefererHeader = false
++  
++  // Security patch: Add private IP check
++  this.isPrivateIP = function(hostname) {
++    // Check for localhost
++    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1') {
++      return true
++    }
++    
++    // Check for private IP ranges
++    var ipv4Pattern = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/
++    var match = hostname.match(ipv4Pattern)
++    if (match) {
++      var oct1 = parseInt(match[1], 10)
++      return (oct1 === 10 || 
++              (oct1 === 172 && parseInt(match[2], 10) >= 16 && parseInt(match[2], 10) <= 31) || 
++              (oct1 === 192 && parseInt(match[2], 10) === 168))
++    }
++    return false
++  }
+ }
+ 
+ Redirect.prototype.onRequest = function (options) {
+@@ -46,6 +67,13 @@ Redirect.prototype.onResponse = function (response) {
+     return
+   }
+ 
++  // Security patch: Prevent SSRF by blocking redirects to private IPs
++  var redirectUri = url.parse(location)
++  if (this.isPrivateIP(redirectUri.hostname)) {
++    self.request.emit('error', new Error('Attempted redirect to private IP: ' + redirectUri.hostname))
++    return
++  }
++
+   if (this.redirectsFollowed >= this.maxRedirects) {
+     this.request.emit('error', new Error('Exceeded maxRedirects. Probably stuck in a redirect loop ' + this.request.uri.href))
+     return
+diff --git a/node_modules/request/request.js b/node_modules/request/request.js
+index 1089dd9..e3ae101 100644
+--- a/node_modules/request/request.js
++++ b/node_modules/request/request.js
+@@ -1,5 +1,7 @@
+ 'use strict'
+ 
++// PATCHED FOR SECURITY: Fixed SSRF vulnerability
++
+ var http = require('http')
+ var https = require('https')
+ var url = require('url')
+@@ -65,6 +67,25 @@ function initParams (uri, options, callback) {
+   return params
+ }
+ 
++// Security patch: Add private IP check
++function isPrivateIP(hostname) {
++  // Check for localhost
++  if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1') {
++    return true
++  }
++  
++  // Check for private IP ranges
++  var ipv4Pattern = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/
++  var match = hostname.match(ipv4Pattern)
++  if (match) {
++    var oct1 = parseInt(match[1], 10)
++    return (oct1 === 10 || 
++            (oct1 === 172 && parseInt(match[2], 10) >= 16 && parseInt(match[2], 10) <= 31) || 
++            (oct1 === 192 && parseInt(match[2], 10) === 168))
++  }
++  return false
++}
++
+ function request (uri, options, callback) {
+   if (typeof uri === 'undefined') {
+     throw new Error('undefined is not a valid uri or options object.')
+@@ -78,6 +99,14 @@ function request (uri, options, callback) {
+   var params = initParams(uri, options, callback)
+   var target = {}
+   var urlParsed = url.parse(params.uri || '')
++  
++  // Security patch: Prevent SSRF by blocking requests to private IPs
++  if (urlParsed.hostname && isPrivateIP(urlParsed.hostname)) {
++    if (params.callback) {
++      return params.callback(new Error('Request to private IP denied for security reasons: ' + urlParsed.hostname))
++    }
++    throw new Error('Request to private IP denied for security reasons: ' + urlParsed.hostname)
++  }
+ 
+   // support RFC 3986, section 3
+   if (urlParsed.protocol) {

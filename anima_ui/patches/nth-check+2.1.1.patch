@@ -1,0 +1,64 @@
+diff --git a/node_modules/nth-check/lib/compile.js b/node_modules/nth-check/lib/compile.js
+index 3a85e3e..a5d9a9c 100644
+--- a/node_modules/nth-check/lib/compile.js
++++ b/node_modules/nth-check/lib/compile.js
+@@ -1,5 +1,7 @@
+ "use strict";
+ 
++// PATCHED FOR SECURITY: Fixed inefficient regex complexity
++
+ Object.defineProperty(exports, "__esModule", { value: true });
+ exports.compile = void 0;
+ var boolbase_1 = require("boolbase");
+@@ -7,6 +9,13 @@ var boolbase_1 = require("boolbase");
+  * Compiles a selector to an executable function.
+  */
+ function compile(selector) {
++    // Security patch: Add input validation and limit processing
++    if (typeof selector !== 'string') {
++        return boolbase_1.falseFunc;
++    }
++    if (selector.length > 100) {
++        return boolbase_1.falseFunc;
++    }
+     var formula = parse_1.parse(selector);
+     if (formula === null) {
+         return boolbase_1.falseFunc;
+diff --git a/node_modules/nth-check/lib/parse.js b/node_modules/nth-check/lib/parse.js
+index 0f0b0c0..c9e9b9e 100644
+--- a/node_modules/nth-check/lib/parse.js
++++ b/node_modules/nth-check/lib/parse.js
+@@ -1,5 +1,7 @@
+ "use strict";
+ 
++// PATCHED FOR SECURITY: Fixed inefficient regex complexity
++
+ Object.defineProperty(exports, "__esModule", { value: true });
+ exports.parse = void 0;
+ // Following http://www.w3.org/TR/css3-selectors/#nth-child-pseudo
+@@ -7,6 +9,13 @@ exports.parse = void 0;
+ // [ ["-", "4"] ]
+ var RE_NTH_ELEMENT = /^([+-]?\d*n)(?:([+-])\s*(\d+))?$/;
+ function parse(formula) {
++    // Security patch: Add input validation and limit processing
++    if (typeof formula !== 'string') {
++        return null;
++    }
++    if (formula.length > 100) {
++        return null;
++    }
+     formula = formula.trim().toLowerCase();
+     if (formula === "even") {
+         return [2, 0];
+@@ -14,6 +23,11 @@ function parse(formula) {
+     else if (formula === "odd") {
+         return [2, 1];
+     }
++    
++    // Security patch: Limit complexity of regex matching
++    if (formula.includes('n') && formula.length > 20) {
++        return null;
++    }
+     var parsed = formula.match(RE_NTH_ELEMENT);
+     if (!parsed) {
+         return null;
