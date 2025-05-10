@@ -1,0 +1,127 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Lambda function for forwarding emails from S3 to a specified email address
+Resources:
+  EmailForwarderFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: EmailForwarder
+      Handler: lambda_email_forwarder.lambda_handler
+      Role:
+        Fn::GetAtt:
+        - EmailForwarderRole
+        - Arn
+      Runtime: python3.9
+      Timeout: 30
+      MemorySize: 128
+      Environment:
+        Variables:
+          FORWARD_TO: kiwonbowens@helo-im.ai
+          REGION: us-east-1
+          S3_BUCKET: heloim-ai-tech-emails
+          FROM_EMAIL: heloimai@heloim-ai.tech
+      Code:
+        ZipFile: "import json\nimport boto3\nimport email\nimport os\nimport re\n\
+          from email.mime.multipart import MIMEMultipart\nfrom email.mime.text import\
+          \ MIMEText\nfrom email.mime.application import MIMEApplication\nfrom email.utils\
+          \ import parseaddr\n\n# Configuration\nFORWARD_TO = os.environ.get('FORWARD_TO')\n\
+          REGION = os.environ.get('REGION')\nS3_BUCKET = os.environ.get('S3_BUCKET')\n\
+          FROM_EMAIL = os.environ.get('FROM_EMAIL')\n\ndef lambda_handler(event, context):\n\
+          \    \"\"\"\n    Lambda function to forward emails from S3 to a specified\
+          \ email address.\n    \"\"\"\n    print(\"Email forwarding lambda triggered\"\
+          )\n    \n    # Get the S3 object\n    s3_client = boto3.client('s3')\n \
+          \   ses_client = boto3.client('ses', region_name=REGION)\n    \n    # Get\
+          \ the S3 bucket and object key from the event\n    s3_bucket = event['Records'][0]['s3']['bucket']['name']\n\
+          \    s3_object_key = event['Records'][0]['s3']['object']['key']\n    \n\
+          \    print(f\"Processing email from S3 bucket: {s3_bucket}, key: {s3_object_key}\"\
+          )\n    \n    try:\n        # Get the email object from S3\n        email_object\
+          \ = s3_client.get_object(Bucket=s3_bucket, Key=s3_object_key)\n        email_content\
+          \ = email_object['Body'].read().decode('utf-8')\n        \n        # Parse\
+          \ the email\n        parsed_email = email.message_from_string(email_content)\n\
+          \        \n        # Extract email details\n        subject = parsed_email.get('Subject',\
+          \ '(No Subject)')\n        from_address = parseaddr(parsed_email.get('From',\
+          \ ''))[1]\n        to_address = parseaddr(parsed_email.get('To', ''))[1]\n\
+          \        \n        print(f\"Original email - From: {from_address}, To: {to_address},\
+          \ Subject: {subject}\")\n        \n        # Create a new email message\n\
+          \        forwarded_message = MIMEMultipart()\n        forwarded_message['Subject']\
+          \ = f\"Fwd: {subject}\"\n        forwarded_message['From'] = FROM_EMAIL\n\
+          \        forwarded_message['To'] = FORWARD_TO\n        \n        # Add original\
+          \ headers as text\n        headers_text = f\"From: {from_address}\\n\"\n\
+          \        headers_text += f\"To: {to_address}\\n\"\n        headers_text\
+          \ += f\"Subject: {subject}\\n\"\n        headers_text += f\"Date: {parsed_email.get('Date',\
+          \ '')}\\n\\n\"\n        \n        # Add original message body\n        if\
+          \ parsed_email.is_multipart():\n            for part in parsed_email.walk():\n\
+          \                content_type = part.get_content_type()\n              \
+          \  content_disposition = str(part.get(\"Content-Disposition\"))\n      \
+          \          \n                # Skip multipart containers\n             \
+          \   if content_type == \"multipart/alternative\" or content_type == \"multipart/mixed\"\
+          :\n                    continue\n                \n                # Handle\
+          \ text parts\n                if content_type == \"text/plain\" or content_type\
+          \ == \"text/html\":\n                    body = part.get_payload(decode=True).decode('utf-8',\
+          \ errors='replace')\n                    forwarded_message.attach(MIMEText(headers_text\
+          \ + body, part.get_content_subtype()))\n                \n             \
+          \   # Handle attachments\n                elif \"attachment\" in content_disposition:\n\
+          \                    filename = part.get_filename()\n                  \
+          \  if filename:\n                        attachment = MIMEApplication(part.get_payload(decode=True))\n\
+          \                        attachment.add_header('Content-Disposition', 'attachment',\
+          \ filename=filename)\n                        forwarded_message.attach(attachment)\n\
+          \        else:\n            # Handle plain text emails\n            body\
+          \ = parsed_email.get_payload(decode=True).decode('utf-8', errors='replace')\n\
+          \            forwarded_message.attach(MIMEText(headers_text + body, 'plain'))\n\
+          \        \n        # Send the forwarded email\n        response = ses_client.send_raw_email(\n\
+          \            Source=FROM_EMAIL,\n            Destinations=[FORWARD_TO],\n\
+          \            RawMessage={'Data': forwarded_message.as_string()}\n      \
+          \  )\n        \n        print(f\"Email forwarded successfully. Message ID:\
+          \ {response['MessageId']}\")\n        return {\n            'statusCode':\
+          \ 200,\n            'body': json.dumps('Email forwarded successfully')\n\
+          \        }\n        \n    except Exception as e:\n        print(f\"Error\
+          \ processing email: {str(e)}\")\n        return {\n            'statusCode':\
+          \ 500,\n            'body': json.dumps(f'Error processing email: {str(e)}')\n\
+          \        }\n"
+  EmailForwarderRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: lambda.amazonaws.com
+          Action: sts:AssumeRole
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+      - PolicyName: EmailForwarderPolicy
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - s3:GetObject
+            Resource:
+              Fn::Sub: arn:aws:s3:::${S3Bucket}/*
+          - Effect: Allow
+            Action:
+            - ses:SendRawEmail
+            Resource: '*'
+  S3Bucket:
+    Type: String
+    Default: heloim-ai-tech-emails
+    Description: S3 bucket where emails are stored
+  S3NotificationPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Ref: EmailForwarderFunction
+      Principal: s3.amazonaws.com
+      SourceAccount:
+        Ref: AWS::AccountId
+      SourceArn:
+        Fn::Sub: arn:aws:s3:::${S3Bucket}
+Outputs:
+  EmailForwarderFunction:
+    Description: Lambda function for forwarding emails
+    Value:
+      Fn::GetAtt:
+      - EmailForwarderFunction
+      - Arn

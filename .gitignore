@@ -1,28 +1,71 @@
+# Environment variables
 .env
-*.log
+.env.*
+
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
-.DS_Store
-node_modules/
-*.bak
+*.so
+.Python
+venv/
+ENV/
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
 
-# AWS SAM
+# Node.js
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+package-lock.json
+
+# Logs
+logs/
+*.log
+
+# Data
+data/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# AWS
 .aws-sam/
 samconfig.toml
+.aws/
 
-# AWS credentials
-aws/*_accessKeys.csv
+# Docker
+.docker/
 
-# Build artifacts
-build/
-dist/
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
 
-# Local development
-.vscode/
-.idea/
-
-# Temporary files
-*.tmp
-*.temp
-myenv/
+# Credentials
+credentials.json
+*_key.json
+*.pem
+*.key
