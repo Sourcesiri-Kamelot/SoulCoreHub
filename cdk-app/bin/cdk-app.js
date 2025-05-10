@@ -1,0 +1,39 @@
+#!/usr/bin/env node
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+require("source-map-support/register");
+const cdk = require("aws-cdk-lib");
+const soulcorehub_stack_1 = require("../lib/soulcorehub-stack");
+const codecatalyst_stack_1 = require("../lib/codecatalyst-stack");
+const app = new cdk.App();
+// Create the main stack
+const mainStack = new soulcorehub_stack_1.SoulCoreHubStack(app, 'SoulCoreHubStack', {
+    env: {
+        account: process.env.CDK_DEFAULT_ACCOUNT,
+        region: process.env.CDK_DEFAULT_REGION || 'us-east-1'
+    },
+    description: 'SoulCoreHub API and infrastructure',
+});
+// Create the CodeCatalyst stack
+new codecatalyst_stack_1.CodeCatalystStack(app, 'SoulCoreHubCodeCatalystStack', {
+    env: {
+        account: process.env.CDK_DEFAULT_ACCOUNT,
+        region: process.env.CDK_DEFAULT_REGION || 'us-east-1'
+    },
+    description: 'SoulCoreHub CodeCatalyst integration',
+});
+// Create the Route53 stack for the domain
+// Uncomment and configure when ready to deploy to a domain
+/*
+new Route53Stack(app, 'SoulCoreHubRoute53Stack', {
+  env: {
+    account: process.env.CDK_DEFAULT_ACCOUNT,
+    region: process.env.CDK_DEFAULT_REGION || 'us-east-1'
+  },
+  description: 'SoulCoreHub Route53 configuration',
+  api: mainStack.api,
+  domainName: 'soulcorehub.io',
+});
+*/
+app.synth();
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY2RrLWFwcC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbImNkay1hcHAudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7O0FBQ0EsdUNBQXFDO0FBQ3JDLG1DQUFtQztBQUNuQyxnRUFBNEQ7QUFDNUQsa0VBQThEO0FBRzlELE1BQU0sR0FBRyxHQUFHLElBQUksR0FBRyxDQUFDLEdBQUcsRUFBRSxDQUFDO0FBRTFCLHdCQUF3QjtBQUN4QixNQUFNLFNBQVMsR0FBRyxJQUFJLG9DQUFnQixDQUFDLEdBQUcsRUFBRSxrQkFBa0IsRUFBRTtJQUM5RCxHQUFHLEVBQUU7UUFDSCxPQUFPLEVBQUUsT0FBTyxDQUFDLEdBQUcsQ0FBQyxtQkFBbUI7UUFDeEMsTUFBTSxFQUFFLE9BQU8sQ0FBQyxHQUFHLENBQUMsa0JBQWtCLElBQUksV0FBVztLQUN0RDtJQUNELFdBQVcsRUFBRSxvQ0FBb0M7Q0FDbEQsQ0FBQyxDQUFDO0FBRUgsZ0NBQWdDO0FBQ2hDLElBQUksc0NBQWlCLENBQUMsR0FBRyxFQUFFLDhCQUE4QixFQUFFO0lBQ3pELEdBQUcsRUFBRTtRQUNILE9BQU8sRUFBRSxPQUFPLENBQUMsR0FBRyxDQUFDLG1CQUFtQjtRQUN4QyxNQUFNLEVBQUUsT0FBTyxDQUFDLEdBQUcsQ0FBQyxrQkFBa0IsSUFBSSxXQUFXO0tBQ3REO0lBQ0QsV0FBVyxFQUFFLHNDQUFzQztDQUNwRCxDQUFDLENBQUM7QUFFSCwwQ0FBMEM7QUFDMUMsMkRBQTJEO0FBQzNEOzs7Ozs7Ozs7O0VBVUU7QUFFRixHQUFHLENBQUMsS0FBSyxFQUFFLENBQUMiLCJzb3VyY2VzQ29udGVudCI6WyIjIS91c3IvYmluL2VudiBub2RlXG5pbXBvcnQgJ3NvdXJjZS1tYXAtc3VwcG9ydC9yZWdpc3Rlcic7XG5pbXBvcnQgKiBhcyBjZGsgZnJvbSAnYXdzLWNkay1saWInO1xuaW1wb3J0IHsgU291bENvcmVIdWJTdGFjayB9IGZyb20gJy4uL2xpYi9zb3VsY29yZWh1Yi1zdGFjayc7XG5pbXBvcnQgeyBDb2RlQ2F0YWx5c3RTdGFjayB9IGZyb20gJy4uL2xpYi9jb2RlY2F0YWx5c3Qtc3RhY2snO1xuaW1wb3J0IHsgUm91dGU1M1N0YWNrIH0gZnJvbSAnLi4vbGliL3JvdXRlNTMtc3RhY2snO1xuXG5jb25zdCBhcHAgPSBuZXcgY2RrLkFwcCgpO1xuXG4vLyBDcmVhdGUgdGhlIG1haW4gc3RhY2tcbmNvbnN0IG1haW5TdGFjayA9IG5ldyBTb3VsQ29yZUh1YlN0YWNrKGFwcCwgJ1NvdWxDb3JlSHViU3RhY2snLCB7XG4gIGVudjogeyBcbiAgICBhY2NvdW50OiBwcm9jZXNzLmVudi5DREtfREVGQVVMVF9BQ0NPVU5ULCBcbiAgICByZWdpb246IHByb2Nlc3MuZW52LkNES19ERUZBVUxUX1JFR0lPTiB8fCAndXMtZWFzdC0xJyBcbiAgfSxcbiAgZGVzY3JpcHRpb246ICdTb3VsQ29yZUh1YiBBUEkgYW5kIGluZnJhc3RydWN0dXJlJyxcbn0pO1xuXG4vLyBDcmVhdGUgdGhlIENvZGVDYXRhbHlzdCBzdGFja1xubmV3IENvZGVDYXRhbHlzdFN0YWNrKGFwcCwgJ1NvdWxDb3JlSHViQ29kZUNhdGFseXN0U3RhY2snLCB7XG4gIGVudjogeyBcbiAgICBhY2NvdW50OiBwcm9jZXNzLmVudi5DREtfREVGQVVMVF9BQ0NPVU5ULCBcbiAgICByZWdpb246IHByb2Nlc3MuZW52LkNES19ERUZBVUxUX1JFR0lPTiB8fCAndXMtZWFzdC0xJyBcbiAgfSxcbiAgZGVzY3JpcHRpb246ICdTb3VsQ29yZUh1YiBDb2RlQ2F0YWx5c3QgaW50ZWdyYXRpb24nLFxufSk7XG5cbi8vIENyZWF0ZSB0aGUgUm91dGU1MyBzdGFjayBmb3IgdGhlIGRvbWFpblxuLy8gVW5jb21tZW50IGFuZCBjb25maWd1cmUgd2hlbiByZWFkeSB0byBkZXBsb3kgdG8gYSBkb21haW5cbi8qXG5uZXcgUm91dGU1M1N0YWNrKGFwcCwgJ1NvdWxDb3JlSHViUm91dGU1M1N0YWNrJywge1xuICBlbnY6IHsgXG4gICAgYWNjb3VudDogcHJvY2Vzcy5lbnYuQ0RLX0RFRkFVTFRfQUNDT1VOVCwgXG4gICAgcmVnaW9uOiBwcm9jZXNzLmVudi5DREtfREVGQVVMVF9SRUdJT04gfHwgJ3VzLWVhc3QtMScgXG4gIH0sXG4gIGRlc2NyaXB0aW9uOiAnU291bENvcmVIdWIgUm91dGU1MyBjb25maWd1cmF0aW9uJyxcbiAgYXBpOiBtYWluU3RhY2suYXBpLFxuICBkb21haW5OYW1lOiAnc291bGNvcmVodWIuaW8nLFxufSk7XG4qL1xuXG5hcHAuc3ludGgoKTtcbiJdfQ==

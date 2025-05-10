@@ -1,0 +1,3859 @@
+{
+ "Description": "SoulCoreHub API and infrastructure",
+ "Resources": {
+  "ClientsTableC30D35A3": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "clientId",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "KeySchema": [
+     {
+      "AttributeName": "clientId",
+      "KeyType": "HASH"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/ClientsTable/Resource"
+   }
+  },
+  "MemoryTable77C28B76": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "memoryId",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "KeySchema": [
+     {
+      "AttributeName": "memoryId",
+      "KeyType": "HASH"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/MemoryTable/Resource"
+   }
+  },
+  "AgentsTable78E0948F": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "agentId",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "KeySchema": [
+     {
+      "AttributeName": "agentId",
+      "KeyType": "HASH"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/AgentsTable/Resource"
+   }
+  },
+  "AppsTable172E1E77": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "appId",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "KeySchema": [
+     {
+      "AttributeName": "appId",
+      "KeyType": "HASH"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/AppsTable/Resource"
+   }
+  },
+  "MainframeLambdaServiceRoleA272CA2A": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/MainframeLambda/ServiceRole/Resource"
+   }
+  },
+  "MainframeLambdaServiceRoleDefaultPolicyE387EBCE": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "AgentsTable78E0948F",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::GetAtt": [
+          "AppsTable172E1E77",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::GetAtt": [
+          "ClientsTableC30D35A3",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::GetAtt": [
+          "MemoryTable77C28B76",
+          "Arn"
+         ]
+        },
+        {
+         "Ref": "AWS::NoValue"
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "MainframeLambdaServiceRoleDefaultPolicyE387EBCE",
+    "Roles": [
+     {
+      "Ref": "MainframeLambdaServiceRoleA272CA2A"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/MainframeLambda/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "MainframeLambda343C4B8E": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-699475940746-us-east-1",
+     "S3Key": "af3f1fa885d2f41e712898e49e8af50c0cb712c54bdd0dc95d078a587bd32fc1.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "CLIENTS_TABLE": {
+       "Ref": "ClientsTableC30D35A3"
+      },
+      "MEMORY_TABLE": {
+       "Ref": "MemoryTable77C28B76"
+      },
+      "AGENTS_TABLE": {
+       "Ref": "AgentsTable78E0948F"
+      },
+      "APPS_TABLE": {
+       "Ref": "AppsTable172E1E77"
+      }
+     }
+    },
+    "Handler": "index.handler",
+    "MemorySize": 512,
+    "Role": {
+     "Fn::GetAtt": [
+      "MainframeLambdaServiceRoleA272CA2A",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs18.x",
+    "Timeout": 30
+   },
+   "DependsOn": [
+    "MainframeLambdaServiceRoleDefaultPolicyE387EBCE",
+    "MainframeLambdaServiceRoleA272CA2A"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/MainframeLambda/Resource",
+    "aws:asset:path": "asset.af3f1fa885d2f41e712898e49e8af50c0cb712c54bdd0dc95d078a587bd32fc1",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "ClientsLambdaServiceRoleDF9BC2C0": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/ClientsLambda/ServiceRole/Resource"
+   }
+  },
+  "ClientsLambdaServiceRoleDefaultPolicy0D001147": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ClientsTableC30D35A3",
+          "Arn"
+         ]
+        },
+        {
+         "Ref": "AWS::NoValue"
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "ClientsLambdaServiceRoleDefaultPolicy0D001147",
+    "Roles": [
+     {
+      "Ref": "ClientsLambdaServiceRoleDF9BC2C0"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/ClientsLambda/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "ClientsLambda61513EB5": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-699475940746-us-east-1",
+     "S3Key": "5c46a235caea6c09aa9358780a50f7fbf909ed6f8e29b985bf9b9e9200fb6a9f.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "CLIENTS_TABLE": {
+       "Ref": "ClientsTableC30D35A3"
+      }
+     }
+    },
+    "Handler": "index.handler",
+    "MemorySize": 512,
+    "Role": {
+     "Fn::GetAtt": [
+      "ClientsLambdaServiceRoleDF9BC2C0",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs18.x",
+    "Timeout": 30
+   },
+   "DependsOn": [
+    "ClientsLambdaServiceRoleDefaultPolicy0D001147",
+    "ClientsLambdaServiceRoleDF9BC2C0"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/ClientsLambda/Resource",
+    "aws:asset:path": "asset.5c46a235caea6c09aa9358780a50f7fbf909ed6f8e29b985bf9b9e9200fb6a9f",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "MemoryLambdaServiceRole84A02FD6": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/MemoryLambda/ServiceRole/Resource"
+   }
+  },
+  "MemoryLambdaServiceRoleDefaultPolicy0AAD850D": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "MemoryTable77C28B76",
+          "Arn"
+         ]
+        },
+        {
+         "Ref": "AWS::NoValue"
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "MemoryLambdaServiceRoleDefaultPolicy0AAD850D",
+    "Roles": [
+     {
+      "Ref": "MemoryLambdaServiceRole84A02FD6"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/MemoryLambda/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "MemoryLambda1722545F": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-699475940746-us-east-1",
+     "S3Key": "c565b17fffe5df73593897bbe93e151481bee0feb18eb3c14890c7af14539e88.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "MEMORY_TABLE": {
+       "Ref": "MemoryTable77C28B76"
+      }
+     }
+    },
+    "Handler": "index.handler",
+    "MemorySize": 512,
+    "Role": {
+     "Fn::GetAtt": [
+      "MemoryLambdaServiceRole84A02FD6",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs18.x",
+    "Timeout": 30
+   },
+   "DependsOn": [
+    "MemoryLambdaServiceRoleDefaultPolicy0AAD850D",
+    "MemoryLambdaServiceRole84A02FD6"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/MemoryLambda/Resource",
+    "aws:asset:path": "asset.c565b17fffe5df73593897bbe93e151481bee0feb18eb3c14890c7af14539e88",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "AgentsLambdaServiceRole4FFB7C1B": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/AgentsLambda/ServiceRole/Resource"
+   }
+  },
+  "AgentsLambdaServiceRoleDefaultPolicyD5F54DD3": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "AgentsTable78E0948F",
+          "Arn"
+         ]
+        },
+        {
+         "Ref": "AWS::NoValue"
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "AgentsLambdaServiceRoleDefaultPolicyD5F54DD3",
+    "Roles": [
+     {
+      "Ref": "AgentsLambdaServiceRole4FFB7C1B"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/AgentsLambda/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "AgentsLambda3BCBBB38": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-699475940746-us-east-1",
+     "S3Key": "57c73b44fd67c8c2de96ddedd9cf71c8e9b482e39fd884243fe03b9982c4aaf1.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "AGENTS_TABLE": {
+       "Ref": "AgentsTable78E0948F"
+      }
+     }
+    },
+    "Handler": "index.handler",
+    "MemorySize": 512,
+    "Role": {
+     "Fn::GetAtt": [
+      "AgentsLambdaServiceRole4FFB7C1B",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs18.x",
+    "Timeout": 30
+   },
+   "DependsOn": [
+    "AgentsLambdaServiceRoleDefaultPolicyD5F54DD3",
+    "AgentsLambdaServiceRole4FFB7C1B"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/AgentsLambda/Resource",
+    "aws:asset:path": "asset.57c73b44fd67c8c2de96ddedd9cf71c8e9b482e39fd884243fe03b9982c4aaf1",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "AppsLambdaServiceRoleC4895317": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/AppsLambda/ServiceRole/Resource"
+   }
+  },
+  "AppsLambdaServiceRoleDefaultPolicy6DFCF0B3": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "AppsTable172E1E77",
+          "Arn"
+         ]
+        },
+        {
+         "Ref": "AWS::NoValue"
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "AppsLambdaServiceRoleDefaultPolicy6DFCF0B3",
+    "Roles": [
+     {
+      "Ref": "AppsLambdaServiceRoleC4895317"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/AppsLambda/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "AppsLambda52B1D3EC": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-699475940746-us-east-1",
+     "S3Key": "eb98a54f4658c9c11280a0217cad029ba3294e36d9ffb7cc26369ca8286acd7e.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "APPS_TABLE": {
+       "Ref": "AppsTable172E1E77"
+      }
+     }
+    },
+    "Handler": "index.handler",
+    "MemorySize": 512,
+    "Role": {
+     "Fn::GetAtt": [
+      "AppsLambdaServiceRoleC4895317",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs18.x",
+    "Timeout": 30
+   },
+   "DependsOn": [
+    "AppsLambdaServiceRoleDefaultPolicy6DFCF0B3",
+    "AppsLambdaServiceRoleC4895317"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/AppsLambda/Resource",
+    "aws:asset:path": "asset.eb98a54f4658c9c11280a0217cad029ba3294e36d9ffb7cc26369ca8286acd7e",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "SoulCoreHubApiF8888713": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "Description": "API for SoulCoreHub",
+    "Name": "SoulCoreHub API"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Resource"
+   }
+  },
+  "SoulCoreHubApiDeployment20431F939c5826aa64f87262dc206d6b0807ca96": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "Description": "API for SoulCoreHub",
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "DependsOn": [
+    "SoulCoreHubApiagentsagentIdconfigOPTIONSFCF6B9CA",
+    "SoulCoreHubApiagentsagentIdconfigPUTEFC27BDB",
+    "SoulCoreHubApiagentsagentIdconfig7E350E8E",
+    "SoulCoreHubApiagentsagentIdinvokeOPTIONS4A851156",
+    "SoulCoreHubApiagentsagentIdinvokePOST6E019AF8",
+    "SoulCoreHubApiagentsagentIdinvokeD4B34C13",
+    "SoulCoreHubApiagentsagentIdOPTIONS4DC3007A",
+    "SoulCoreHubApiagentsagentIdC77EDCEA",
+    "SoulCoreHubApiagentsagentIdstatusGETED4D241F",
+    "SoulCoreHubApiagentsagentIdstatusOPTIONSBB2EC725",
+    "SoulCoreHubApiagentsagentIdstatus5A4E2BC1",
+    "SoulCoreHubApiagentsOPTIONS0A26A73C",
+    "SoulCoreHubApiagentsB630ECD6",
+    "SoulCoreHubApiappsappIdDELETE9494D248",
+    "SoulCoreHubApiappsappIdfunctionsfunctionNameOPTIONS61310318",
+    "SoulCoreHubApiappsappIdfunctionsfunctionNamePOST67D23A87",
+    "SoulCoreHubApiappsappIdfunctionsfunctionName8896BB4F",
+    "SoulCoreHubApiappsappIdfunctionsOPTIONS78761972",
+    "SoulCoreHubApiappsappIdfunctionsBD3A9E17",
+    "SoulCoreHubApiappsappIdGETE2C0EE34",
+    "SoulCoreHubApiappsappIdOPTIONSFFFB1A8E",
+    "SoulCoreHubApiappsappIdPUT3882242F",
+    "SoulCoreHubApiappsappId742EB443",
+    "SoulCoreHubApiappsGET26AB6C62",
+    "SoulCoreHubApiappsOPTIONS5EB542B1",
+    "SoulCoreHubApiappsPOST545846AC",
+    "SoulCoreHubApiappsA5D102FA",
+    "SoulCoreHubApiclientsclientIdauthenticateOPTIONS4BFB3EC1",
+    "SoulCoreHubApiclientsclientIdauthenticatePOSTF7ECAE98",
+    "SoulCoreHubApiclientsclientIdauthenticateB286F205",
+    "SoulCoreHubApiclientsclientIdconfigOPTIONSA831994A",
+    "SoulCoreHubApiclientsclientIdconfigPUT8C618F52",
+    "SoulCoreHubApiclientsclientIdconfig6B9D6D5E",
+    "SoulCoreHubApiclientsclientIdGET13624B85",
+    "SoulCoreHubApiclientsclientIdOPTIONSFD6575F1",
+    "SoulCoreHubApiclientsclientId39993C22",
+    "SoulCoreHubApiclientsOPTIONSCFED4E44",
+    "SoulCoreHubApiclientsPOST8B64037C",
+    "SoulCoreHubApiclients23E1286E",
+    "SoulCoreHubApiexecuteOPTIONSA86108B1",
+    "SoulCoreHubApiexecutePOST8981E394",
+    "SoulCoreHubApiexecute8F450E9A",
+    "SoulCoreHubApimemorymemoryIdDELETE1C9D0BFA",
+    "SoulCoreHubApimemorymemoryIdGET49C78CAF",
+    "SoulCoreHubApimemorymemoryIdOPTIONS844D03C7",
+    "SoulCoreHubApimemorymemoryIdPUT324E31C4",
+    "SoulCoreHubApimemorymemoryId28D8D7F4",
+    "SoulCoreHubApimemorymemoryIdsearchOPTIONS79C1B4D8",
+    "SoulCoreHubApimemorymemoryIdsearchPOSTCFCF819F",
+    "SoulCoreHubApimemorymemoryIdsearch29C8BEE7",
+    "SoulCoreHubApimemoryOPTIONS1882A262",
+    "SoulCoreHubApimemoryE18D3202",
+    "SoulCoreHubApiOPTIONS353A37BD",
+    "SoulCoreHubApistatusGETAE25A42F",
+    "SoulCoreHubApistatusOPTIONSF104B96C",
+    "SoulCoreHubApistatusE6677B64"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Deployment/Resource"
+   }
+  },
+  "SoulCoreHubApiDeploymentStageprod34A8578A": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "DeploymentId": {
+     "Ref": "SoulCoreHubApiDeployment20431F939c5826aa64f87262dc206d6b0807ca96"
+    },
+    "MethodSettings": [
+     {
+      "DataTraceEnabled": true,
+      "HttpMethod": "*",
+      "LoggingLevel": "INFO",
+      "ResourcePath": "/*"
+     }
+    ],
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    },
+    "StageName": "prod"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/DeploymentStage.prod/Resource"
+   }
+  },
+  "SoulCoreHubApiOPTIONS353A37BD": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Api-Token,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Fn::GetAtt": [
+      "SoulCoreHubApiF8888713",
+      "RootResourceId"
+     ]
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/OPTIONS/Resource"
+   }
+  },
+  "SoulCoreHubApistatusE6677B64": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "SoulCoreHubApiF8888713",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "status",
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/status/Resource"
+   }
+  },
+  "SoulCoreHubApistatusOPTIONSF104B96C": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Api-Token,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "SoulCoreHubApistatusE6677B64"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/status/OPTIONS/Resource"
+   }
+  },
+  "SoulCoreHubApistatusGETApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174GETstatusFA5B1EAD": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "MainframeLambda343C4B8E",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/",
+       {
+        "Ref": "SoulCoreHubApiDeploymentStageprod34A8578A"
+       },
+       "/GET/status"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/status/GET/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.GET..status"
+   }
+  },
+  "SoulCoreHubApistatusGETApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174GETstatusBED973B1": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "MainframeLambda343C4B8E",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/test-invoke-stage/GET/status"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/status/GET/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.GET..status"
+   }
+  },
+  "SoulCoreHubApistatusGETAE25A42F": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "MainframeLambda343C4B8E",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "SoulCoreHubApistatusE6677B64"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/status/GET/Resource"
+   }
+  },
+  "SoulCoreHubApiclients23E1286E": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "SoulCoreHubApiF8888713",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "clients",
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/clients/Resource"
+   }
+  },
+  "SoulCoreHubApiclientsOPTIONSCFED4E44": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Api-Token,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "SoulCoreHubApiclients23E1286E"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/clients/OPTIONS/Resource"
+   }
+  },
+  "SoulCoreHubApiclientsPOSTApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174POSTclientsE741DBAA": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ClientsLambda61513EB5",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/",
+       {
+        "Ref": "SoulCoreHubApiDeploymentStageprod34A8578A"
+       },
+       "/POST/clients"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/clients/POST/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.POST..clients"
+   }
+  },
+  "SoulCoreHubApiclientsPOSTApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174POSTclients0C8D44F4": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ClientsLambda61513EB5",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/test-invoke-stage/POST/clients"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/clients/POST/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.POST..clients"
+   }
+  },
+  "SoulCoreHubApiclientsPOST8B64037C": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "ClientsLambda61513EB5",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "SoulCoreHubApiclients23E1286E"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/clients/POST/Resource"
+   }
+  },
+  "SoulCoreHubApiclientsclientId39993C22": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "SoulCoreHubApiclients23E1286E"
+    },
+    "PathPart": "{clientId}",
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/clients/{clientId}/Resource"
+   }
+  },
+  "SoulCoreHubApiclientsclientIdOPTIONSFD6575F1": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Api-Token,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "SoulCoreHubApiclientsclientId39993C22"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/clients/{clientId}/OPTIONS/Resource"
+   }
+  },
+  "SoulCoreHubApiclientsclientIdGETApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174GETclientsclientId51C9E957": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ClientsLambda61513EB5",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/",
+       {
+        "Ref": "SoulCoreHubApiDeploymentStageprod34A8578A"
+       },
+       "/GET/clients/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/clients/{clientId}/GET/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.GET..clients.{clientId}"
+   }
+  },
+  "SoulCoreHubApiclientsclientIdGETApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174GETclientsclientId70FC0DD3": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ClientsLambda61513EB5",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/test-invoke-stage/GET/clients/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/clients/{clientId}/GET/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.GET..clients.{clientId}"
+   }
+  },
+  "SoulCoreHubApiclientsclientIdGET13624B85": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "ClientsLambda61513EB5",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "SoulCoreHubApiclientsclientId39993C22"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/clients/{clientId}/GET/Resource"
+   }
+  },
+  "SoulCoreHubApiclientsclientIdauthenticateB286F205": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "SoulCoreHubApiclientsclientId39993C22"
+    },
+    "PathPart": "authenticate",
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/clients/{clientId}/authenticate/Resource"
+   }
+  },
+  "SoulCoreHubApiclientsclientIdauthenticateOPTIONS4BFB3EC1": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Api-Token,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "SoulCoreHubApiclientsclientIdauthenticateB286F205"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/clients/{clientId}/authenticate/OPTIONS/Resource"
+   }
+  },
+  "SoulCoreHubApiclientsclientIdauthenticatePOSTApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174POSTclientsclientIdauthenticate23F8D530": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ClientsLambda61513EB5",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/",
+       {
+        "Ref": "SoulCoreHubApiDeploymentStageprod34A8578A"
+       },
+       "/POST/clients/*/authenticate"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/clients/{clientId}/authenticate/POST/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.POST..clients.{clientId}.authenticate"
+   }
+  },
+  "SoulCoreHubApiclientsclientIdauthenticatePOSTApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174POSTclientsclientIdauthenticate062F6A05": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ClientsLambda61513EB5",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/test-invoke-stage/POST/clients/*/authenticate"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/clients/{clientId}/authenticate/POST/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.POST..clients.{clientId}.authenticate"
+   }
+  },
+  "SoulCoreHubApiclientsclientIdauthenticatePOSTF7ECAE98": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "ClientsLambda61513EB5",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "SoulCoreHubApiclientsclientIdauthenticateB286F205"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/clients/{clientId}/authenticate/POST/Resource"
+   }
+  },
+  "SoulCoreHubApiclientsclientIdconfig6B9D6D5E": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "SoulCoreHubApiclientsclientId39993C22"
+    },
+    "PathPart": "config",
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/clients/{clientId}/config/Resource"
+   }
+  },
+  "SoulCoreHubApiclientsclientIdconfigOPTIONSA831994A": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Api-Token,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "SoulCoreHubApiclientsclientIdconfig6B9D6D5E"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/clients/{clientId}/config/OPTIONS/Resource"
+   }
+  },
+  "SoulCoreHubApiclientsclientIdconfigPUTApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174PUTclientsclientIdconfigF7AFD4E0": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ClientsLambda61513EB5",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/",
+       {
+        "Ref": "SoulCoreHubApiDeploymentStageprod34A8578A"
+       },
+       "/PUT/clients/*/config"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/clients/{clientId}/config/PUT/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.PUT..clients.{clientId}.config"
+   }
+  },
+  "SoulCoreHubApiclientsclientIdconfigPUTApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174PUTclientsclientIdconfigBCAB469B": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ClientsLambda61513EB5",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/test-invoke-stage/PUT/clients/*/config"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/clients/{clientId}/config/PUT/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.PUT..clients.{clientId}.config"
+   }
+  },
+  "SoulCoreHubApiclientsclientIdconfigPUT8C618F52": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "PUT",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "ClientsLambda61513EB5",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "SoulCoreHubApiclientsclientIdconfig6B9D6D5E"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/clients/{clientId}/config/PUT/Resource"
+   }
+  },
+  "SoulCoreHubApiexecute8F450E9A": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "SoulCoreHubApiF8888713",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "execute",
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/execute/Resource"
+   }
+  },
+  "SoulCoreHubApiexecuteOPTIONSA86108B1": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Api-Token,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "SoulCoreHubApiexecute8F450E9A"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/execute/OPTIONS/Resource"
+   }
+  },
+  "SoulCoreHubApiexecutePOSTApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174POSTexecute8352CDA1": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "MainframeLambda343C4B8E",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/",
+       {
+        "Ref": "SoulCoreHubApiDeploymentStageprod34A8578A"
+       },
+       "/POST/execute"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/execute/POST/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.POST..execute"
+   }
+  },
+  "SoulCoreHubApiexecutePOSTApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174POSTexecute32D06506": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "MainframeLambda343C4B8E",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/test-invoke-stage/POST/execute"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/execute/POST/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.POST..execute"
+   }
+  },
+  "SoulCoreHubApiexecutePOST8981E394": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "MainframeLambda343C4B8E",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "SoulCoreHubApiexecute8F450E9A"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/execute/POST/Resource"
+   }
+  },
+  "SoulCoreHubApimemoryE18D3202": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "SoulCoreHubApiF8888713",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "memory",
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/memory/Resource"
+   }
+  },
+  "SoulCoreHubApimemoryOPTIONS1882A262": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Api-Token,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "SoulCoreHubApimemoryE18D3202"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/memory/OPTIONS/Resource"
+   }
+  },
+  "SoulCoreHubApimemorymemoryId28D8D7F4": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "SoulCoreHubApimemoryE18D3202"
+    },
+    "PathPart": "{memoryId}",
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/memory/{memoryId}/Resource"
+   }
+  },
+  "SoulCoreHubApimemorymemoryIdOPTIONS844D03C7": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Api-Token,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "SoulCoreHubApimemorymemoryId28D8D7F4"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/memory/{memoryId}/OPTIONS/Resource"
+   }
+  },
+  "SoulCoreHubApimemorymemoryIdGETApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174GETmemorymemoryIdA71CC76B": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "MemoryLambda1722545F",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/",
+       {
+        "Ref": "SoulCoreHubApiDeploymentStageprod34A8578A"
+       },
+       "/GET/memory/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/memory/{memoryId}/GET/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.GET..memory.{memoryId}"
+   }
+  },
+  "SoulCoreHubApimemorymemoryIdGETApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174GETmemorymemoryId292A2A3C": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "MemoryLambda1722545F",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/test-invoke-stage/GET/memory/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/memory/{memoryId}/GET/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.GET..memory.{memoryId}"
+   }
+  },
+  "SoulCoreHubApimemorymemoryIdGET49C78CAF": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "MemoryLambda1722545F",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "SoulCoreHubApimemorymemoryId28D8D7F4"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/memory/{memoryId}/GET/Resource"
+   }
+  },
+  "SoulCoreHubApimemorymemoryIdPUTApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174PUTmemorymemoryId5DDB045E": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "MemoryLambda1722545F",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/",
+       {
+        "Ref": "SoulCoreHubApiDeploymentStageprod34A8578A"
+       },
+       "/PUT/memory/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/memory/{memoryId}/PUT/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.PUT..memory.{memoryId}"
+   }
+  },
+  "SoulCoreHubApimemorymemoryIdPUTApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174PUTmemorymemoryId8DA72C60": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "MemoryLambda1722545F",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/test-invoke-stage/PUT/memory/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/memory/{memoryId}/PUT/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.PUT..memory.{memoryId}"
+   }
+  },
+  "SoulCoreHubApimemorymemoryIdPUT324E31C4": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "PUT",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "MemoryLambda1722545F",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "SoulCoreHubApimemorymemoryId28D8D7F4"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/memory/{memoryId}/PUT/Resource"
+   }
+  },
+  "SoulCoreHubApimemorymemoryIdDELETEApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174DELETEmemorymemoryId2FB49B2C": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "MemoryLambda1722545F",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/",
+       {
+        "Ref": "SoulCoreHubApiDeploymentStageprod34A8578A"
+       },
+       "/DELETE/memory/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/memory/{memoryId}/DELETE/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.DELETE..memory.{memoryId}"
+   }
+  },
+  "SoulCoreHubApimemorymemoryIdDELETEApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174DELETEmemorymemoryId1BBC03D3": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "MemoryLambda1722545F",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/test-invoke-stage/DELETE/memory/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/memory/{memoryId}/DELETE/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.DELETE..memory.{memoryId}"
+   }
+  },
+  "SoulCoreHubApimemorymemoryIdDELETE1C9D0BFA": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "DELETE",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "MemoryLambda1722545F",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "SoulCoreHubApimemorymemoryId28D8D7F4"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/memory/{memoryId}/DELETE/Resource"
+   }
+  },
+  "SoulCoreHubApimemorymemoryIdsearch29C8BEE7": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "SoulCoreHubApimemorymemoryId28D8D7F4"
+    },
+    "PathPart": "search",
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/memory/{memoryId}/search/Resource"
+   }
+  },
+  "SoulCoreHubApimemorymemoryIdsearchOPTIONS79C1B4D8": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Api-Token,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "SoulCoreHubApimemorymemoryIdsearch29C8BEE7"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/memory/{memoryId}/search/OPTIONS/Resource"
+   }
+  },
+  "SoulCoreHubApimemorymemoryIdsearchPOSTApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174POSTmemorymemoryIdsearch9F3C0A85": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "MemoryLambda1722545F",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/",
+       {
+        "Ref": "SoulCoreHubApiDeploymentStageprod34A8578A"
+       },
+       "/POST/memory/*/search"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/memory/{memoryId}/search/POST/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.POST..memory.{memoryId}.search"
+   }
+  },
+  "SoulCoreHubApimemorymemoryIdsearchPOSTApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174POSTmemorymemoryIdsearchB7215235": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "MemoryLambda1722545F",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/test-invoke-stage/POST/memory/*/search"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/memory/{memoryId}/search/POST/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.POST..memory.{memoryId}.search"
+   }
+  },
+  "SoulCoreHubApimemorymemoryIdsearchPOSTCFCF819F": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "MemoryLambda1722545F",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "SoulCoreHubApimemorymemoryIdsearch29C8BEE7"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/memory/{memoryId}/search/POST/Resource"
+   }
+  },
+  "SoulCoreHubApiagentsB630ECD6": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "SoulCoreHubApiF8888713",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "agents",
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/agents/Resource"
+   }
+  },
+  "SoulCoreHubApiagentsOPTIONS0A26A73C": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Api-Token,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "SoulCoreHubApiagentsB630ECD6"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/agents/OPTIONS/Resource"
+   }
+  },
+  "SoulCoreHubApiagentsagentIdC77EDCEA": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "SoulCoreHubApiagentsB630ECD6"
+    },
+    "PathPart": "{agentId}",
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/Resource"
+   }
+  },
+  "SoulCoreHubApiagentsagentIdOPTIONS4DC3007A": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Api-Token,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "SoulCoreHubApiagentsagentIdC77EDCEA"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/OPTIONS/Resource"
+   }
+  },
+  "SoulCoreHubApiagentsagentIdstatus5A4E2BC1": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "SoulCoreHubApiagentsagentIdC77EDCEA"
+    },
+    "PathPart": "status",
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/status/Resource"
+   }
+  },
+  "SoulCoreHubApiagentsagentIdstatusOPTIONSBB2EC725": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Api-Token,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "SoulCoreHubApiagentsagentIdstatus5A4E2BC1"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/status/OPTIONS/Resource"
+   }
+  },
+  "SoulCoreHubApiagentsagentIdstatusGETApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174GETagentsagentIdstatus69E45F76": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AgentsLambda3BCBBB38",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/",
+       {
+        "Ref": "SoulCoreHubApiDeploymentStageprod34A8578A"
+       },
+       "/GET/agents/*/status"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/status/GET/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.GET..agents.{agentId}.status"
+   }
+  },
+  "SoulCoreHubApiagentsagentIdstatusGETApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174GETagentsagentIdstatus0FA68E03": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AgentsLambda3BCBBB38",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/test-invoke-stage/GET/agents/*/status"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/status/GET/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.GET..agents.{agentId}.status"
+   }
+  },
+  "SoulCoreHubApiagentsagentIdstatusGETED4D241F": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "AgentsLambda3BCBBB38",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "SoulCoreHubApiagentsagentIdstatus5A4E2BC1"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/status/GET/Resource"
+   }
+  },
+  "SoulCoreHubApiagentsagentIdinvokeD4B34C13": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "SoulCoreHubApiagentsagentIdC77EDCEA"
+    },
+    "PathPart": "invoke",
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/invoke/Resource"
+   }
+  },
+  "SoulCoreHubApiagentsagentIdinvokeOPTIONS4A851156": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Api-Token,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "SoulCoreHubApiagentsagentIdinvokeD4B34C13"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/invoke/OPTIONS/Resource"
+   }
+  },
+  "SoulCoreHubApiagentsagentIdinvokePOSTApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174POSTagentsagentIdinvoke61A7CD26": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AgentsLambda3BCBBB38",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/",
+       {
+        "Ref": "SoulCoreHubApiDeploymentStageprod34A8578A"
+       },
+       "/POST/agents/*/invoke"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/invoke/POST/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.POST..agents.{agentId}.invoke"
+   }
+  },
+  "SoulCoreHubApiagentsagentIdinvokePOSTApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174POSTagentsagentIdinvokeE033B08A": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AgentsLambda3BCBBB38",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/test-invoke-stage/POST/agents/*/invoke"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/invoke/POST/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.POST..agents.{agentId}.invoke"
+   }
+  },
+  "SoulCoreHubApiagentsagentIdinvokePOST6E019AF8": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "AgentsLambda3BCBBB38",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "SoulCoreHubApiagentsagentIdinvokeD4B34C13"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/invoke/POST/Resource"
+   }
+  },
+  "SoulCoreHubApiagentsagentIdconfig7E350E8E": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "SoulCoreHubApiagentsagentIdC77EDCEA"
+    },
+    "PathPart": "config",
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/config/Resource"
+   }
+  },
+  "SoulCoreHubApiagentsagentIdconfigOPTIONSFCF6B9CA": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Api-Token,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "SoulCoreHubApiagentsagentIdconfig7E350E8E"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/config/OPTIONS/Resource"
+   }
+  },
+  "SoulCoreHubApiagentsagentIdconfigPUTApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174PUTagentsagentIdconfig7AE54372": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AgentsLambda3BCBBB38",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/",
+       {
+        "Ref": "SoulCoreHubApiDeploymentStageprod34A8578A"
+       },
+       "/PUT/agents/*/config"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/config/PUT/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.PUT..agents.{agentId}.config"
+   }
+  },
+  "SoulCoreHubApiagentsagentIdconfigPUTApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174PUTagentsagentIdconfig1B2E06C4": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AgentsLambda3BCBBB38",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/test-invoke-stage/PUT/agents/*/config"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/config/PUT/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.PUT..agents.{agentId}.config"
+   }
+  },
+  "SoulCoreHubApiagentsagentIdconfigPUTEFC27BDB": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "PUT",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "AgentsLambda3BCBBB38",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "SoulCoreHubApiagentsagentIdconfig7E350E8E"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/config/PUT/Resource"
+   }
+  },
+  "SoulCoreHubApiappsA5D102FA": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "SoulCoreHubApiF8888713",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "apps",
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/apps/Resource"
+   }
+  },
+  "SoulCoreHubApiappsOPTIONS5EB542B1": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Api-Token,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "SoulCoreHubApiappsA5D102FA"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/apps/OPTIONS/Resource"
+   }
+  },
+  "SoulCoreHubApiappsGETApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174GETappsFDB98582": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AppsLambda52B1D3EC",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/",
+       {
+        "Ref": "SoulCoreHubApiDeploymentStageprod34A8578A"
+       },
+       "/GET/apps"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/apps/GET/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.GET..apps"
+   }
+  },
+  "SoulCoreHubApiappsGETApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174GETapps562DDBB4": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AppsLambda52B1D3EC",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/test-invoke-stage/GET/apps"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/apps/GET/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.GET..apps"
+   }
+  },
+  "SoulCoreHubApiappsGET26AB6C62": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "AppsLambda52B1D3EC",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "SoulCoreHubApiappsA5D102FA"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/apps/GET/Resource"
+   }
+  },
+  "SoulCoreHubApiappsPOSTApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174POSTapps438C6204": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AppsLambda52B1D3EC",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/",
+       {
+        "Ref": "SoulCoreHubApiDeploymentStageprod34A8578A"
+       },
+       "/POST/apps"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/apps/POST/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.POST..apps"
+   }
+  },
+  "SoulCoreHubApiappsPOSTApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174POSTappsDD055326": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AppsLambda52B1D3EC",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/test-invoke-stage/POST/apps"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/apps/POST/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.POST..apps"
+   }
+  },
+  "SoulCoreHubApiappsPOST545846AC": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "AppsLambda52B1D3EC",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "SoulCoreHubApiappsA5D102FA"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/apps/POST/Resource"
+   }
+  },
+  "SoulCoreHubApiappsappId742EB443": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "SoulCoreHubApiappsA5D102FA"
+    },
+    "PathPart": "{appId}",
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/Resource"
+   }
+  },
+  "SoulCoreHubApiappsappIdOPTIONSFFFB1A8E": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Api-Token,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "SoulCoreHubApiappsappId742EB443"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/OPTIONS/Resource"
+   }
+  },
+  "SoulCoreHubApiappsappIdGETApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174GETappsappIdDC2C449C": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AppsLambda52B1D3EC",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/",
+       {
+        "Ref": "SoulCoreHubApiDeploymentStageprod34A8578A"
+       },
+       "/GET/apps/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/GET/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.GET..apps.{appId}"
+   }
+  },
+  "SoulCoreHubApiappsappIdGETApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174GETappsappId5E635B97": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AppsLambda52B1D3EC",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/test-invoke-stage/GET/apps/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/GET/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.GET..apps.{appId}"
+   }
+  },
+  "SoulCoreHubApiappsappIdGETE2C0EE34": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "AppsLambda52B1D3EC",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "SoulCoreHubApiappsappId742EB443"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/GET/Resource"
+   }
+  },
+  "SoulCoreHubApiappsappIdPUTApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174PUTappsappIdC0659C56": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AppsLambda52B1D3EC",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/",
+       {
+        "Ref": "SoulCoreHubApiDeploymentStageprod34A8578A"
+       },
+       "/PUT/apps/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/PUT/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.PUT..apps.{appId}"
+   }
+  },
+  "SoulCoreHubApiappsappIdPUTApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174PUTappsappId9807E0BA": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AppsLambda52B1D3EC",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/test-invoke-stage/PUT/apps/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/PUT/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.PUT..apps.{appId}"
+   }
+  },
+  "SoulCoreHubApiappsappIdPUT3882242F": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "PUT",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "AppsLambda52B1D3EC",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "SoulCoreHubApiappsappId742EB443"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/PUT/Resource"
+   }
+  },
+  "SoulCoreHubApiappsappIdDELETEApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174DELETEappsappId09B97E55": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AppsLambda52B1D3EC",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/",
+       {
+        "Ref": "SoulCoreHubApiDeploymentStageprod34A8578A"
+       },
+       "/DELETE/apps/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/DELETE/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.DELETE..apps.{appId}"
+   }
+  },
+  "SoulCoreHubApiappsappIdDELETEApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174DELETEappsappId602831C2": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AppsLambda52B1D3EC",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/test-invoke-stage/DELETE/apps/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/DELETE/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.DELETE..apps.{appId}"
+   }
+  },
+  "SoulCoreHubApiappsappIdDELETE9494D248": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "DELETE",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "AppsLambda52B1D3EC",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "SoulCoreHubApiappsappId742EB443"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/DELETE/Resource"
+   }
+  },
+  "SoulCoreHubApiappsappIdfunctionsBD3A9E17": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "SoulCoreHubApiappsappId742EB443"
+    },
+    "PathPart": "functions",
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/functions/Resource"
+   }
+  },
+  "SoulCoreHubApiappsappIdfunctionsOPTIONS78761972": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Api-Token,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "SoulCoreHubApiappsappIdfunctionsBD3A9E17"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/functions/OPTIONS/Resource"
+   }
+  },
+  "SoulCoreHubApiappsappIdfunctionsfunctionName8896BB4F": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "SoulCoreHubApiappsappIdfunctionsBD3A9E17"
+    },
+    "PathPart": "{functionName}",
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/functions/{functionName}/Resource"
+   }
+  },
+  "SoulCoreHubApiappsappIdfunctionsfunctionNameOPTIONS61310318": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Api-Token,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "SoulCoreHubApiappsappIdfunctionsfunctionName8896BB4F"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/functions/{functionName}/OPTIONS/Resource"
+   }
+  },
+  "SoulCoreHubApiappsappIdfunctionsfunctionNamePOSTApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174POSTappsappIdfunctionsfunctionName2CA07BD0": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AppsLambda52B1D3EC",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/",
+       {
+        "Ref": "SoulCoreHubApiDeploymentStageprod34A8578A"
+       },
+       "/POST/apps/*/functions/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/functions/{functionName}/POST/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.POST..apps.{appId}.functions.{functionName}"
+   }
+  },
+  "SoulCoreHubApiappsappIdfunctionsfunctionNamePOSTApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174POSTappsappIdfunctionsfunctionName1F25B9F7": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AppsLambda52B1D3EC",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:699475940746:",
+       {
+        "Ref": "SoulCoreHubApiF8888713"
+       },
+       "/test-invoke-stage/POST/apps/*/functions/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/functions/{functionName}/POST/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.POST..apps.{appId}.functions.{functionName}"
+   }
+  },
+  "SoulCoreHubApiappsappIdfunctionsfunctionNamePOST67D23A87": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "AppsLambda52B1D3EC",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "SoulCoreHubApiappsappIdfunctionsfunctionName8896BB4F"
+    },
+    "RestApiId": {
+     "Ref": "SoulCoreHubApiF8888713"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/functions/{functionName}/POST/Resource"
+   }
+  },
+  "ApiGateway5xxErrorAlarm2C646F8D": {
+   "Type": "AWS::CloudWatch::Alarm",
+   "Properties": {
+    "AlarmDescription": "API Gateway 5xx Error Alarm",
+    "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+    "Dimensions": [
+     {
+      "Name": "ApiName",
+      "Value": "SoulCoreHub API"
+     }
+    ],
+    "EvaluationPeriods": 1,
+    "MetricName": "5XXError",
+    "Namespace": "AWS/ApiGateway",
+    "Period": 300,
+    "Statistic": "Sum",
+    "Threshold": 5
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/ApiGateway5xxErrorAlarm/Resource"
+   }
+  },
+  "ApiGateway4xxErrorAlarm631A9849": {
+   "Type": "AWS::CloudWatch::Alarm",
+   "Properties": {
+    "AlarmDescription": "API Gateway 4xx Error Alarm",
+    "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+    "Dimensions": [
+     {
+      "Name": "ApiName",
+      "Value": "SoulCoreHub API"
+     }
+    ],
+    "EvaluationPeriods": 1,
+    "MetricName": "4XXError",
+    "Namespace": "AWS/ApiGateway",
+    "Period": 300,
+    "Statistic": "Sum",
+    "Threshold": 50
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/ApiGateway4xxErrorAlarm/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/02QTU/DMAyGfwv3NNBNHDh2oN0Q0+A+uYnpsuajahyqqsp/J0mL2MmP/dqvnex4/fLMnx5g8pWQfaVVy5dPAtGzVLoscrZgnEzFL2g1stdvWyAyDaaVwJdjsIKUs1m65xOORnmfssgUGL6c3Tpf4slpJebSVygyv7+A90ieNzmknB+C6JEO4JHBoDognGBORuipGVTx2vANB+1mg5Zy9S5LT+nK1hVSvwujwOL5jnR1Mosb/ambc+HIhHZBTkDiypdGw2iyXCDG/5FydF6ibJcbPgINgSKzTiK/+cef3Z7Xdfrpm1eqGoMlZZCf1/gLVs3cwYYBAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "SoulCoreHubStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "SoulCoreHubApiEndpointDFBFD01C": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "SoulCoreHubApiF8888713"
+      },
+      ".execute-api.us-east-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "SoulCoreHubApiDeploymentStageprod34A8578A"
+      },
+      "/"
+     ]
+    ]
+   }
+  },
+  "ApiEndpoint": {
+   "Description": "API Gateway Endpoint",
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "SoulCoreHubApiF8888713"
+      },
+      ".execute-api.us-east-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "SoulCoreHubApiDeploymentStageprod34A8578A"
+      },
+      "/"
+     ]
+    ]
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

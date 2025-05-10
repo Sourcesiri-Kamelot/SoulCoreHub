@@ -1,0 +1,1012 @@
+{
+  "version": "41.0.0",
+  "artifacts": {
+    "SoulCoreHubStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "SoulCoreHubStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "SoulCoreHubStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://699475940746/us-east-1",
+      "properties": {
+        "templateFile": "SoulCoreHubStack.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::699475940746:role/cdk-hnb659fds-deploy-role-699475940746-us-east-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::699475940746:role/cdk-hnb659fds-cfn-exec-role-699475940746-us-east-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-699475940746-us-east-1/3428c8387014a1417eff3dda9bcb04180e593502ee82e9fb90e8e13f3735fe5d.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "SoulCoreHubStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::699475940746:role/cdk-hnb659fds-lookup-role-699475940746-us-east-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "SoulCoreHubStack.assets"
+      ],
+      "metadata": {
+        "/SoulCoreHubStack/ClientsTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ClientsTableC30D35A3"
+          }
+        ],
+        "/SoulCoreHubStack/MemoryTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MemoryTable77C28B76"
+          }
+        ],
+        "/SoulCoreHubStack/AgentsTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AgentsTable78E0948F"
+          }
+        ],
+        "/SoulCoreHubStack/AppsTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AppsTable172E1E77"
+          }
+        ],
+        "/SoulCoreHubStack/MainframeLambda/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MainframeLambdaServiceRoleA272CA2A"
+          }
+        ],
+        "/SoulCoreHubStack/MainframeLambda/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MainframeLambdaServiceRoleDefaultPolicyE387EBCE"
+          }
+        ],
+        "/SoulCoreHubStack/MainframeLambda/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MainframeLambda343C4B8E"
+          }
+        ],
+        "/SoulCoreHubStack/ClientsLambda/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ClientsLambdaServiceRoleDF9BC2C0"
+          }
+        ],
+        "/SoulCoreHubStack/ClientsLambda/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ClientsLambdaServiceRoleDefaultPolicy0D001147"
+          }
+        ],
+        "/SoulCoreHubStack/ClientsLambda/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ClientsLambda61513EB5"
+          }
+        ],
+        "/SoulCoreHubStack/MemoryLambda/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MemoryLambdaServiceRole84A02FD6"
+          }
+        ],
+        "/SoulCoreHubStack/MemoryLambda/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MemoryLambdaServiceRoleDefaultPolicy0AAD850D"
+          }
+        ],
+        "/SoulCoreHubStack/MemoryLambda/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MemoryLambda1722545F"
+          }
+        ],
+        "/SoulCoreHubStack/AgentsLambda/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AgentsLambdaServiceRole4FFB7C1B"
+          }
+        ],
+        "/SoulCoreHubStack/AgentsLambda/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AgentsLambdaServiceRoleDefaultPolicyD5F54DD3"
+          }
+        ],
+        "/SoulCoreHubStack/AgentsLambda/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AgentsLambda3BCBBB38"
+          }
+        ],
+        "/SoulCoreHubStack/AppsLambda/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AppsLambdaServiceRoleC4895317"
+          }
+        ],
+        "/SoulCoreHubStack/AppsLambda/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AppsLambdaServiceRoleDefaultPolicy6DFCF0B3"
+          }
+        ],
+        "/SoulCoreHubStack/AppsLambda/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AppsLambda52B1D3EC"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiF8888713"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiDeployment20431F939c5826aa64f87262dc206d6b0807ca96"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiDeploymentStageprod34A8578A"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiEndpointDFBFD01C"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiOPTIONS353A37BD"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/status/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApistatusE6677B64"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/status/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApistatusOPTIONSF104B96C"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/status/GET/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.GET..status": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApistatusGETApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174GETstatusFA5B1EAD"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/status/GET/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.GET..status": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApistatusGETApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174GETstatusBED973B1"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/status/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApistatusGETAE25A42F"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/clients/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiclients23E1286E"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/clients/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiclientsOPTIONSCFED4E44"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/clients/POST/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.POST..clients": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiclientsPOSTApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174POSTclientsE741DBAA"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/clients/POST/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.POST..clients": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiclientsPOSTApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174POSTclients0C8D44F4"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/clients/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiclientsPOST8B64037C"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/clients/{clientId}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiclientsclientId39993C22"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/clients/{clientId}/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiclientsclientIdOPTIONSFD6575F1"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/clients/{clientId}/GET/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.GET..clients.{clientId}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiclientsclientIdGETApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174GETclientsclientId51C9E957"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/clients/{clientId}/GET/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.GET..clients.{clientId}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiclientsclientIdGETApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174GETclientsclientId70FC0DD3"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/clients/{clientId}/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiclientsclientIdGET13624B85"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/clients/{clientId}/authenticate/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiclientsclientIdauthenticateB286F205"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/clients/{clientId}/authenticate/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiclientsclientIdauthenticateOPTIONS4BFB3EC1"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/clients/{clientId}/authenticate/POST/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.POST..clients.{clientId}.authenticate": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiclientsclientIdauthenticatePOSTApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174POSTclientsclientIdauthenticate23F8D530"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/clients/{clientId}/authenticate/POST/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.POST..clients.{clientId}.authenticate": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiclientsclientIdauthenticatePOSTApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174POSTclientsclientIdauthenticate062F6A05"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/clients/{clientId}/authenticate/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiclientsclientIdauthenticatePOSTF7ECAE98"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/clients/{clientId}/config/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiclientsclientIdconfig6B9D6D5E"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/clients/{clientId}/config/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiclientsclientIdconfigOPTIONSA831994A"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/clients/{clientId}/config/PUT/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.PUT..clients.{clientId}.config": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiclientsclientIdconfigPUTApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174PUTclientsclientIdconfigF7AFD4E0"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/clients/{clientId}/config/PUT/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.PUT..clients.{clientId}.config": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiclientsclientIdconfigPUTApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174PUTclientsclientIdconfigBCAB469B"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/clients/{clientId}/config/PUT/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiclientsclientIdconfigPUT8C618F52"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/execute/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiexecute8F450E9A"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/execute/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiexecuteOPTIONSA86108B1"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/execute/POST/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.POST..execute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiexecutePOSTApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174POSTexecute8352CDA1"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/execute/POST/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.POST..execute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiexecutePOSTApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174POSTexecute32D06506"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/execute/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiexecutePOST8981E394"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/memory/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApimemoryE18D3202"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/memory/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApimemoryOPTIONS1882A262"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/memory/{memoryId}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApimemorymemoryId28D8D7F4"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/memory/{memoryId}/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApimemorymemoryIdOPTIONS844D03C7"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/memory/{memoryId}/GET/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.GET..memory.{memoryId}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApimemorymemoryIdGETApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174GETmemorymemoryIdA71CC76B"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/memory/{memoryId}/GET/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.GET..memory.{memoryId}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApimemorymemoryIdGETApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174GETmemorymemoryId292A2A3C"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/memory/{memoryId}/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApimemorymemoryIdGET49C78CAF"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/memory/{memoryId}/PUT/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.PUT..memory.{memoryId}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApimemorymemoryIdPUTApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174PUTmemorymemoryId5DDB045E"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/memory/{memoryId}/PUT/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.PUT..memory.{memoryId}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApimemorymemoryIdPUTApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174PUTmemorymemoryId8DA72C60"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/memory/{memoryId}/PUT/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApimemorymemoryIdPUT324E31C4"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/memory/{memoryId}/DELETE/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.DELETE..memory.{memoryId}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApimemorymemoryIdDELETEApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174DELETEmemorymemoryId2FB49B2C"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/memory/{memoryId}/DELETE/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.DELETE..memory.{memoryId}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApimemorymemoryIdDELETEApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174DELETEmemorymemoryId1BBC03D3"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/memory/{memoryId}/DELETE/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApimemorymemoryIdDELETE1C9D0BFA"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/memory/{memoryId}/search/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApimemorymemoryIdsearch29C8BEE7"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/memory/{memoryId}/search/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApimemorymemoryIdsearchOPTIONS79C1B4D8"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/memory/{memoryId}/search/POST/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.POST..memory.{memoryId}.search": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApimemorymemoryIdsearchPOSTApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174POSTmemorymemoryIdsearch9F3C0A85"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/memory/{memoryId}/search/POST/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.POST..memory.{memoryId}.search": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApimemorymemoryIdsearchPOSTApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174POSTmemorymemoryIdsearchB7215235"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/memory/{memoryId}/search/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApimemorymemoryIdsearchPOSTCFCF819F"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/agents/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiagentsB630ECD6"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/agents/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiagentsOPTIONS0A26A73C"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiagentsagentIdC77EDCEA"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiagentsagentIdOPTIONS4DC3007A"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/status/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiagentsagentIdstatus5A4E2BC1"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/status/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiagentsagentIdstatusOPTIONSBB2EC725"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/status/GET/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.GET..agents.{agentId}.status": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiagentsagentIdstatusGETApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174GETagentsagentIdstatus69E45F76"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/status/GET/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.GET..agents.{agentId}.status": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiagentsagentIdstatusGETApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174GETagentsagentIdstatus0FA68E03"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/status/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiagentsagentIdstatusGETED4D241F"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/invoke/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiagentsagentIdinvokeD4B34C13"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/invoke/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiagentsagentIdinvokeOPTIONS4A851156"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/invoke/POST/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.POST..agents.{agentId}.invoke": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiagentsagentIdinvokePOSTApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174POSTagentsagentIdinvoke61A7CD26"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/invoke/POST/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.POST..agents.{agentId}.invoke": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiagentsagentIdinvokePOSTApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174POSTagentsagentIdinvokeE033B08A"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/invoke/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiagentsagentIdinvokePOST6E019AF8"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/config/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiagentsagentIdconfig7E350E8E"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/config/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiagentsagentIdconfigOPTIONSFCF6B9CA"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/config/PUT/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.PUT..agents.{agentId}.config": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiagentsagentIdconfigPUTApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174PUTagentsagentIdconfig7AE54372"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/config/PUT/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.PUT..agents.{agentId}.config": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiagentsagentIdconfigPUTApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174PUTagentsagentIdconfig1B2E06C4"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/agents/{agentId}/config/PUT/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiagentsagentIdconfigPUTEFC27BDB"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/apps/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiappsA5D102FA"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/apps/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiappsOPTIONS5EB542B1"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/apps/GET/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.GET..apps": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiappsGETApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174GETappsFDB98582"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/apps/GET/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.GET..apps": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiappsGETApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174GETapps562DDBB4"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/apps/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiappsGET26AB6C62"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/apps/POST/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.POST..apps": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiappsPOSTApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174POSTapps438C6204"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/apps/POST/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.POST..apps": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiappsPOSTApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174POSTappsDD055326"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/apps/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiappsPOST545846AC"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiappsappId742EB443"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiappsappIdOPTIONSFFFB1A8E"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/GET/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.GET..apps.{appId}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiappsappIdGETApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174GETappsappIdDC2C449C"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/GET/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.GET..apps.{appId}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiappsappIdGETApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174GETappsappId5E635B97"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiappsappIdGETE2C0EE34"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/PUT/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.PUT..apps.{appId}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiappsappIdPUTApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174PUTappsappIdC0659C56"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/PUT/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.PUT..apps.{appId}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiappsappIdPUTApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174PUTappsappId9807E0BA"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/PUT/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiappsappIdPUT3882242F"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/DELETE/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.DELETE..apps.{appId}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiappsappIdDELETEApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174DELETEappsappId09B97E55"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/DELETE/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.DELETE..apps.{appId}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiappsappIdDELETEApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174DELETEappsappId602831C2"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/DELETE/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiappsappIdDELETE9494D248"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/functions/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiappsappIdfunctionsBD3A9E17"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/functions/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiappsappIdfunctionsOPTIONS78761972"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/functions/{functionName}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiappsappIdfunctionsfunctionName8896BB4F"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/functions/{functionName}/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiappsappIdfunctionsfunctionNameOPTIONS61310318"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/functions/{functionName}/POST/ApiPermission.SoulCoreHubStackSoulCoreHubApi5E4BE174.POST..apps.{appId}.functions.{functionName}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiappsappIdfunctionsfunctionNamePOSTApiPermissionSoulCoreHubStackSoulCoreHubApi5E4BE174POSTappsappIdfunctionsfunctionName2CA07BD0"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/functions/{functionName}/POST/ApiPermission.Test.SoulCoreHubStackSoulCoreHubApi5E4BE174.POST..apps.{appId}.functions.{functionName}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiappsappIdfunctionsfunctionNamePOSTApiPermissionTestSoulCoreHubStackSoulCoreHubApi5E4BE174POSTappsappIdfunctionsfunctionName1F25B9F7"
+          }
+        ],
+        "/SoulCoreHubStack/SoulCoreHubApi/Default/apps/{appId}/functions/{functionName}/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SoulCoreHubApiappsappIdfunctionsfunctionNamePOST67D23A87"
+          }
+        ],
+        "/SoulCoreHubStack/ApiGateway5xxErrorAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGateway5xxErrorAlarm2C646F8D"
+          }
+        ],
+        "/SoulCoreHubStack/ApiGateway4xxErrorAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGateway4xxErrorAlarm631A9849"
+          }
+        ],
+        "/SoulCoreHubStack/ApiEndpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiEndpoint"
+          }
+        ],
+        "/SoulCoreHubStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/SoulCoreHubStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/SoulCoreHubStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "SoulCoreHubStack"
+    },
+    "SoulCoreHubCodeCatalystStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "SoulCoreHubCodeCatalystStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "SoulCoreHubCodeCatalystStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://699475940746/us-east-1",
+      "properties": {
+        "templateFile": "SoulCoreHubCodeCatalystStack.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::699475940746:role/cdk-hnb659fds-deploy-role-699475940746-us-east-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::699475940746:role/cdk-hnb659fds-cfn-exec-role-699475940746-us-east-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-699475940746-us-east-1/555375782bd505ba58aacdb1fafa7c7407233b4cf183a72103eed1f2276e6954.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "SoulCoreHubCodeCatalystStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::699475940746:role/cdk-hnb659fds-lookup-role-699475940746-us-east-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "SoulCoreHubCodeCatalystStack.assets"
+      ],
+      "metadata": {
+        "/SoulCoreHubCodeCatalystStack/CodeBuildRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CodeBuildRole728CBADE"
+          }
+        ],
+        "/SoulCoreHubCodeCatalystStack/ArtifactBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ArtifactBucket7410C9EF"
+          }
+        ],
+        "/SoulCoreHubCodeCatalystStack/ArtifactBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ArtifactBucketPolicy4B4B7752"
+          }
+        ],
+        "/SoulCoreHubCodeCatalystStack/ArtifactBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ArtifactBucketAutoDeleteObjectsCustomResource0BB47FD6"
+          }
+        ],
+        "/SoulCoreHubCodeCatalystStack/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
+          }
+        ],
+        "/SoulCoreHubCodeCatalystStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/SoulCoreHubCodeCatalystStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+          }
+        ],
+        "/SoulCoreHubCodeCatalystStack/BuildProject/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BuildProjectRoleAA92C755"
+          }
+        ],
+        "/SoulCoreHubCodeCatalystStack/BuildProject/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BuildProjectRoleDefaultPolicy3E9F248C"
+          }
+        ],
+        "/SoulCoreHubCodeCatalystStack/BuildProject/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BuildProject097C5DB7"
+          }
+        ],
+        "/SoulCoreHubCodeCatalystStack/DeployProject/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DeployProjectRole588C8C1D"
+          }
+        ],
+        "/SoulCoreHubCodeCatalystStack/DeployProject/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DeployProjectRoleDefaultPolicy52AEA98B"
+          }
+        ],
+        "/SoulCoreHubCodeCatalystStack/DeployProject/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DeployProject1CF7CB79"
+          }
+        ],
+        "/SoulCoreHubCodeCatalystStack/Pipeline": [
+          {
+            "type": "aws:cdk:warning",
+            "data": "V1 pipeline type is implicitly selected when `pipelineType` is not set. If you want to use V2 type, set `PipelineType.V2`. [ack: @aws-cdk/aws-codepipeline:unspecifiedPipelineType]",
+            "trace": [
+              "Annotations.addMessage (/Users/helo.im.ai/SoulCoreHub/cdk-app/node_modules/aws-cdk-lib/core/lib/annotations.js:1:1608)",
+              "Annotations.addWarningV2 (/Users/helo.im.ai/SoulCoreHub/cdk-app/node_modules/aws-cdk-lib/core/lib/annotations.js:1:825)",
+              "new Pipeline (/Users/helo.im.ai/SoulCoreHub/cdk-app/node_modules/aws-cdk-lib/aws-codepipeline/lib/pipeline.js:1:8002)",
+              "new CodeCatalystStack (/Users/helo.im.ai/SoulCoreHub/cdk-app/lib/codecatalyst-stack.ts:96:22)",
+              "Object.<anonymous> (/Users/helo.im.ai/SoulCoreHub/cdk-app/bin/cdk-app.ts:20:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1734:14)",
+              "Module.m._compile (/Users/helo.im.ai/SoulCoreHub/cdk-app/node_modules/ts-node/src/index.ts:1618:23)",
+              "loadTS (node:internal/modules/cjs/loader:1826:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/helo.im.ai/SoulCoreHub/cdk-app/node_modules/ts-node/src/index.ts:1621:12)",
+              "Module.load (node:internal/modules/cjs/loader:1469:32)",
+              "Function._load (node:internal/modules/cjs/loader:1286:12)",
+              "TracingChannel.traceSync (node:diagnostics_channel:322:14)",
+              "wrapModuleLoad (node:internal/modules/cjs/loader:235:24)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:151:5)",
+              "phase4 (/Users/helo.im.ai/SoulCoreHub/cdk-app/node_modules/ts-node/src/bin.ts:649:14)",
+              "bootstrap (/Users/helo.im.ai/SoulCoreHub/cdk-app/node_modules/ts-node/src/bin.ts:95:10)",
+              "main (/Users/helo.im.ai/SoulCoreHub/cdk-app/node_modules/ts-node/src/bin.ts:55:10)",
+              "Object.<anonymous> (/Users/helo.im.ai/SoulCoreHub/cdk-app/node_modules/ts-node/src/bin.ts:800:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1734:14)",
+              "Object..js (node:internal/modules/cjs/loader:1899:10)",
+              "Module.load (node:internal/modules/cjs/loader:1469:32)",
+              "Function._load (node:internal/modules/cjs/loader:1286:12)",
+              "TracingChannel.traceSync (node:diagnostics_channel:322:14)",
+              "wrapModuleLoad (node:internal/modules/cjs/loader:235:24)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:151:5)",
+              "node:internal/main/run_main_module:33:47"
+            ]
+          }
+        ],
+        "/SoulCoreHubCodeCatalystStack/Pipeline/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "PipelineRoleD68726F7"
+          }
+        ],
+        "/SoulCoreHubCodeCatalystStack/Pipeline/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "PipelineRoleDefaultPolicyC7A05455"
+          }
+        ],
+        "/SoulCoreHubCodeCatalystStack/Pipeline/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "PipelineC660917D"
+          }
+        ],
+        "/SoulCoreHubCodeCatalystStack/Pipeline/Source/GitHub_Source/WebhookResource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "PipelineSourceGitHubSourceWebhookResource8EECEFFF"
+          }
+        ],
+        "/SoulCoreHubCodeCatalystStack/Pipeline/Build/Build/CodePipelineActionRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "PipelineBuildCodePipelineActionRoleD77A08E6"
+          }
+        ],
+        "/SoulCoreHubCodeCatalystStack/Pipeline/Build/Build/CodePipelineActionRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "PipelineBuildCodePipelineActionRoleDefaultPolicyC9CB73F8"
+          }
+        ],
+        "/SoulCoreHubCodeCatalystStack/Pipeline/Deploy/Deploy/CodePipelineActionRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "PipelineDeployCodePipelineActionRole8B83082E"
+          }
+        ],
+        "/SoulCoreHubCodeCatalystStack/Pipeline/Deploy/Deploy/CodePipelineActionRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "PipelineDeployCodePipelineActionRoleDefaultPolicyEE6D615B"
+          }
+        ],
+        "/SoulCoreHubCodeCatalystStack/PipelineName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "PipelineName"
+          }
+        ],
+        "/SoulCoreHubCodeCatalystStack/ArtifactBucketName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ArtifactBucketName"
+          }
+        ],
+        "/SoulCoreHubCodeCatalystStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/SoulCoreHubCodeCatalystStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/SoulCoreHubCodeCatalystStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "SoulCoreHubCodeCatalystStack"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  },
+  "minimumCliVersion": "2.1005.0"
+}
