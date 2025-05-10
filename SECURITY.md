@@ -5,43 +5,64 @@
 | Version | Supported          |
 | ------- | ------------------ |
 | 1.0.x   | :white_check_mark: |
+| < 1.0   | :x:                |
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability within SoulCoreHub, please send an email to security@heloim-ai.tech. All security vulnerabilities will be promptly addressed.
+We take the security of SoulCoreHub seriously. If you believe you've found a security vulnerability, please follow these steps:
 
-Please include the following information in your report:
+1. **Do not disclose the vulnerability publicly**
+2. **Email us at security@soulcorehub.io** with details about the vulnerability
+3. Include the following information:
+   - Type of vulnerability
+   - Steps to reproduce
+   - Potential impact
+   - Any suggested fixes (if available)
 
-- Type of vulnerability
-- Full path of the affected file(s)
-- Location of the affected code (line number)
-- Proof of concept or exploit code (if possible)
-- Impact of the vulnerability
+## What to expect
+
+- We will acknowledge receipt of your vulnerability report within 48 hours
+- We will provide a more detailed response within 7 days
+- We will work with you to understand and validate the issue
+- We will keep you informed of our progress as we address the issue
+- We will credit you for your discovery (unless you prefer to remain anonymous)
 
 ## Security Measures
 
-SoulCoreHub implements several security measures:
+SoulCoreHub implements the following security measures:
 
-1. **Dependency Scanning**: Regular scanning and updating of dependencies to address known vulnerabilities
-2. **Input Validation**: Thorough validation of all user inputs
-3. **Authentication**: Secure authentication using AWS Cognito
-4. **Authorization**: Role-based access control for API endpoints
-5. **Data Encryption**: Encryption of sensitive data at rest and in transit
-6. **Rate Limiting**: Protection against brute force and DoS attacks
-7. **CORS Policy**: Strict Cross-Origin Resource Sharing policy
+### Dependency Management
 
-## Recent Security Updates
+- Weekly automated dependency updates via Dependabot
+- Regular security audits of dependencies
+- Strict version pinning for production dependencies
 
-- May 10, 2025: Updated cookie dependency to version 0.7.0 to address GHSA-pxg6-pf52-xh8x
-- May 10, 2025: Removed csurf dependency due to security concerns
-- May 10, 2025: Updated all npm dependencies to latest secure versions
+### Code Security
 
-## Security Best Practices for Contributors
+- Static Application Security Testing (SAST) in CI/CD pipeline
+- Pre-commit hooks for security checks
+- Regular code reviews with security focus
 
-1. Keep all dependencies updated
-2. Follow the principle of least privilege
-3. Validate all inputs
-4. Use parameterized queries for database operations
-5. Implement proper error handling
-6. Use secure headers
-7. Follow AWS security best practices for Lambda functions and API Gateway
+### Runtime Security
+
+- Least privilege IAM policies
+- API Gateway with rate limiting and API key authentication
+- Request signing for sensitive operations
+- Environment variable encryption
+
+### Monitoring and Alerting
+
+- CloudWatch alarms for security events
+- Structured logging for security-related activities
+- Incident response plan for security events
+
+## Security Improvements
+
+We continuously improve our security posture. Recent enhancements include:
+
+- Fixed critical and high vulnerabilities in dependencies
+- Implemented comprehensive API security measures
+- Added automated security scanning
+- Created detailed security documentation
+
+For more details, see our [Security Improvements Summary](SECURITY_IMPROVEMENTS_SUMMARY.md).
