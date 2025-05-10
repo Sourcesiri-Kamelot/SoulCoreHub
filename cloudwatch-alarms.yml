@@ -1,0 +1,219 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'CloudWatch Alarms for SoulCoreHub'
+
+Parameters:
+  Stage:
+    Type: String
+    Default: evolve
+    AllowedValues:
+      - dev
+      - prod
+      - evolve
+      - ascend
+      - ultra
+      - stage
+    Description: Deployment stage
+
+  ApiName:
+    Type: String
+    Default: soulcore-hub
+    Description: Name of the API Gateway
+
+  LambdaFunctionPrefix:
+    Type: String
+    Default: soulcore-anima
+    Description: Prefix for Lambda function names
+
+  NotificationEmail:
+    Type: String
+    Default: alerts@soulcorehub.io
+    Description: Email address for alarm notifications
+
+Resources:
+  # SNS Topic for alarm notifications
+  AlarmTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: !Sub "${Stage}-SoulCoreHub-Alarms"
+      TopicName: !Sub "${Stage}-SoulCoreHub-Alarms"
+
+  # Email subscription for the SNS topic
+  AlarmSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Protocol: email
+      Endpoint: !Ref NotificationEmail
+      TopicArn: !Ref AlarmTopic
+
+  # API Gateway 4xx Error Alarm
+  ApiGateway4xxErrorAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${Stage}-${ApiName}-4xxErrors"
+      AlarmDescription: "Alarm for API Gateway 4xx errors"
+      MetricName: 4XXError
+      Namespace: AWS/ApiGateway
+      Statistic: Sum
+      Period: 60
+      EvaluationPeriods: 5
+      Threshold: 10
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+      Dimensions:
+        - Name: ApiName
+          Value: !Ref ApiName
+        - Name: Stage
+          Value: !Ref Stage
+      AlarmActions:
+        - !Ref AlarmTopic
+
+  # API Gateway 5xx Error Alarm
+  ApiGateway5xxErrorAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${Stage}-${ApiName}-5xxErrors"
+      AlarmDescription: "Alarm for API Gateway 5xx errors"
+      MetricName: 5XXError
+      Namespace: AWS/ApiGateway
+      Statistic: Sum
+      Period: 60
+      EvaluationPeriods: 5
+      Threshold: 5
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+      Dimensions:
+        - Name: ApiName
+          Value: !Ref ApiName
+        - Name: Stage
+          Value: !Ref Stage
+      AlarmActions:
+        - !Ref AlarmTopic
+
+  # API Gateway Latency Alarm
+  ApiGatewayLatencyAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${Stage}-${ApiName}-HighLatency"
+      AlarmDescription: "Alarm for API Gateway high latency"
+      MetricName: Latency
+      Namespace: AWS/ApiGateway
+      Statistic: Average
+      Period: 60
+      EvaluationPeriods: 5
+      Threshold: 3000
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+      Dimensions:
+        - Name: ApiName
+          Value: !Ref ApiName
+        - Name: Stage
+          Value: !Ref Stage
+      AlarmActions:
+        - !Ref AlarmTopic
+
+  # API Gateway Count Alarm (Unusual Traffic)
+  ApiGatewayCountAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${Stage}-${ApiName}-HighTraffic"
+      AlarmDescription: "Alarm for unusually high API traffic"
+      MetricName: Count
+      Namespace: AWS/ApiGateway
+      Statistic: Sum
+      Period: 60
+      EvaluationPeriods: 5
+      Threshold: 1000
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+      Dimensions:
+        - Name: ApiName
+          Value: !Ref ApiName
+        - Name: Stage
+          Value: !Ref Stage
+      AlarmActions:
+        - !Ref AlarmTopic
+
+  # Lambda Error Alarm for Anima
+  AnimaLambdaErrorAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${Stage}-${LambdaFunctionPrefix}-AnimaLambda-Errors"
+      AlarmDescription: "Alarm for Anima Lambda errors"
+      MetricName: Errors
+      Namespace: AWS/Lambda
+      Statistic: Sum
+      Period: 60
+      EvaluationPeriods: 5
+      Threshold: 5
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+      Dimensions:
+        - Name: FunctionName
+          Value: !Sub "${LambdaFunctionPrefix}-AnimaLambda"
+      AlarmActions:
+        - !Ref AlarmTopic
+
+  # Lambda Duration Alarm for Anima
+  AnimaLambdaDurationAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${Stage}-${LambdaFunctionPrefix}-AnimaLambda-Duration"
+      AlarmDescription: "Alarm for Anima Lambda high duration"
+      MetricName: Duration
+      Namespace: AWS/Lambda
+      Statistic: Average
+      Period: 60
+      EvaluationPeriods: 5
+      Threshold: 5000
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+      Dimensions:
+        - Name: FunctionName
+          Value: !Sub "${LambdaFunctionPrefix}-AnimaLambda"
+      AlarmActions:
+        - !Ref AlarmTopic
+
+  # Lambda Throttles Alarm for Anima
+  AnimaLambdaThrottlesAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${Stage}-${LambdaFunctionPrefix}-AnimaLambda-Throttles"
+      AlarmDescription: "Alarm for Anima Lambda throttles"
+      MetricName: Throttles
+      Namespace: AWS/Lambda
+      Statistic: Sum
+      Period: 60
+      EvaluationPeriods: 5
+      Threshold: 5
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+      Dimensions:
+        - Name: FunctionName
+          Value: !Sub "${LambdaFunctionPrefix}-AnimaLambda"
+      AlarmActions:
+        - !Ref AlarmTopic
+
+  # Custom Metric Alarm for Unusual API Usage
+  UnusualAPIUsageAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${Stage}-SoulCoreHub-UnusualAPIUsage"
+      AlarmDescription: "Alarm for unusual API usage patterns"
+      MetricName: AnimaAPIRequests
+      Namespace: SoulCoreHub/Usage
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 3
+      Threshold: 100
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+      Dimensions:
+        - Name: Stage
+          Value: !Ref Stage
+      AlarmActions:
+        - !Ref AlarmTopic
+
+Outputs:
+  AlarmTopicArn:
+    Description: "ARN of the SNS topic for alarms"
+    Value: !Ref AlarmTopic

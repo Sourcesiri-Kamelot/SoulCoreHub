@@ -101,26 +101,39 @@ Resources:
       StageName: !Ref Stage
       Cors:
         AllowMethods: "'GET,POST,OPTIONS'"
-        AllowHeaders: "'Content-Type,Authorization'"
-        AllowOrigin: "'*'"
+        AllowHeaders: "'Content-Type,Authorization,X-Api-Key'"
+        AllowOrigin: "'https://soulcorehub.io'"
       Auth:
         DefaultAuthorizer: CognitoAuthorizer
         Authorizers:
           CognitoAuthorizer:
             UserPoolArn: !GetAtt SoulCoreUserPool.Arn
+          ApiKeyAuthorizer:
+            ApiKeyRequired: true
         AddDefaultAuthorizerToCorsPreflight: false
+      ApiKeys:
+        - SoulCoreApiKey
+      UsagePlan:
+        CreateUsagePlan: PER_API
+        Description: SoulCore API Usage Plan
+        Quota:
+          Limit: 10000
+          Period: MONTH
+        Throttle:
+          BurstLimit: 100
+          RateLimit: 50
       GatewayResponses:
         DEFAULT_4XX:
           ResponseParameters:
             Headers:
-              Access-Control-Allow-Origin: "'*'"
-              Access-Control-Allow-Headers: "'Content-Type,Authorization'"
+              Access-Control-Allow-Origin: "'https://soulcorehub.io'"
+              Access-Control-Allow-Headers: "'Content-Type,Authorization,X-Api-Key'"
               Access-Control-Allow-Methods: "'GET,POST,OPTIONS'"
         DEFAULT_5XX:
           ResponseParameters:
             Headers:
-              Access-Control-Allow-Origin: "'*'"
-              Access-Control-Allow-Headers: "'Content-Type,Authorization'"
+              Access-Control-Allow-Origin: "'https://soulcorehub.io'"
+              Access-Control-Allow-Headers: "'Content-Type,Authorization,X-Api-Key'"
               Access-Control-Allow-Methods: "'GET,POST,OPTIONS'"
       MethodSettings:
         - ResourcePath: '/*'

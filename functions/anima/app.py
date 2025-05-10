@@ -3,6 +3,9 @@ import os
 import sys
 import boto3
 import logging
+import hmac
+import hashlib
+import base64
 from datetime import datetime
 
 # Setup logging
@@ -12,11 +15,13 @@ logger.setLevel(logging.INFO)
 # Initialize AWS clients
 s3_client = boto3.client('s3')
 dynamodb = boto3.resource('dynamodb')
+cloudwatch = boto3.client('cloudwatch')
 
 # Get environment variables
 MEMORY_BUCKET = os.environ.get('MEMORY_BUCKET')
 STAGE = os.environ.get('STAGE', 'dev')
 EMOTIONAL_STATE_TABLE = f'SoulCoreEmotionalState-{STAGE}'
+API_SECRET = os.environ.get('API_SECRET', 'default-secret-key-replace-in-production')
 
 def lambda_handler(event, context):
     """
@@ -26,6 +31,17 @@ def lambda_handler(event, context):
     providing a serverless interface to the emotional core agent.
     """
     try:
+        # Verify request signature if present
+        if not verify_request_signature(event):
+            return {
+                'statusCode': 403,
+                'headers': get_cors_headers(),
+                'body': json.dumps({
+                    'error': 'Invalid request signature',
+                    'message': 'Request signature verification failed'
+                })
+            }
+            
         # Parse the incoming request
         body = json.loads(event.get('body', '{}'))
         user_input = body.get('input', '')
@@ -34,6 +50,9 @@ def lambda_handler(event, context):
         
         # Log the request
         logger.info(f"Received request for Anima with session_id: {session_id}, user_id: {user_id}")
+        
+        # Log usage metrics to CloudWatch
+        log_usage_metrics(user_id)
         
         # Process the input using Anima's core logic
         response = process_anima_request(user_input)
@@ -44,10 +63,7 @@ def lambda_handler(event, context):
         
         return {
             'statusCode': 200,
-            'headers': {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
+            'headers': get_cors_headers(),
             'body': json.dumps({
                 'response': response.get('response', ''),
                 'emotional_state': response.get('emotional_state', {}),
@@ -58,10 +74,7 @@ def lambda_handler(event, context):
         logger.error(f"Error processing Anima request: {str(e)}")
         return {
             'statusCode': 500,
-            'headers': {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
+            'headers': get_cors_headers(),
             'body': json.dumps({
                 'error': str(e)
             })
@@ -128,3 +141,93 @@ def save_conversation_to_s3(session_id, user_input, response):
         )
     except Exception as e:
         logger.error(f"Error saving conversation to S3: {str(e)}")
+
+def verify_request_signature(event):
+    """
+    Verify the signature of the incoming request
+    
+    Args:
+        event: The Lambda event object
+        
+    Returns:
+        True if signature is valid or not present, False otherwise
+    """
+    # If no signature header is present, skip verification (for backward compatibility)
+    if 'headers' not in event or not event['headers'] or 'X-Request-Signature' not in event['headers']:
+        return True
+    
+    try:
+        # Get the signature from the headers
+        signature = event['headers']['X-Request-Signature']
+        
+        # Get the request body
+        body = event.get('body', '')
+        
+        # Calculate the expected signature
+        expected_signature = calculate_signature(body)
+        
+        # Compare signatures
+        return hmac.compare_digest(signature, expected_signature)
+    except Exception as e:
+        logger.error(f"Error verifying signature: {str(e)}")
+        return False
+
+def calculate_signature(data):
+    """
+    Calculate HMAC signature for request data
+    
+    Args:
+        data: The data to sign
+        
+    Returns:
+        Base64 encoded signature
+    """
+    key = API_SECRET.encode('utf-8')
+    message = data.encode('utf-8')
+    signature = hmac.new(key, message, hashlib.sha256).digest()
+    return base64.b64encode(signature).decode('utf-8')
+
+def log_usage_metrics(user_id):
+    """
+    Log usage metrics to CloudWatch
+    
+    Args:
+        user_id: The user ID
+    """
+    try:
+        cloudwatch.put_metric_data(
+            Namespace='SoulCoreHub/Usage',
+            MetricData=[
+                {
+                    'MetricName': 'AnimaAPIRequests',
+                    'Dimensions': [
+                        {
+                            'Name': 'UserId',
+                            'Value': user_id
+                        },
+                        {
+                            'Name': 'Stage',
+                            'Value': STAGE
+                        }
+                    ],
+                    'Value': 1,
+                    'Unit': 'Count'
+                }
+            ]
+        )
+    except Exception as e:
+        logger.error(f"Error logging metrics: {str(e)}")
+
+def get_cors_headers():
+    """
+    Get CORS headers for responses
+    
+    Returns:
+        Dictionary of CORS headers
+    """
+    return {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': 'https://soulcorehub.io',
+        'Access-Control-Allow-Headers': 'Content-Type,Authorization,X-Api-Key,X-Request-Signature',
+        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS'
+    }
