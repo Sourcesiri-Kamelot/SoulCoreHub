@@ -18,7 +18,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "postinstall": "patch-package"
   },
   "eslintConfig": {
     "extends": [
@@ -39,6 +40,8 @@
     ]
   },
   "devDependencies": {
+    "patch-package": "^8.0.0",
+    "postinstall-postinstall": "^2.1.0",
     "yarn": "^1.22.19"
   },
   "resolutions": {
@@ -60,6 +63,14 @@
     "browserslist": "4.16.5",
     "@babel/runtime": "7.26.10",
     "micromatch": "4.0.8",
-    "http-proxy-middleware": "2.0.9"
+    "http-proxy-middleware": "2.0.9",
+    "react-dev-utils/detect-port-alt/detect-port": "1.5.0",
+    "react-dev-utils/detect-port-alt": "1.1.6",
+    "react-dev-utils": "12.0.1",
+    "workbox-webpack-plugin/workbox-build/lodash.template": "4.5.0",
+    "svgo/css-select/nth-check": "2.1.1",
+    "jest-environment-jsdom-fourteen/jsdom/request": "2.88.2",
+    "jest-environment-jsdom/jsdom/request": "2.88.2",
+    "webpack-dev-server/ip": "2.0.1"
   }
 }

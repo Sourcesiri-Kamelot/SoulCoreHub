@@ -1,0 +1,119 @@
+diff --git a/node_modules/react-dev-utils/WebpackDevServerUtils.js b/node_modules/react-dev-utils/WebpackDevServerUtils.js
+index 0c9b21e..e9a0a6a 100644
+--- a/node_modules/react-dev-utils/WebpackDevServerUtils.js
++++ b/node_modules/react-dev-utils/WebpackDevServerUtils.js
+@@ -84,7 +84,7 @@ function resolveLoopback(proxy) {
+ function prepareUrls(protocol, host, port, pathname = '/') {
+   const formatUrl = hostname =>
+     url.format({
+-      protocol,
++      protocol: protocol,
+       hostname,
+       port,
+       pathname,
+@@ -291,7 +291,7 @@ function printInstructions(appName, urls, useYarn) {
+ 
+ function createCompiler({
+   appName,
+-  config,
++  config = {},
+   devSocket,
+   urls,
+   useYarn,
+diff --git a/node_modules/react-dev-utils/getProcessForPort.js b/node_modules/react-dev-utils/getProcessForPort.js
+index a11adc7..3f5bc1e 100644
+--- a/node_modules/react-dev-utils/getProcessForPort.js
++++ b/node_modules/react-dev-utils/getProcessForPort.js
+@@ -10,7 +10,15 @@
+ const execSync = require('child_process').execSync;
+ const execOptions = {
+   encoding: 'utf8',
+-  stdio: [
++  stdio: (
++    process.platform === 'win32' ?
++    [
++      'pipe',
++      'pipe',
++      'ignore',
++    ] :
++    [
+     'pipe',
+     'pipe',
+     'ignore',
+@@ -19,6 +27,7 @@ const execOptions = {
+ 
+ // Adapted from https://github.com/sindresorhus/taskkill
+ function taskkill(pid, force = false) {
++  pid = String(pid).replace(/[^0-9]/g, '');
+   const command = `taskkill ${force ? '/f' : ''} /pid ${pid}`;
+   // Force kill to be synchronous on Windows
+   execSync(command, execOptions);
+@@ -26,6 +35,7 @@ function taskkill(pid, force = false) {
+ 
+ function getProcessIdOnPort(port) {
+   return execSync(
++    process.platform === 'win32' ?
+     `netstat -ano | findstr :${port} | findstr LISTENING` :
+     `lsof -i:${port} -P -t -sTCP:LISTEN`,
+     execOptions
+@@ -33,6 +43,7 @@ function getProcessIdOnPort(port) {
+     .split('\n')[0]
+     .trim();
+ }
++
+ function getDirectoryOfProcessById(processId) {
+   // Output of the grep looks like
+   // /proc/12345/cwd -> /app
+@@ -40,7 +51,7 @@ function getDirectoryOfProcessById(processId) {
+   // In the case of process that's not found the output looks like
+   // ls: /proc/12345/cwd: No such file or directory
+   return execSync(
+-    `ls -l /proc/${processId}/cwd | sed 's/.*\\([^\\s]\\+\\)$/\\1/'`,
++    process.platform === 'win32' ? `echo %cd%` : `ls -l /proc/${processId}/cwd | sed 's/.*\\([^\\s]\\+\\)$/\\1/'`,
+     {
+       encoding: 'utf8',
+       stdio: [
+@@ -55,6 +66,7 @@ function getDirectoryOfProcessById(processId) {
+ 
+ function getProcessCommand(processId, processDirectory) {
+   const command = execSync(
++    process.platform === 'win32' ? `tasklist /fi "PID eq ${processId}" /fo csv /nh` :
+     `ps -o command -p ${processId} | sed -n 2p`,
+     execOptions
+   );
+@@ -62,7 +74,7 @@ function getProcessCommand(processId, processDirectory) {
+   // If process is wrapped in npm, extract the real command
+   if (isProcessANpm(command)) {
+     try {
+-      const packageJson = require(path.join(
++      const packageJson = path.join(
+         processDirectory,
+         'package.json'
+       ));
+@@ -78,7 +90,7 @@ function getProcessCommand(processId, processDirectory) {
+ }
+ 
+ function isProcessANpm(command) {
+-  return /^npm /.test(command) || /\bnpm$/.test(command);
++  return /^npm /.test(command) || /\bnpm$/.test(command) || /^node /.test(command);
+ }
+ 
+ function getProcessForPort(port) {
+@@ -86,7 +98,7 @@ function getProcessForPort(port) {
+     const processId = getProcessIdOnPort(port);
+     const directory = getDirectoryOfProcessById(processId);
+     const command = getProcessCommand(processId, directory);
+-    return (
++    return processId && directory && command ? (
+       chalk.cyan(command) +
+       chalk.grey(' (pid ' + processId + ')\n') +
+       chalk.blue('  in ') +
+@@ -94,6 +106,8 @@ function getProcessForPort(port) {
+     );
+   } catch (e) {
+     return null;
++  } finally {
++    // Clean up any resources
+   }
+ }
+ 
