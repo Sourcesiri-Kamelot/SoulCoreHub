@@ -6,8 +6,8 @@ Description: >
 
 Globals:
   Function:
-    Timeout: 10
-    MemorySize: 128
+    Timeout: 30
+    MemorySize: 256
     Runtime: python3.9
     Architectures:
       - x86_64
@@ -15,13 +15,11 @@ Globals:
       Variables:
         LOG_LEVEL: INFO
         MEMORY_BUCKET: !Ref MemoryBucket
-        STRIPE_API_KEY: '{{resolve:secretsmanager:SoulCoreSecrets:SecretString:STRIPE_API_KEY}}'
-        STRIPE_WEBHOOK_SECRET: '{{resolve:secretsmanager:SoulCoreSecrets:SecretString:STRIPE_WEBHOOK_SECRET}}'
 
 Parameters:
   DomainName:
     Type: String
-    Default: soulcore.heloim-ai.tech
+    Default: soulcorehub.io
     Description: Domain name for the API Gateway custom domain
 
   CertificateArn:
@@ -35,11 +33,15 @@ Parameters:
     AllowedValues:
       - dev
       - prod
+      - evolve
+      - ascend
+      - ultra
+      - stage
     Description: Deployment stage (dev or prod)
     
   MinimalResources:
     Type: String
-    Default: "true"
+    Default: "false"
     AllowedValues:
       - "true"
       - "false"
@@ -56,8 +58,6 @@ Resources:
     Type: AWS::Cognito::UserPool
     Properties:
       UserPoolName: !Sub SoulCoreUsers-${Stage}
-      AutoVerifyAttributes:
-        - email
       UsernameAttributes:
         - email
       Schema:
@@ -510,7 +510,7 @@ Resources:
       RestApiId: !Ref SoulCoreApi
       Stage: !Ref Stage
 
-  # Secrets Manager for API keys
+  # SoulCoreSecrets - Secrets Manager for API keys
   SoulCoreSecrets:
     Type: AWS::SecretsManager::Secret
     Properties:

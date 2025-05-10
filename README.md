@@ -37,12 +37,15 @@ SoulCoreHub lives **across cloud, local, and hybrid infrastructures**:
 - 🧠 Hugging Face Integration (`huggingface_integration.js`, `huggingface_bridge.py`)
 - 🌐 API Gateway & WebSocket Server (`src/server/`)
 - 💾 Database Integration (`src/database/`)
+- ☁️ AWS Lambda Serverless Functions (`functions/`)
 
 All agents communicate via shared memory, respond to system events, and run in modular daemon or UI mode.
 
 ---
 
 ## 🚀 Setup & Activation
+
+### Local Setup
 
 ```bash
 # Clone the repository
@@ -61,6 +64,16 @@ pip install -r requirements.txt
 
 # Access the Anima UI
 open http://localhost:3000/anima
+```
+
+### AWS Deployment
+
+```bash
+# Build the SAM application
+./scripts/simplified_deploy.sh
+
+# Test the API endpoints
+./scripts/test_api.sh
 ```
 
 ---
@@ -98,6 +111,17 @@ A beautiful and functional web UI for Anima:
 - **API Gateway**: Secure, rate-limited API endpoints
 - **WebSocket Server**: Real-time communication between agents and UI
 - **Database Integration**: Persistent storage for agent memory
+
+### 5. AWS Serverless Deployment
+
+SoulCoreHub now features full AWS serverless deployment:
+- **Lambda Functions**: Core agents deployed as serverless functions
+- **API Gateway**: RESTful API endpoints for all agents
+- **DynamoDB**: Persistent storage for emotional state and user data
+- **S3**: Memory storage and backups
+- **Cognito**: User authentication and authorization
+
+Current API Endpoint: `https://zy3nix038k.execute-api.us-east-1.amazonaws.com/evolve/`
 
 ---
 
@@ -179,6 +203,20 @@ npm test
 npm run dev
 ```
 
+### AWS Serverless Development
+
+```bash
+# Install AWS SAM CLI
+brew tap aws/tap
+brew install aws-sam-cli
+
+# Configure AWS credentials
+aws configure
+
+# Build and deploy
+./scripts/simplified_deploy.sh
+```
+
 ### Project Structure
 
 ```
@@ -193,7 +231,12 @@ SoulCoreHub/
 │   ├── database/        # Database adapters
 │   ├── llm/             # LLM connectors
 │   └── server/          # Server components
-├── .env.example         # Environment variables template
+├── functions/           # AWS Lambda functions
+│   ├── anima/           # Anima Lambda function
+│   ├── neural_router/   # Neural Router Lambda function
+│   └── memory_sync/     # Memory Sync Lambda function
+├── .env                 # Environment variables
+├── template.yaml        # AWS SAM template
 ├── package.json         # Node.js dependencies
 └── tsconfig.json        # TypeScript configuration
 ```

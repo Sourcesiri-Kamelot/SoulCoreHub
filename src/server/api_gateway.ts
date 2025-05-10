@@ -10,6 +10,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import { animaApi } from '../agents/anima';
+import soulCommandCenterApi from './soul_command_center_api';
 
 /**
  * Set up the API Gateway
@@ -36,6 +37,7 @@ export function setupApiGateway(app: express.Application) {
   
   // API routes
   app.use('/api/anima', animaApi);
+  app.use('/api/command-center', soulCommandCenterApi);
   
   // Health check
   app.get('/api/health', (req, res) => {

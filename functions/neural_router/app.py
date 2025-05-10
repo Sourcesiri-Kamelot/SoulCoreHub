@@ -3,61 +3,84 @@ import os
 import sys
 import boto3
 import logging
-import requests
 from datetime import datetime
+import re
 
 # Setup logging
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 # Initialize AWS clients
-s3_client = boto3.client('s3')
-dynamodb = boto3.resource('dynamodb')
+lambda_client = boto3.client('lambda')
 
 # Get environment variables
-MEMORY_BUCKET = os.environ.get('MEMORY_BUCKET')
-EMOTIONAL_STATE_TABLE = 'SoulCoreEmotionalState'
-
-# Add the project root to the Python path for imports
-sys.path.append('/var/task')
+STAGE = os.environ.get('STAGE', 'dev')
 
 def lambda_handler(event, context):
     """
-    Neural Router Lambda handler - routes user input to the appropriate agent or MCP server
+    Neural Router Lambda handler - routes user input to the appropriate agent
     
-    This Lambda function analyzes user input and determines which agent or service
-    should handle the request, then forwards it accordingly.
+    This Lambda function analyzes user input and routes it to the appropriate
+    agent Lambda function based on content analysis.
     """
     try:
         # Parse the incoming request
         body = json.loads(event.get('body', '{}'))
         user_input = body.get('input', '')
         session_id = body.get('session_id', 'default')
+        user_id = body.get('user_id', 'anonymous')
         
         # Log the request
-        logger.info(f"Received routing request with session_id: {session_id}")
+        logger.info(f"Received routing request with session_id: {session_id}, user_id: {user_id}")
         
-        # Analyze the input to determine the appropriate agent
-        routing_result = analyze_and_route(user_input)
+        # For now, route everything to Anima since it's our only implemented function
+        target_agent = "anima"
+        confidence = 1.0
         
-        # Save routing decision to DynamoDB for analytics
-        save_routing_decision(session_id, user_input, routing_result)
+        logger.info(f"Routing to {target_agent} with confidence {confidence}")
+        
+        # Prepare the payload for the target Lambda
+        payload = {
+            'body': json.dumps({
+                'input': user_input,
+                'session_id': session_id,
+                'user_id': user_id,
+                'routing_info': {
+                    'source': 'neural_router',
+                    'confidence': confidence
+                }
+            })
+        }
+        
+        # Get the function name from the current context
+        current_function_name = context.function_name
+        stack_name = "-".join(current_function_name.split('-')[:-1])  # Extract stack name
+        
+        # Construct the target function name
+        target_function = f"{stack_name}-AnimaLambda-{current_function_name.split('-')[-1]}"
+        
+        logger.info(f"Invoking function: {target_function}")
+        
+        # Invoke the target Lambda function
+        response = lambda_client.invoke(
+            FunctionName=target_function,
+            InvocationType='RequestResponse',
+            Payload=json.dumps(payload)
+        )
+        
+        # Parse the response from the target Lambda
+        response_payload = json.loads(response['Payload'].read().decode())
         
         return {
-            'statusCode': 200,
+            'statusCode': response_payload.get('statusCode', 200),
             'headers': {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*'
             },
-            'body': json.dumps({
-                'route': routing_result.get('route'),
-                'confidence': routing_result.get('confidence'),
-                'response': routing_result.get('response', ''),
-                'timestamp': datetime.now().isoformat()
-            })
+            'body': response_payload.get('body', '{}')
         }
     except Exception as e:
-        logger.error(f"Error in Neural Router: {str(e)}")
+        logger.error(f"Error routing request: {str(e)}")
         return {
             'statusCode': 500,
             'headers': {
@@ -65,73 +88,7 @@ def lambda_handler(event, context):
                 'Access-Control-Allow-Origin': '*'
             },
             'body': json.dumps({
-                'error': str(e)
+                'error': str(e),
+                'message': 'Error routing your request. Please try again.'
             })
         }
-
-def analyze_and_route(user_input):
-    """
-    Analyze user input and determine the appropriate routing
-    
-    This function implements the core logic from neural_routing.py in the SoulCoreHub project.
-    It determines which agent or MCP server should handle the request.
-    """
-    # This is a simplified version of the routing logic
-    # In production, you would import the actual neural_routing module
-    
-    user_input_lower = user_input.lower()
-    
-    # Simple keyword-based routing
-    if any(word in user_input_lower for word in ['emotion', 'feel', 'feeling', 'reflect']):
-        return {
-            'route': 'anima',
-            'confidence': 0.85,
-            'response': 'Routing to Anima for emotional processing'
-        }
-    elif any(word in user_input_lower for word in ['system', 'architecture', 'build', 'create']):
-        return {
-            'route': 'gptsoul',
-            'confidence': 0.9,
-            'response': 'Routing to GPTSoul for system architecture tasks'
-        }
-    elif any(word in user_input_lower for word in ['repair', 'fix', 'heal', 'recover']):
-        return {
-            'route': 'evove',
-            'confidence': 0.8,
-            'response': 'Routing to EvoVe for system repair'
-        }
-    elif any(word in user_input_lower for word in ['cloud', 'strategy', 'plan']):
-        return {
-            'route': 'azur',
-            'confidence': 0.75,
-            'response': 'Routing to Azür for strategic planning'
-        }
-    elif any(word in user_input_lower for word in ['mcp', 'context', 'knowledge']):
-        return {
-            'route': 'mcp_server',
-            'confidence': 0.7,
-            'response': 'Routing to MCP server for contextual processing'
-        }
-    else:
-        # Default to GPTSoul as the main coordinator
-        return {
-            'route': 'gptsoul',
-            'confidence': 0.6,
-            'response': 'No specific routing detected, defaulting to GPTSoul'
-        }
-
-def save_routing_decision(session_id, user_input, routing_result):
-    """Save the routing decision to DynamoDB for analytics"""
-    try:
-        table = dynamodb.Table('SoulCoreRouting')
-        table.put_item(
-            Item={
-                'session_id': session_id,
-                'timestamp': datetime.now().isoformat(),
-                'user_input': user_input,
-                'route': routing_result.get('route'),
-                'confidence': routing_result.get('confidence')
-            }
-        )
-    except Exception as e:
-        logger.error(f"Error saving routing decision: {str(e)}")

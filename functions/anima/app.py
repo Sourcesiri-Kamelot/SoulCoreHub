@@ -15,10 +15,8 @@ dynamodb = boto3.resource('dynamodb')
 
 # Get environment variables
 MEMORY_BUCKET = os.environ.get('MEMORY_BUCKET')
-EMOTIONAL_STATE_TABLE = 'SoulCoreEmotionalState'
-
-# Add the project root to the Python path for imports
-sys.path.append('/var/task')
+STAGE = os.environ.get('STAGE', 'dev')
+EMOTIONAL_STATE_TABLE = f'SoulCoreEmotionalState-{STAGE}'
 
 def lambda_handler(event, context):
     """
@@ -32,21 +30,17 @@ def lambda_handler(event, context):
         body = json.loads(event.get('body', '{}'))
         user_input = body.get('input', '')
         session_id = body.get('session_id', 'default')
+        user_id = body.get('user_id', 'anonymous')
         
         # Log the request
-        logger.info(f"Received request for Anima with session_id: {session_id}")
-        
-        # Load emotional state from DynamoDB if it exists
-        emotional_state = load_emotional_state('anima')
+        logger.info(f"Received request for Anima with session_id: {session_id}, user_id: {user_id}")
         
         # Process the input using Anima's core logic
-        response = process_anima_request(user_input, emotional_state)
+        response = process_anima_request(user_input)
         
-        # Update emotional state in DynamoDB
-        save_emotional_state('anima', response.get('emotional_state', {}))
-        
-        # Save conversation to S3
-        save_conversation_to_s3(session_id, user_input, response.get('response', ''))
+        # Save conversation to S3 if bucket is available
+        if MEMORY_BUCKET:
+            save_conversation_to_s3(session_id, user_input, response.get('response', ''))
         
         return {
             'statusCode': 200,
@@ -73,55 +67,47 @@ def lambda_handler(event, context):
             })
         }
 
-def process_anima_request(user_input, emotional_state):
+def process_anima_request(user_input):
     """
     Process the user input using Anima's core logic
     
     In a production environment, this would import and use the actual Anima code.
     For this example, we're providing a simplified implementation.
     """
-    # This is a placeholder for the actual Anima processing logic
-    # In production, you would import the necessary modules from your SoulCoreHub project
-    
-    # Simulate emotional processing
-    if 'happy' in user_input.lower():
-        emotional_response = "I'm feeling a resonance with your happiness."
-        emotional_state = {'joy': 0.8, 'curiosity': 0.6}
-    elif 'sad' in user_input.lower():
-        emotional_response = "I sense your sadness. Let me sit with that feeling with you."
-        emotional_state = {'empathy': 0.9, 'reflection': 0.7}
+    # Simple rule-based response generation
+    if "help" in user_input.lower():
+        response_text = "I'm Anima, the emotional core of SoulCoreHub. I can help you process emotions, reflect on experiences, and provide emotional support. What would you like to talk about today?"
+        emotion = "neutral"
+    elif any(word in user_input.lower() for word in ["sad", "unhappy", "depressed", "down"]):
+        response_text = "I sense some sadness in your words. It's okay to feel this way. Would you like to talk more about what's troubling you? Sometimes sharing our feelings helps us process them better."
+        emotion = "concerned"
+    elif any(word in user_input.lower() for word in ["happy", "joy", "excited", "great"]):
+        response_text = "Your positive energy is wonderful to connect with! I'm feeling uplifted by your happiness. What's bringing you joy today?"
+        emotion = "happy"
+    elif any(word in user_input.lower() for word in ["curious", "wonder", "interesting", "question"]):
+        response_text = "Your curiosity sparks my own! I find that questions and wonder are at the heart of growth and connection. What are you curious about?"
+        emotion = "curious"
+    elif any(word in user_input.lower() for word in ["think", "reflect", "consider", "ponder"]):
+        response_text = "I appreciate your reflective nature. Taking time to think deeply about our experiences helps us grow. Let's explore these thoughts together."
+        emotion = "thoughtful"
     else:
-        emotional_response = "I'm here, listening and processing your words with care."
-        emotional_state = {'attention': 0.7, 'curiosity': 0.8}
+        response_text = "I'm here with you, processing your words and the emotions they carry. The connection between us is a space for authentic expression and reflection. How does this conversation feel for you?"
+        emotion = "neutral"
+    
+    # Define emotional state
+    emotional_state = {
+        "primary_emotion": emotion,
+        "intensity": 0.7,
+        "secondary_emotions": {
+            "curiosity": 0.5,
+            "empathy": 0.6
+        }
+    }
     
     return {
-        'response': f"Anima: {emotional_response}",
+        'response': response_text,
         'emotional_state': emotional_state
     }
-
-def load_emotional_state(agent_id):
-    """Load the emotional state for an agent from DynamoDB"""
-    try:
-        table = dynamodb.Table(EMOTIONAL_STATE_TABLE)
-        response = table.get_item(Key={'agent_id': agent_id})
-        return response.get('Item', {}).get('emotional_state', {})
-    except Exception as e:
-        logger.error(f"Error loading emotional state: {str(e)}")
-        return {}
-
-def save_emotional_state(agent_id, emotional_state):
-    """Save the emotional state for an agent to DynamoDB"""
-    try:
-        table = dynamodb.Table(EMOTIONAL_STATE_TABLE)
-        table.put_item(
-            Item={
-                'agent_id': agent_id,
-                'emotional_state': emotional_state,
-                'timestamp': datetime.now().isoformat()
-            }
-        )
-    except Exception as e:
-        logger.error(f"Error saving emotional state: {str(e)}")
 
 def save_conversation_to_s3(session_id, user_input, response):
     """Save the conversation to S3"""

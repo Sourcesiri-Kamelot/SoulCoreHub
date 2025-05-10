@@ -1,0 +1,33 @@
+{
+  "ChangeBatch": {
+    "Comment": "Create DNS validation records for ACM certificate",
+    "Changes": [
+      {
+        "Action": "CREATE",
+        "ResourceRecordSet": {
+          "Name": "_4fa1ba52c7fa6d7e60329fe89592a2f2.soulcorehub.com",
+          "Type": "CNAME",
+          "TTL": 300,
+          "ResourceRecords": [
+            {
+              "Value": "_3078ecbad2c7aeeb493cb0503dce9d95.xlfgrmvvlj.acm-validations.aws"
+            }
+          ]
+        }
+      },
+      {
+        "Action": "CREATE",
+        "ResourceRecordSet": {
+          "Name": "_0bd59eea0378ebc707ccfddc1853b00d.www.soulcorehub.com",
+          "Type": "CNAME",
+          "TTL": 300,
+          "ResourceRecords": [
+            {
+              "Value": "_7732ed2312cb8d25f10777a2076ba9a8.xlfgrmvvlj.acm-validations.aws"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
