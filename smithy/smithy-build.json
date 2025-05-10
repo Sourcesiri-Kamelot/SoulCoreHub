@@ -1,0 +1,44 @@
+{
+  "version": "1.0",
+  "imports": [
+    "dependencies"
+  ],
+  "projections": {
+    "typescript-client": {
+      "plugins": {
+        "typescript-codegen": {
+          "service": "soulcorehub.api#SoulCoreHubService",
+          "targetNamespace": "soulcorehub",
+          "package": "@soulcorehub/client",
+          "packageVersion": "1.0.0",
+          "isClient": true
+        }
+      }
+    },
+    "typescript-server": {
+      "plugins": {
+        "typescript-codegen": {
+          "service": "soulcorehub.api#SoulCoreHubService",
+          "targetNamespace": "soulcorehub",
+          "package": "@soulcorehub/server",
+          "packageVersion": "1.0.0",
+          "isClient": false
+        }
+      }
+    },
+    "cdk": {
+      "plugins": {
+        "cdk-codegen": {
+          "service": "soulcorehub.api#SoulCoreHubService",
+          "module": "soulcorehub-cdk",
+          "runtimeConfig": {
+            "typescript": {
+              "packageName": "@soulcorehub/cdk",
+              "packageVersion": "1.0.0"
+            }
+          }
+        }
+      }
+    }
+  }
+}
