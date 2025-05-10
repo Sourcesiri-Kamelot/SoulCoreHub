@@ -1,0 +1,47 @@
+version: 2
+updates:
+  # npm dependencies
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    versioning-strategy: auto
+    
+  # Python dependencies
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    
+  # Additional npm directories
+  - package-ecosystem: "npm"
+    directory: "/anima_ui"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    
+  - package-ecosystem: "npm"
+    directory: "/anima-interface"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    
+  - package-ecosystem: "npm"
+    directory: "/soulcore-gui"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    
+  - package-ecosystem: "npm"
+    directory: "/config"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    
+  - package-ecosystem: "npm"
+    directory: "/lambda/getUserPlan"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
