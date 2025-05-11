@@ -1,42 +1,94 @@
 {
   "version": "1.0",
-  "imports": [
-    "dependencies"
-  ],
   "projections": {
-    "typescript-client": {
-      "plugins": {
-        "typescript-codegen": {
-          "service": "soulcorehub.api#SoulCoreHubService",
-          "targetNamespace": "soulcorehub",
-          "package": "@soulcorehub/client",
-          "packageVersion": "1.0.0",
-          "isClient": true
-        }
-      }
-    },
-    "typescript-server": {
-      "plugins": {
-        "typescript-codegen": {
-          "service": "soulcorehub.api#SoulCoreHubService",
-          "targetNamespace": "soulcorehub",
-          "package": "@soulcorehub/server",
-          "packageVersion": "1.0.0",
-          "isClient": false
-        }
-      }
-    },
-    "cdk": {
-      "plugins": {
-        "cdk-codegen": {
-          "service": "soulcorehub.api#SoulCoreHubService",
-          "module": "soulcorehub-cdk",
-          "runtimeConfig": {
-            "typescript": {
-              "packageName": "@soulcorehub/cdk",
-              "packageVersion": "1.0.0"
-            }
+    "api": {
+      "transforms": [
+        {
+          "name": "includeShapes",
+          "args": {
+            "include": ["com.soulcorehub#*"]
           }
+        }
+      ],
+      "plugins": {
+        "openapi": {
+          "service": "com.soulcorehub#SoulCoreHubApi",
+          "protocol": "aws.protocols#restJson1",
+          "version": "3.0.0",
+          "apiGateway": true
+        }
+      }
+    },
+    "typescript-client": {
+      "transforms": [
+        {
+          "name": "includeShapes",
+          "args": {
+            "include": ["com.soulcorehub#*"]
+          }
+        }
+      ],
+      "plugins": {
+        "typescript-codegen": {
+          "service": "com.soulcorehub#SoulCoreHubApi",
+          "package": "@soulcorehub/api-client",
+          "packageVersion": "1.0.0",
+          "includeReadme": true,
+          "includeTest": true
+        }
+      }
+    },
+    "python-client": {
+      "transforms": [
+        {
+          "name": "includeShapes",
+          "args": {
+            "include": ["com.soulcorehub#*"]
+          }
+        }
+      ],
+      "plugins": {
+        "python-codegen": {
+          "service": "com.soulcorehub#SoulCoreHubApi",
+          "module": "soulcorehub_api_client",
+          "moduleVersion": "1.0.0",
+          "includeReadme": true,
+          "includeTest": true
+        }
+      }
+    },
+    "java-server": {
+      "transforms": [
+        {
+          "name": "includeShapes",
+          "args": {
+            "include": ["com.soulcorehub#*"]
+          }
+        }
+      ],
+      "plugins": {
+        "java-codegen": {
+          "service": "com.soulcorehub#SoulCoreHubApi",
+          "package": "com.soulcorehub.api",
+          "packageVersion": "1.0.0",
+          "serverOnly": true
+        }
+      }
+    },
+    "aws-lambda": {
+      "transforms": [
+        {
+          "name": "includeShapes",
+          "args": {
+            "include": ["com.soulcorehub#*"]
+          }
+        }
+      ],
+      "plugins": {
+        "aws-lambda-codegen": {
+          "service": "com.soulcorehub#SoulCoreHubApi",
+          "package": "com.soulcorehub.lambda",
+          "packageVersion": "1.0.0"
         }
       }
     }

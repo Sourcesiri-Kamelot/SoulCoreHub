@@ -1,0 +1,9 @@
+rootProject.name = 'soulcorehub-api'
+
+include 'model'
+include 'handlers'
+include 'integration'
+
+project(':model').projectDir = file('model')
+project(':handlers').projectDir = file('handlers')
+project(':integration').projectDir = file('integration')
