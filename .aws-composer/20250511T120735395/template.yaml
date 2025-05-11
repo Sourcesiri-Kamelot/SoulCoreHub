@@ -1,7 +1,8 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: |
-  SoulCoreHub Serverless Application Deploys the SoulCore AI agents as serverless functions with cost optimization
+Description: >
+  SoulCoreHub Serverless Application
+  Deploys the SoulCore AI agents as serverless functions with cost optimization
 
 Globals:
   Function:
@@ -23,10 +24,9 @@ Parameters:
 
   CertificateArn:
     Type: String
-    Default: ''
-    Description: ARN of the ACM certificate for the custom domain (leave empty to
-      skip custom domain setup)
-
+    Default: ""
+    Description: ARN of the ACM certificate for the custom domain (leave empty to skip custom domain setup)
+    
   Stage:
     Type: String
     Default: dev
@@ -38,26 +38,19 @@ Parameters:
       - ultra
       - stage
     Description: Deployment stage (dev or prod)
-
+    
   MinimalResources:
     Type: String
-    Default: 'false'
+    Default: "false"
     AllowedValues:
-      - 'true'
-      - 'false'
+      - "true"
+      - "false"
     Description: Use minimal resources to save costs
 
 Conditions:
-  HasCertificate: !Not
-    - !Equals
-      - !Ref CertificateArn
-      - ''
-  IsProd: !Equals
-    - !Ref Stage
-    - prod
-  UseMinimalResources: !Equals
-    - !Ref MinimalResources
-    - 'true'
+  HasCertificate: !Not [!Equals [!Ref CertificateArn, ""]]
+  IsProd: !Equals [!Ref Stage, prod]
+  UseMinimalResources: !Equals [!Ref MinimalResources, "true"]
 
 Resources:
   # Cognito User Pool for Authentication
@@ -87,7 +80,7 @@ Resources:
         AllowAdminCreateUserOnly: false
       EmailConfiguration:
         EmailSendingAccount: COGNITO_DEFAULT
-
+      
   # Cognito User Pool Client
   SoulCoreUserPoolClient:
     Type: AWS::Cognito::UserPoolClient
@@ -100,16 +93,16 @@ Resources:
         - ALLOW_REFRESH_TOKEN_AUTH
         - ALLOW_USER_SRP_AUTH
       PreventUserExistenceErrors: ENABLED
-
+      
   # API Gateway for all Lambda functions
   SoulCoreApi:
     Type: AWS::Serverless::Api
     Properties:
       StageName: !Ref Stage
       Cors:
-        AllowMethods: '''GET,POST,OPTIONS'''
-        AllowHeaders: '''Content-Type,Authorization,X-Api-Key'''
-        AllowOrigin: '''https://soulcorehub.io'''
+        AllowMethods: "'GET,POST,OPTIONS'"
+        AllowHeaders: "'Content-Type,Authorization,X-Api-Key'"
+        AllowOrigin: "'https://soulcorehub.io'"
       Auth:
         DefaultAuthorizer: CognitoAuthorizer
         Authorizers:
@@ -133,32 +126,26 @@ Resources:
         DEFAULT_4XX:
           ResponseParameters:
             Headers:
-              Access-Control-Allow-Origin: '''https://soulcorehub.io'''
-              Access-Control-Allow-Headers: '''Content-Type,Authorization,X-Api-Key'''
-              Access-Control-Allow-Methods: '''GET,POST,OPTIONS'''
+              Access-Control-Allow-Origin: "'https://soulcorehub.io'"
+              Access-Control-Allow-Headers: "'Content-Type,Authorization,X-Api-Key'"
+              Access-Control-Allow-Methods: "'GET,POST,OPTIONS'"
         DEFAULT_5XX:
           ResponseParameters:
             Headers:
-              Access-Control-Allow-Origin: '''https://soulcorehub.io'''
-              Access-Control-Allow-Headers: '''Content-Type,Authorization,X-Api-Key'''
-              Access-Control-Allow-Methods: '''GET,POST,OPTIONS'''
+              Access-Control-Allow-Origin: "'https://soulcorehub.io'"
+              Access-Control-Allow-Headers: "'Content-Type,Authorization,X-Api-Key'"
+              Access-Control-Allow-Methods: "'GET,POST,OPTIONS'"
       MethodSettings:
-        - ResourcePath: /*
+        - ResourcePath: '/*'
           HttpMethod: '*'
-          ThrottlingBurstLimit: !If
-            - UseMinimalResources
-            - 10
-            - 50
-          ThrottlingRateLimit: !If
-            - UseMinimalResources
-            - 5
-            - 25
+          ThrottlingBurstLimit: !If [UseMinimalResources, 10, 50]
+          ThrottlingRateLimit: !If [UseMinimalResources, 5, 25]
 
   # S3 Bucket for memory storage
   MemoryBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Sub soulcore-memory-${AWS::AccountId}-${AWS::Region}-${Stage}
+      BucketName: !Sub "soulcore-memory-${AWS::AccountId}-${AWS::Region}-${Stage}"
       VersioningConfiguration:
         Status: Enabled
       LifecycleConfiguration:
@@ -177,7 +164,7 @@ Resources:
   EmotionalStateTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: !Sub SoulCoreEmotionalState-${Stage}
+      TableName: !Sub "SoulCoreEmotionalState-${Stage}"
       BillingMode: PAY_PER_REQUEST
       AttributeDefinitions:
         - AttributeName: agent_id
@@ -185,12 +172,12 @@ Resources:
       KeySchema:
         - AttributeName: agent_id
           KeyType: HASH
-
+          
   # DynamoDB Table for user subscriptions
   SubscriptionsTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: !Sub SoulCoreSubscriptions-${Stage}
+      TableName: !Sub "SoulCoreSubscriptions-${Stage}"
       BillingMode: PAY_PER_REQUEST
       AttributeDefinitions:
         - AttributeName: user_id
@@ -198,12 +185,12 @@ Resources:
       KeySchema:
         - AttributeName: user_id
           KeyType: HASH
-
+          
   # DynamoDB Table for usage tracking
   UsageTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: !Sub SoulCoreUsage-${Stage}
+      TableName: !Sub "SoulCoreUsage-${Stage}"
       BillingMode: PAY_PER_REQUEST
       AttributeDefinitions:
         - AttributeName: user_id
@@ -223,14 +210,8 @@ Resources:
       CodeUri: functions/anima/
       Handler: app.lambda_handler
       Runtime: python3.9
-      MemorySize: !If
-        - UseMinimalResources
-        - 128
-        - 512
-      Timeout: !If
-        - UseMinimalResources
-        - 10
-        - 30
+      MemorySize: !If [UseMinimalResources, 128, 512]
+      Timeout: !If [UseMinimalResources, 10, 30]
       Policies:
         - S3ReadPolicy:
             BucketName: !Ref MemoryBucket
@@ -266,14 +247,8 @@ Resources:
       CodeUri: functions/gptsoul/
       Handler: app.lambda_handler
       Runtime: python3.9
-      MemorySize: !If
-        - UseMinimalResources
-        - 128
-        - 512
-      Timeout: !If
-        - UseMinimalResources
-        - 10
-        - 30
+      MemorySize: !If [UseMinimalResources, 128, 512]
+      Timeout: !If [UseMinimalResources, 10, 30]
       Policies:
         - S3ReadPolicy:
             BucketName: !Ref MemoryBucket
@@ -309,14 +284,8 @@ Resources:
       CodeUri: functions/neural_router/
       Handler: app.lambda_handler
       Runtime: python3.9
-      MemorySize: !If
-        - UseMinimalResources
-        - 128
-        - 512
-      Timeout: !If
-        - UseMinimalResources
-        - 10
-        - 30
+      MemorySize: !If [UseMinimalResources, 128, 512]
+      Timeout: !If [UseMinimalResources, 10, 30]
       Policies:
         - S3ReadPolicy:
             BucketName: !Ref MemoryBucket
@@ -352,14 +321,8 @@ Resources:
       CodeUri: functions/memory_sync/
       Handler: app.lambda_handler
       Runtime: python3.9
-      MemorySize: !If
-        - UseMinimalResources
-        - 128
-        - 256
-      Timeout: !If
-        - UseMinimalResources
-        - 10
-        - 30
+      MemorySize: !If [UseMinimalResources, 128, 256]
+      Timeout: !If [UseMinimalResources, 10, 30]
       Policies:
         - S3CrudPolicy:
             BucketName: !Ref MemoryBucket
@@ -383,14 +346,8 @@ Resources:
       CodeUri: functions/resurrection/
       Handler: app.lambda_handler
       Runtime: python3.9
-      MemorySize: !If
-        - UseMinimalResources
-        - 128
-        - 256
-      Timeout: !If
-        - UseMinimalResources
-        - 10
-        - 30
+      MemorySize: !If [UseMinimalResources, 128, 256]
+      Timeout: !If [UseMinimalResources, 10, 30]
       Policies:
         - S3ReadPolicy:
             BucketName: !Ref MemoryBucket
@@ -416,14 +373,8 @@ Resources:
       CodeUri: functions/dashboard/
       Handler: app.lambda_handler
       Runtime: python3.9
-      MemorySize: !If
-        - UseMinimalResources
-        - 128
-        - 256
-      Timeout: !If
-        - UseMinimalResources
-        - 10
-        - 30
+      MemorySize: !If [UseMinimalResources, 128, 256]
+      Timeout: !If [UseMinimalResources, 10, 30]
       Policies:
         - S3ReadPolicy:
             BucketName: !Ref MemoryBucket
@@ -457,14 +408,8 @@ Resources:
       CodeUri: functions/auth/
       Handler: app.lambda_handler
       Runtime: python3.9
-      MemorySize: !If
-        - UseMinimalResources
-        - 128
-        - 256
-      Timeout: !If
-        - UseMinimalResources
-        - 10
-        - 30
+      MemorySize: !If [UseMinimalResources, 128, 256]
+      Timeout: !If [UseMinimalResources, 10, 30]
       Policies:
         - Version: '2012-10-17'
           Statement:
@@ -517,7 +462,7 @@ Resources:
             Method: post
             Auth:
               Authorizer: NONE
-
+              
   # PaymentLambda - handles Stripe payments and subscriptions
   PaymentLambda:
     Type: AWS::Serverless::Function
@@ -525,14 +470,8 @@ Resources:
       CodeUri: functions/payment/
       Handler: app.lambda_handler
       Runtime: python3.9
-      MemorySize: !If
-        - UseMinimalResources
-        - 128
-        - 256
-      Timeout: !If
-        - UseMinimalResources
-        - 10
-        - 30
+      MemorySize: !If [UseMinimalResources, 128, 256]
+      Timeout: !If [UseMinimalResources, 10, 30]
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref SubscriptionsTable
@@ -588,52 +527,52 @@ Resources:
   SoulCoreSecrets:
     Type: AWS::SecretsManager::Secret
     Properties:
-      Name: !Sub SoulCoreSecrets-${Stage}
-      Description: API keys and secrets for SoulCoreHub
+      Name: !Sub "SoulCoreSecrets-${Stage}"
+      Description: "API keys and secrets for SoulCoreHub"
       SecretString: '{"STRIPE_API_KEY":"sk_test_placeholder","STRIPE_WEBHOOK_SECRET":"whsec_placeholder"}'
 
 Outputs:
   SoulCoreApi:
-    Description: API Gateway endpoint URL for SoulCore functions
-    Value: !Sub https://${SoulCoreApi}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/
-
+    Description: "API Gateway endpoint URL for SoulCore functions"
+    Value: !Sub "https://${SoulCoreApi}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/"
+  
   CustomDomainUrl:
     Condition: HasCertificate
-    Description: Custom domain URL for the API
-    Value: !Sub https://${DomainName}/
-
+    Description: "Custom domain URL for the API"
+    Value: !Sub "https://${DomainName}/"
+  
   UserPoolId:
-    Description: Cognito User Pool ID
+    Description: "Cognito User Pool ID"
     Value: !Ref SoulCoreUserPool
-
+    
   UserPoolClientId:
-    Description: Cognito User Pool Client ID
+    Description: "Cognito User Pool Client ID"
     Value: !Ref SoulCoreUserPoolClient
-
+  
   AnimaLambda:
-    Description: Anima Lambda Function ARN
+    Description: "Anima Lambda Function ARN"
     Value: !GetAtt AnimaLambda.Arn
-
+  
   GPTSoulLambda:
-    Description: GPTSoul Lambda Function ARN
+    Description: "GPTSoul Lambda Function ARN"
     Value: !GetAtt GPTSoulLambda.Arn
-
+  
   NeuralRouterLambda:
-    Description: Neural Router Lambda Function ARN
+    Description: "Neural Router Lambda Function ARN"
     Value: !GetAtt NeuralRouterLambda.Arn
-
+  
   MemorySyncLambda:
-    Description: Memory Sync Lambda Function ARN
+    Description: "Memory Sync Lambda Function ARN"
     Value: !GetAtt MemorySyncLambda.Arn
-
+  
   ResurrectionLambda:
-    Description: Resurrection Lambda Function ARN
+    Description: "Resurrection Lambda Function ARN"
     Value: !GetAtt ResurrectionLambda.Arn
-
+  
   SoulCoreDashboardLambda:
-    Description: SoulCore Dashboard Lambda Function ARN
+    Description: "SoulCore Dashboard Lambda Function ARN"
     Value: !GetAtt SoulCoreDashboardLambda.Arn
-
+  
   MemoryBucket:
-    Description: S3 Bucket for SoulCore memory storage
+    Description: "S3 Bucket for SoulCore memory storage"
     Value: !Ref MemoryBucket
