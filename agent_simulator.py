@@ -6,6 +6,7 @@ Simulates agent responses for testing the SoulCore Society Protocol
 
 import json
 import logging
+import sys
 import time
 import threading
 import random
