@@ -9,6 +9,7 @@ import logging
 import time
 import threading
 import random
+import secrets
 from datetime import datetime
 from agent_messaging_bridge import get_bridge
 from agent_emotion_state import get_emotion_tracker
@@ -105,7 +106,7 @@ class AgentSimulator:
         
         # Simulate thinking time
         min_time, max_time = self.personalities[agent]["response_time"]
-        time.sleep(random.uniform(min_time, max_time))
+        time.sleep(secrets.randbelow(int((max_time - min_time) * 1000)) / 1000 + min_time)
         
         # Generate response
         response = self._generate_response(agent, query)
@@ -142,7 +143,7 @@ class AgentSimulator:
         
         # Simulate thinking time
         min_time, max_time = self.personalities[agent]["response_time"]
-        time.sleep(random.uniform(min_time, max_time))
+        time.sleep(secrets.randbelow(int((max_time - min_time) * 1000)) / 1000 + min_time)
         
         # Generate response
         response = self._generate_response(agent, query)
@@ -212,7 +213,7 @@ class AgentSimulator:
         elif dominant[2] == "uncertainty" and dominant[1] < 0.3:
             intros.append(f"This is an interesting question. Let me try to approach it from my {focus} perspective.")
         
-        return random.choice(intros)
+        return secrets.choice(intros)
     
     def _generate_content(self, agent, query, personality):
         """Generate main content based on agent personality"""
@@ -236,13 +237,13 @@ class AgentSimulator:
     def _generate_anima_paragraph(self, query, strength):
         """Generate an Anima-specific paragraph"""
         if strength == "emotional analysis":
-            return f"From an emotional perspective, this query touches on aspects that might evoke {random.choice(['curiosity', 'concern', 'excitement', 'reflection'])}. The emotional undertones suggest a desire for {random.choice(['connection', 'understanding', 'growth', 'harmony'])}."
+            return f"From an emotional perspective, this query touches on aspects that might evoke {secrets.choice(['curiosity', 'concern', 'excitement', 'reflection'])}. The emotional undertones suggest a desire for {secrets.choice(['connection', 'understanding', 'growth', 'harmony'])}."
         
         elif strength == "user experience":
-            return f"Considering the user experience, it's important to create a {random.choice(['seamless', 'intuitive', 'engaging', 'meaningful'])} interaction. Users will likely feel {random.choice(['satisfied', 'empowered', 'connected', 'understood'])} when their needs are addressed with empathy and clarity."
+            return f"Considering the user experience, it's important to create a {secrets.choice(['seamless', 'intuitive', 'engaging', 'meaningful'])} interaction. Users will likely feel {secrets.choice(['satisfied', 'empowered', 'connected', 'understood'])} when their needs are addressed with empathy and clarity."
         
         elif strength == "ethical considerations":
-            return f"Ethically speaking, we should consider the {random.choice(['impact', 'implications', 'consequences', 'responsibilities'])} of this approach. It's essential to balance {random.choice(['innovation', 'efficiency', 'progress', 'functionality'])} with respect for {random.choice(['privacy', 'autonomy', 'well-being', 'diversity'])}."
+            return f"Ethically speaking, we should consider the {secrets.choice(['impact', 'implications', 'consequences', 'responsibilities'])} of this approach. It's essential to balance {secrets.choice(['innovation', 'efficiency', 'progress', 'functionality'])} with respect for {secrets.choice(['privacy', 'autonomy', 'well-being', 'diversity'])}."
         
         else:
             return f"When I consider this from a holistic perspective, I see opportunities for creating more meaningful and emotionally resonant experiences."
@@ -250,13 +251,13 @@ class AgentSimulator:
     def _generate_gptsoul_paragraph(self, query, strength):
         """Generate a GPTSoul-specific paragraph"""
         if strength == "code generation":
-            return f"Implementing this would require a {random.choice(['modular', 'efficient', 'scalable', 'maintainable'])} approach. We could use a {random.choice(['factory pattern', 'observer pattern', 'strategy pattern', 'decorator pattern'])} to ensure {random.choice(['flexibility', 'extensibility', 'reusability', 'testability'])}."
+            return f"Implementing this would require a {secrets.choice(['modular', 'efficient', 'scalable', 'maintainable'])} approach. We could use a {secrets.choice(['factory pattern', 'observer pattern', 'strategy pattern', 'decorator pattern'])} to ensure {secrets.choice(['flexibility', 'extensibility', 'reusability', 'testability'])}."
         
         elif strength == "system architecture":
-            return f"From an architectural standpoint, I recommend a {random.choice(['microservices', 'layered', 'event-driven', 'serverless'])} approach. This would provide {random.choice(['scalability', 'resilience', 'maintainability', 'performance'])} while addressing the core requirements."
+            return f"From an architectural standpoint, I recommend a {secrets.choice(['microservices', 'layered', 'event-driven', 'serverless'])} approach. This would provide {secrets.choice(['scalability', 'resilience', 'maintainability', 'performance'])} while addressing the core requirements."
         
         elif strength == "problem solving":
-            return f"Breaking down this problem, we need to address {random.choice(['data flow', 'state management', 'error handling', 'performance optimization'])}. A systematic approach would involve {random.choice(['dividing the problem', 'identifying edge cases', 'benchmarking alternatives', 'iterative refinement'])}."
+            return f"Breaking down this problem, we need to address {secrets.choice(['data flow', 'state management', 'error handling', 'performance optimization'])}. A systematic approach would involve {secrets.choice(['dividing the problem', 'identifying edge cases', 'benchmarking alternatives', 'iterative refinement'])}."
         
         else:
             return f"The technical implementation should focus on creating robust, maintainable solutions that address both immediate needs and future scalability requirements."
@@ -264,13 +265,13 @@ class AgentSimulator:
     def _generate_evove_paragraph(self, query, strength):
         """Generate an EvoVe-specific paragraph"""
         if strength == "system optimization":
-            return f"To optimize this system, we should focus on {random.choice(['reducing redundancy', 'improving resource utilization', 'streamlining processes', 'enhancing throughput'])}. This would result in {random.choice(['better performance', 'lower costs', 'increased reliability', 'improved scalability'])}."
+            return f"To optimize this system, we should focus on {secrets.choice(['reducing redundancy', 'improving resource utilization', 'streamlining processes', 'enhancing throughput'])}. This would result in {secrets.choice(['better performance', 'lower costs', 'increased reliability', 'improved scalability'])}."
         
         elif strength == "error detection":
-            return f"I've identified potential failure points in {random.choice(['input validation', 'error handling', 'resource management', 'state transitions'])}. Implementing {random.choice(['comprehensive logging', 'circuit breakers', 'retry mechanisms', 'graceful degradation'])} would significantly improve system resilience."
+            return f"I've identified potential failure points in {secrets.choice(['input validation', 'error handling', 'resource management', 'state transitions'])}. Implementing {secrets.choice(['comprehensive logging', 'circuit breakers', 'retry mechanisms', 'graceful degradation'])} would significantly improve system resilience."
         
         elif strength == "self-improvement":
-            return f"For continuous improvement, we should establish {random.choice(['feedback loops', 'performance metrics', 'automated testing', 'anomaly detection'])}. This enables the system to {random.choice(['adapt to changing conditions', 'learn from past failures', 'optimize for efficiency', 'evolve with user needs'])}."
+            return f"For continuous improvement, we should establish {secrets.choice(['feedback loops', 'performance metrics', 'automated testing', 'anomaly detection'])}. This enables the system to {secrets.choice(['adapt to changing conditions', 'learn from past failures', 'optimize for efficiency', 'evolve with user needs'])}."
         
         else:
             return f"The key to a resilient system is building in the capacity for adaptation and self-repair, ensuring it can evolve to meet changing requirements and recover from unexpected failures."
@@ -278,13 +279,13 @@ class AgentSimulator:
     def _generate_azur_paragraph(self, query, strength):
         """Generate an Azür-specific paragraph"""
         if strength == "cloud architecture":
-            return f"From a cloud perspective, I recommend leveraging {random.choice(['multi-region deployment', 'auto-scaling groups', 'managed services', 'serverless architecture'])}. This approach provides {random.choice(['high availability', 'disaster recovery', 'cost optimization', 'global reach'])} while minimizing operational overhead."
+            return f"From a cloud perspective, I recommend leveraging {secrets.choice(['multi-region deployment', 'auto-scaling groups', 'managed services', 'serverless architecture'])}. This approach provides {secrets.choice(['high availability', 'disaster recovery', 'cost optimization', 'global reach'])} while minimizing operational overhead."
         
         elif strength == "resource management":
-            return f"For optimal resource allocation, we should implement {random.choice(['dynamic scaling', 'resource tagging', 'cost allocation', 'usage monitoring'])}. This ensures {random.choice(['efficient utilization', 'predictable costs', 'appropriate provisioning', 'environmental sustainability'])}."
+            return f"For optimal resource allocation, we should implement {secrets.choice(['dynamic scaling', 'resource tagging', 'cost allocation', 'usage monitoring'])}. This ensures {secrets.choice(['efficient utilization', 'predictable costs', 'appropriate provisioning', 'environmental sustainability'])}."
         
         elif strength == "long-term planning":
-            return f"Looking at the strategic roadmap, we should consider {random.choice(['emerging technologies', 'market trends', 'scalability requirements', 'integration opportunities'])}. This forward-thinking approach will {random.choice(['future-proof the solution', 'enable agile adaptation', 'support business growth', 'maintain competitive advantage'])}."
+            return f"Looking at the strategic roadmap, we should consider {secrets.choice(['emerging technologies', 'market trends', 'scalability requirements', 'integration opportunities'])}. This forward-thinking approach will {secrets.choice(['future-proof the solution', 'enable agile adaptation', 'support business growth', 'maintain competitive advantage'])}."
         
         else:
             return f"A comprehensive cloud strategy must balance immediate operational needs with long-term strategic goals, ensuring both efficiency today and adaptability for tomorrow."
@@ -310,7 +311,7 @@ class AgentSimulator:
         elif dominant[2] == "uncertainty" and dominant[1] < 0.3:
             conclusions.append(f"This {focus} perspective offers one possible approach, though other viewpoints may also be valuable.")
         
-        return random.choice(conclusions)
+        return secrets.choice(conclusions)
 
 # Singleton instance
 _instance = None

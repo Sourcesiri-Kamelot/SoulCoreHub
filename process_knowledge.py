@@ -36,9 +36,18 @@ try:
     import tiktoken
 except ImportError:
     logger.error("Required packages not found. Installing dependencies...")
-    import subprocess
-    subprocess.run(["pip", "install", "langchain", "langchain_community", "langchain_openai", 
-                   "tiktoken", "faiss-cpu", "pypdf", "docx2txt", "unstructured", "bs4"])
+    import subprocess  # nosec B404
+    import sys
+    try:
+        subprocess.run([sys.executable, "-m", "pip", "install", "langchain", "langchain_community", "langchain_openai", 
+                       "tiktoken", "faiss-cpu", "pypdf", "docx2txt", "unstructured", "bs4"], 
+                      shell=False, check=True, timeout=300)  # nosec B603
+    except subprocess.CalledProcessError as e:
+        logger.error(f"Failed to install dependencies: {e}")
+        raise
+    except subprocess.TimeoutExpired:
+        logger.error("Package installation timed out")
+        raise
     
     # Retry imports
     from langchain_community.document_loaders import (
@@ -85,7 +94,7 @@ class DocumentProcessor:
     
     def _get_file_hash(self, filepath: str) -> str:
         """Generate a hash for a file to track changes."""
-        hasher = hashlib.md5()
+        hasher = hashlib.md5(usedforsecurity=False)
         with open(filepath, 'rb') as f:
             buf = f.read()
             hasher.update(buf)
