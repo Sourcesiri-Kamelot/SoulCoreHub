@@ -23,8 +23,17 @@ try:
     import pandas as pd
 except ImportError:
     logger.error("Required packages not found. Installing dependencies...")
-    import subprocess
-    subprocess.run(["pip", "install", "datasets", "pandas", "huggingface_hub"])
+    import subprocess  # nosec B404
+    import sys
+    try:
+        subprocess.run([sys.executable, "-m", "pip", "install", "datasets", "pandas", "huggingface_hub"], 
+                      shell=False, check=True, timeout=300)  # nosec B603
+    except subprocess.CalledProcessError as e:
+        logger.error(f"Failed to install dependencies: {e}")
+        raise
+    except subprocess.TimeoutExpired:
+        logger.error("Package installation timed out")
+        raise
     
     # Retry imports
     from datasets import load_dataset, Dataset, DatasetDict
@@ -226,8 +235,8 @@ class HuggingFaceDatasetManager:
         dataset = self.datasets[dataset_name]
         
         # Get random examples
-        import random
-        indices = random.sample(range(len(dataset)), min(count, len(dataset)))
+        import secrets
+        indices = secrets.SystemRandom().sample(range(len(dataset)), min(count, len(dataset)))
         examples = [dict(dataset[i]) for i in indices]
         
         return examples
