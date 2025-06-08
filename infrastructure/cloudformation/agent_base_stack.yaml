@@ -1,0 +1,150 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'SoulCoreHub - Base Infrastructure for Ethical AI Agents'
+
+Parameters:
+  Environment:
+    Description: Deployment environment
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - staging
+      - prod
+  
+  AgentName:
+    Description: Name of the agent being deployed
+    Type: String
+    AllowedValues:
+      - GPTSoul
+      - Anima
+      - EvoVe
+      - Azur
+
+Resources:
+  # Lambda execution role with minimal permissions
+  AgentExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Path: /
+      RoleName: !Sub ${AgentName}-${Environment}-ExecutionRole
+
+  # S3 bucket for agent data storage
+  AgentDataBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub soulcorehub-${AgentName}-${Environment}-data
+      AccessControl: Private
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      VersioningConfiguration:
+        Status: Enabled
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+
+  # DynamoDB table for agent state and memory
+  AgentStateTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub soulcorehub-${AgentName}-${Environment}-state
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: type
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: TypeIndex
+          KeySchema:
+            - AttributeName: type
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+
+  # Lambda function for the agent
+  AgentFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub soulcorehub-${AgentName}-${Environment}
+      Handler: index.handler
+      Role: !GetAtt AgentExecutionRole.Arn
+      Code:
+        ZipFile: |
+          exports.handler = async (event) => {
+            console.log('Agent initialized:', process.env.AGENT_NAME);
+            console.log('Event received:', JSON.stringify(event));
+            
+            // This is a placeholder. The actual code will be deployed via CI/CD
+            return {
+              statusCode: 200,
+              body: JSON.stringify({
+                message: `${process.env.AGENT_NAME} is ready to serve ethically`,
+                timestamp: new Date().toISOString()
+              })
+            };
+          };
+      Runtime: nodejs18.x
+      Timeout: 30
+      MemorySize: 256
+      Environment:
+        Variables:
+          AGENT_NAME: !Ref AgentName
+          ENVIRONMENT: !Ref Environment
+          STATE_TABLE: !Ref AgentStateTable
+          DATA_BUCKET: !Ref AgentDataBucket
+
+  # EventBridge rule to trigger agent on schedule
+  AgentScheduleRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Name: !Sub soulcorehub-${AgentName}-${Environment}-schedule
+      Description: !Sub "Scheduled trigger for ${AgentName} agent"
+      ScheduleExpression: "rate(1 hour)"
+      State: ENABLED
+      Targets:
+        - Id: !Sub "${AgentName}Target"
+          Arn: !GetAtt AgentFunction.Arn
+
+  # Permission for EventBridge to invoke Lambda
+  AgentSchedulePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref AgentFunction
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt AgentScheduleRule.Arn
+
+Outputs:
+  AgentFunctionArn:
+    Description: ARN of the agent Lambda function
+    Value: !GetAtt AgentFunction.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-AgentFunctionArn"
+  
+  AgentDataBucketName:
+    Description: Name of the S3 bucket for agent data
+    Value: !Ref AgentDataBucket
+    Export:
+      Name: !Sub "${AWS::StackName}-AgentDataBucketName"
+  
+  AgentStateTableName:
+    Description: Name of the DynamoDB table for agent state
+    Value: !Ref AgentStateTable
+    Export:
+      Name: !Sub "${AWS::StackName}-AgentStateTableName"

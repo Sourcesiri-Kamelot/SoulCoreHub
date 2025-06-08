@@ -1,0 +1,187 @@
+stages:
+  - validate
+  - build
+  - test
+  - package
+  - deploy
+
+variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+  AWS_DEFAULT_REGION: "us-east-1"
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
+
+# Cache dependencies between jobs
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - .gradle/
+    - smithy/build/
+    - node_modules/
+
+# Validate Smithy model
+smithy-validate:
+  stage: validate
+  image: gradle:7.4.2-jdk11
+  script:
+    - cd smithy
+    - gradle smithyBuild
+  artifacts:
+    paths:
+      - smithy/build/smithy/
+    expire_in: 1 week
+
+# Build Java handlers
+build-java:
+  stage: build
+  image: gradle:7.4.2-jdk11
+  script:
+    - cd smithy
+    - gradle build
+  artifacts:
+    paths:
+      - smithy/build/
+    expire_in: 1 week
+  dependencies:
+    - smithy-validate
+
+# Generate TypeScript client
+generate-typescript-client:
+  stage: build
+  image: gradle:7.4.2-jdk11
+  script:
+    - cd smithy
+    - gradle generateTypeScriptClient
+  artifacts:
+    paths:
+      - smithy/build/typescript-client/
+      - frontend/src/api-client/
+    expire_in: 1 week
+  dependencies:
+    - smithy-validate
+
+# Generate Python client
+generate-python-client:
+  stage: build
+  image: gradle:7.4.2-jdk11
+  script:
+    - cd smithy
+    - gradle generatePythonClient
+  artifacts:
+    paths:
+      - smithy/build/python-client/
+      - cli/api-client/
+    expire_in: 1 week
+  dependencies:
+    - smithy-validate
+
+# Test Java handlers
+test-java:
+  stage: test
+  image: gradle:7.4.2-jdk11
+  script:
+    - cd smithy
+    - gradle test
+  dependencies:
+    - build-java
+
+# Test TypeScript client
+test-typescript:
+  stage: test
+  image: node:18
+  script:
+    - cd frontend
+    - npm install
+    - npm test
+  dependencies:
+    - generate-typescript-client
+
+# Test Python client
+test-python:
+  stage: test
+  image: python:3.9
+  script:
+    - cd cli
+    - pip install -r requirements.txt
+    - pytest
+  dependencies:
+    - generate-python-client
+
+# Package Lambda functions
+package-lambda:
+  stage: package
+  image: amazon/aws-cli
+  script:
+    - aws cloudformation package
+      --template-file infrastructure/cloudformation/agent_base_stack.yaml
+      --s3-bucket ${DEPLOYMENT_BUCKET}
+      --s3-prefix lambda
+      --output-template-file packaged-template.yaml
+  artifacts:
+    paths:
+      - packaged-template.yaml
+    expire_in: 1 week
+  dependencies:
+    - build-java
+  only:
+    - main
+    - develop
+
+# Build Docker image
+build-docker:
+  stage: package
+  image: docker:20.10.16
+  services:
+    - docker:20.10.16-dind
+  variables:
+    DOCKER_HOST: tcp://docker:2376
+    DOCKER_TLS_VERIFY: 1
+    DOCKER_CERT_PATH: /certs/client
+  script:
+    - docker build -t ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA} .
+    - docker tag ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA} ${CI_REGISTRY_IMAGE}:latest
+    - docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
+    - docker push ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA}
+    - docker push ${CI_REGISTRY_IMAGE}:latest
+  only:
+    - main
+    - develop
+
+# Deploy to development environment
+deploy-dev:
+  stage: deploy
+  image: amazon/aws-cli
+  environment:
+    name: development
+    url: https://dev-api.soulcorehub.com
+  script:
+    - aws cloudformation deploy
+      --template-file packaged-template.yaml
+      --stack-name soulcorehub-dev
+      --parameter-overrides Environment=dev
+      --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM
+      --no-fail-on-empty-changeset
+  dependencies:
+    - package-lambda
+  only:
+    - develop
+
+# Deploy to production environment
+deploy-prod:
+  stage: deploy
+  image: amazon/aws-cli
+  environment:
+    name: production
+    url: https://api.soulcorehub.com
+  script:
+    - aws cloudformation deploy
+      --template-file packaged-template.yaml
+      --stack-name soulcorehub-prod
+      --parameter-overrides Environment=prod
+      --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM
+      --no-fail-on-empty-changeset
+  dependencies:
+    - package-lambda
+  only:
+    - main
+  when: manual

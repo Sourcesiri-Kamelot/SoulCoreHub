@@ -1,0 +1,210 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'SoulCoreHub - API Gateway and Integration'
+
+Parameters:
+  Environment:
+    Description: Deployment environment
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - staging
+      - prod
+
+Resources:
+  # API Gateway
+  SoulCoreHubApi:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: !Sub soulcorehub-api-${Environment}
+      Description: SoulCoreHub API Gateway
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+      ApiKeySourceType: HEADER
+      MinimumCompressionSize: 1024
+
+  # API Gateway Usage Plan
+  ApiUsagePlan:
+    Type: AWS::ApiGateway::UsagePlan
+    Properties:
+      UsagePlanName: !Sub soulcorehub-usage-plan-${Environment}
+      Description: Usage plan for SoulCoreHub API
+      ApiStages:
+        - ApiId: !Ref SoulCoreHubApi
+          Stage: !Ref ApiStage
+      Throttle:
+        BurstLimit: 20
+        RateLimit: 10
+      Quota:
+        Limit: 5000
+        Period: DAY
+
+  # API Key for authenticated access
+  ApiKey:
+    Type: AWS::ApiGateway::ApiKey
+    Properties:
+      Name: !Sub soulcorehub-api-key-${Environment}
+      Description: API Key for SoulCoreHub API
+      Enabled: true
+
+  # Associate API Key with Usage Plan
+  ApiKeyUsagePlanAssociation:
+    Type: AWS::ApiGateway::UsagePlanKey
+    Properties:
+      KeyId: !Ref ApiKey
+      KeyType: API_KEY
+      UsagePlanId: !Ref ApiUsagePlan
+
+  # API Gateway Deployment
+  ApiDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn:
+      - AgentsResource
+      - ContentResource
+      - CommerceResource
+    Properties:
+      RestApiId: !Ref SoulCoreHubApi
+      Description: SoulCoreHub API Deployment
+
+  # API Gateway Stage
+  ApiStage:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      DeploymentId: !Ref ApiDeployment
+      RestApiId: !Ref SoulCoreHubApi
+      StageName: !Ref Environment
+      Description: !Sub SoulCoreHub API ${Environment} Stage
+      MethodSettings:
+        - ResourcePath: "/*"
+          HttpMethod: "*"
+          MetricsEnabled: true
+          DataTraceEnabled: true
+          LoggingLevel: INFO
+
+  # Root resource for agents
+  AgentsResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref SoulCoreHubApi
+      ParentId: !GetAtt SoulCoreHubApi.RootResourceId
+      PathPart: "agents"
+
+  # Root resource for content
+  ContentResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref SoulCoreHubApi
+      ParentId: !GetAtt SoulCoreHubApi.RootResourceId
+      PathPart: "content"
+
+  # Root resource for commerce
+  CommerceResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref SoulCoreHubApi
+      ParentId: !GetAtt SoulCoreHubApi.RootResourceId
+      PathPart: "commerce"
+
+  # Lambda for API authorization
+  ApiAuthorizerFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub soulcorehub-api-authorizer-${Environment}
+      Handler: index.handler
+      Role: !GetAtt ApiAuthorizerRole.Arn
+      Code:
+        ZipFile: |
+          exports.handler = async (event) => {
+            console.log('Auth event:', JSON.stringify(event));
+            
+            // This is a placeholder. The actual authorization logic will be implemented
+            // in a proper deployment. For now, we'll authorize all requests.
+            
+            // Extract token from the Authorization header
+            const token = event.authorizationToken;
+            
+            // For demo purposes, allow all authenticated requests
+            // In production, validate against a user database or cognito
+            const effect = token ? 'Allow' : 'Deny';
+            
+            // Generate policy
+            const authResponse = {
+              principalId: token || 'anonymous',
+              policyDocument: {
+                Version: '2012-10-17',
+                Statement: [
+                  {
+                    Action: 'execute-api:Invoke',
+                    Effect: effect,
+                    Resource: event.methodArn
+                  }
+                ]
+              }
+            };
+            
+            return authResponse;
+          };
+      Runtime: nodejs18.x
+      Timeout: 10
+      MemorySize: 128
+
+  # IAM role for API authorizer
+  ApiAuthorizerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+  # API Gateway Authorizer
+  ApiAuthorizer:
+    Type: AWS::ApiGateway::Authorizer
+    Properties:
+      Name: !Sub soulcorehub-authorizer-${Environment}
+      RestApiId: !Ref SoulCoreHubApi
+      Type: TOKEN
+      AuthorizerUri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ApiAuthorizerFunction.Arn}/invocations
+      IdentitySource: method.request.header.Authorization
+      AuthorizerResultTtlInSeconds: 300
+
+  # Permission for API Gateway to invoke the authorizer
+  ApiAuthorizerPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref ApiAuthorizerFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${SoulCoreHubApi}/authorizers/${ApiAuthorizer}
+
+  # CloudWatch Log Group for API Gateway
+  ApiGatewayLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/apigateway/${SoulCoreHubApi}-${Environment}
+      RetentionInDays: 30
+
+Outputs:
+  ApiGatewayUrl:
+    Description: URL of the API Gateway
+    Value: !Sub https://${SoulCoreHubApi}.execute-api.${AWS::Region}.amazonaws.com/${Environment}
+    Export:
+      Name: !Sub "${AWS::StackName}-ApiGatewayUrl"
+  
+  ApiId:
+    Description: ID of the API Gateway
+    Value: !Ref SoulCoreHubApi
+    Export:
+      Name: !Sub "${AWS::StackName}-ApiId"
+  
+  ApiKeyId:
+    Description: ID of the API Key
+    Value: !Ref ApiKey
+    Export:
+      Name: !Sub "${AWS::StackName}-ApiKeyId"

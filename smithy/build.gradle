@@ -1,0 +1,104 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'software.amazon.smithy' version '0.6.0'
+}
+
+group = 'com.soulcorehub'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+dependencies {
+    implementation 'software.amazon.smithy:smithy-model:1.25.0'
+    implementation 'software.amazon.smithy:smithy-aws-traits:1.25.0'
+    implementation 'software.amazon.smithy:smithy-aws-cloudformation:1.25.0'
+    implementation 'software.amazon.smithy:smithy-openapi:1.25.0'
+    implementation 'software.amazon.smithy:smithy-cli:1.25.0'
+    implementation 'software.amazon.smithy:smithy-codegen-core:1.25.0'
+    implementation 'software.amazon.smithy:smithy-aws-apigateway-openapi:1.25.0'
+    implementation 'software.amazon.smithy:smithy-aws-apigateway-traits:1.25.0'
+    implementation 'software.amazon.smithy:smithy-protocol-test-traits:1.25.0'
+    
+    // AWS SDK dependencies
+    implementation platform('software.amazon.awssdk:bom:2.20.56')
+    implementation 'software.amazon.awssdk:dynamodb'
+    implementation 'software.amazon.awssdk:lambda'
+    implementation 'software.amazon.awssdk:apigateway'
+    implementation 'software.amazon.awssdk:s3'
+    
+    // Testing dependencies
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+}
+
+smithy {
+    outputDirectory = file("${buildDir}/smithy")
+}
+
+// Task to generate OpenAPI specification
+task generateOpenApi(type: JavaExec) {
+    group = 'smithy'
+    description = 'Generates OpenAPI specification from Smithy model'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'software.amazon.smithy.cli.SmithyCli'
+    args = ['build', '--output', "${buildDir}/openapi"]
+}
+
+// Task to generate TypeScript client
+task generateTypeScriptClient(type: JavaExec) {
+    group = 'smithy'
+    description = 'Generates TypeScript client from Smithy model'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'software.amazon.smithy.cli.SmithyCli'
+    args = ['build', '--output', "${buildDir}/typescript-client"]
+    
+    doLast {
+        copy {
+            from "${buildDir}/typescript-client"
+            into "${rootDir}/../frontend/src/api-client"
+        }
+    }
+}
+
+// Task to generate Python client
+task generatePythonClient(type: JavaExec) {
+    group = 'smithy'
+    description = 'Generates Python client from Smithy model'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'software.amazon.smithy.cli.SmithyCli'
+    args = ['build', '--output', "${buildDir}/python-client"]
+    
+    doLast {
+        copy {
+            from "${buildDir}/python-client"
+            into "${rootDir}/../cli/api-client"
+        }
+    }
+}
+
+// Task to generate all clients
+task generateClients {
+    group = 'smithy'
+    description = 'Generates all client SDKs'
+    dependsOn generateOpenApi, generateTypeScriptClient, generatePythonClient
+}
+
+test {
+    useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
+}

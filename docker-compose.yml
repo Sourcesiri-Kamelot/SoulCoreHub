@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  soulcorehub-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: soulcorehub-app
+    volumes:
+      - .:/app
+      - ~/.aws:/root/.aws:ro
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+    networks:
+      - soulcore-network
+    depends_on:
+      - mongodb
+    command: python anima_autonomous.py
+
+  mongodb:
+    image: mongo:latest
+    container_name: soulcorehub-mongodb
+    volumes:
+      - mongodb-data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - soulcore-network
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME:-admin}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD:-password}
+
+  web-server:
+    image: node:18
+    container_name: soulcorehub-web
+    volumes:
+      - .:/app
+    working_dir: /app
+    ports:
+      - "8080:8080"
+    networks:
+      - soulcore-network
+    command: node server.js
+    depends_on:
+      - soulcorehub-app
+
+  nvidia-runtime:
+    image: nvcr.io/nvidia/pytorch:23.04-py3
+    container_name: soulcorehub-nvidia
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    networks:
+      - soulcore-network
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+networks:
+  soulcore-network:
+    driver: bridge
+
+volumes:
+  mongodb-data:
