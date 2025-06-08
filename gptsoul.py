@@ -1,1 +1,1 @@
-/Users/helo.im.ai/SoulCoreHub/gptsoul_soulconfig.py
+gptsoul_soulconfig.py
