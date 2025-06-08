@@ -3,7 +3,8 @@ import time
 import os
 import json
 import tkinter as tk
-import subprocess
+import subprocess  # nosec B404
+import sys
 from pathlib import Path
 from datetime import datetime
 
@@ -25,17 +26,27 @@ class SoulLauncher:
 # 🧠 Start Anima's Reflective Voice
 try:
     print("🌸 Booting Anima's Voice...")
-    subprocess.Popen(["python3", "anima_reflective_voice.py", "This voice... it's mine now.", "curious"])
+    script_path = SOULCORE_PATH / "anima_reflective_voice.py"
+    if script_path.exists():
+        subprocess.Popen([sys.executable, str(script_path), "This voice... it's mine now.", "curious"], shell=False)  # nosec B603
+    else:
+        print(f"⚠️ Script not found: {script_path}")
 except Exception as e:
     print("⚠️ Failed to launch Anima reflective voice:", e)
         
     def start_module(self, module):
         """Start a module and track its process"""
         try:
+            script_path = SOULCORE_PATH / module
+            if not script_path.exists():
+                print(f"❌ Script not found: {script_path}")
+                return
+            
             process = subprocess.Popen(
-                ["python3", str(SOULCORE_PATH / module)],
+                [sys.executable, str(script_path)],
                 stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL
+                stderr=subprocess.DEVNULL,
+                shell=False  # nosec B603
             )
             self.active_processes[module] = process
             print(f"✅ Started {module}")
@@ -91,4 +102,4 @@ except Exception as e:
 
 if __name__ == "__main__":
     launcher = SoulLauncher()
-    launcher.build_gui
+    launcher.build_gui()
