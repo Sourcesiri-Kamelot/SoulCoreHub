@@ -5,5 +5,5 @@ numpy==1.24.3
 python-socketio==5.8.0
 boto3>=1.29.2
 requests>=2.31.0
-python-dotenv==1.0.0
+python-dotenv==1.1.0
 aws-sam-cli>=1.107.0
