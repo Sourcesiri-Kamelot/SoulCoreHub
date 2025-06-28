@@ -9,7 +9,8 @@
     "dev": "nodemon server.js",
     "lint": "eslint .",
     "client": "cd client && npm start",
-    "build-client": "cd client && npm run build"
+    "build-client": "cd client && npm run build",
+    "build": "mkdir -p dist && cp index.html dist/ && cp *.js dist/ && cp society.html dist/ && echo 'Build complete - Cerebro interface ready for CodeCatalyst deployment'"
   },
   "keywords": [
     "ai",
